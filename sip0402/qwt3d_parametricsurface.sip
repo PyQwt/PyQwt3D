@@ -43,6 +43,10 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
+    ParametricSurface();
+    ParametricSurface(SurfacePlot &);
+    ParametricSurface(SurfacePlot *);
+
     virtual Triple operator()(double, double) = 0;
 
     virtual bool create(SurfacePlot &);
@@ -50,10 +54,6 @@ public:
     void assign(SurfacePlot &);
     void assign(SurfacePlot *);
     void setPeriodic(bool, bool);
-private:
-    ParametricSurface();
-    ParametricSurface(SurfacePlot &);
-    ParametricSurface(SurfacePlot *);
 
 }; // class ParametricSurface
 
