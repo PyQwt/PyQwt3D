@@ -24,27 +24,28 @@ ZLIBDIR := $(shell pwd)/zlib-1.2.1
 # ZLIBDIR := /home/packer/RPM/BUILD/zlib-1.2.1
 
 # Do not edit below this line, unless you know what you are doing.
-CXX := $(shell which ccache) $(CXX)
-CC := $(shell which ccache) $(CC)
+CXX  := $(shell which ccache) $(CXX)
+CC   := $(shell which ccache) $(CC)
+JOBS := $(shell getconf _NPROCESSORS_ONLN)
 
 .PHONY: dist
 
 # Build and link PyQwt3D against a shared Qwt3D library.
 all: symlinks
 	(cd configure \
-	&& python configure.py -I $(INCDIR) -L $(LIBDIR) \
-	&& $(MAKE) CC="$(CC)" CXX="$(CXX)")
+	&& python configure.py -j $(JOBS) -I $(INCDIR) -L $(LIBDIR) \
+	&& $(MAKE) -j $(JOBS) CC="$(CC)" CXX="$(CXX)")
 
 install:
 	(cd configure && make install)
 
 # Build and link PyQwt3D including the local source tree of Qwt3D.
-all-static:
+all-static: symlinks
 	(cd configure \
 	&& python configure.py -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
 	&& $(MAKE) CC="$(CC)" CXX="$(CXX)")
 
-debug:
+debug: symlinks
 	(cd configure \
 	&& python configure.py \
 		-Q $(QWT3DDIR) -D PYQWT3D_DEBUG --debug --tracing \
