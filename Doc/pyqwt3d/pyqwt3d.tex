@@ -7,6 +7,8 @@
   {http://qwtplot3d.sourceforge.net/web/navigation/api_frame.html}}
 \newcommand{\QwtPlotDddManual}{\ulink{QwtPlot3D manual}
   {http://qwtplot3d.sourceforge.net/web/navigation/manual_frame.html}}
+\newcommand{\ZLib}{\ulink{ZLib}
+  {http://www.gzip.org/zlib}}
 \newcommand{\mailinglist}{\ulink{mailing list}
   {mailto:pyqwt-users@lists.sourceforge.net}}
 
@@ -23,12 +25,12 @@
   {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.tar.gz?download}}
 \newcommand{\optik}{\ulink{optik}
   {http://optik.sourceforge.net}}
-\newcommand{\NewSip}{\ulink{sip-4.1.1.tar.gz}
-  {http://pyqwt.sourceforge.net/support/sip-4.1.1.tar.gz}}
-\newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.13.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.13.tar.gz}}
-\newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.13.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.13.tar.gz}}
+\newcommand{\NewSip}{\ulink{sip-4.2.tar.gz}
+  {http://pyqwt.sourceforge.net/support/sip-4.2.tar.gz}}
+\newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.14.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.14.tar.gz}}
+\newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.14.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.14.tar.gz}}
 \newcommand{\PyQtCom}{\ulink{PyQt-commercial}
   {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
 \newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.tar.gz}
@@ -39,10 +41,10 @@
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.4-beta.zip?download}}
 
 % Installers for MS-Windows
-\newcommand{\PythonExe}{\ulink{Python-2.3.4.exe}
-  {http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe}}
-\newcommand{\NumericExe}{\ulink{Numeric-23.6.win32-py2.3.exe}
-  {http://prdownloads.sourceforge.net/numpy/Numeric-23.6.win32-py2.3.exe?download}}
+\newcommand{\PythonExe}{\ulink{Python-2.3.5.exe}
+  {http://www.python.org/ftp/python/2.3.5/Python-2.3.5.exe}}
+\newcommand{\NumericExe}{\ulink{Numeric-23.7.win32-py2.3.exe}
+  {http://prdownloads.sourceforge.net/numpy/Numeric-23.7.win32-py2.3.exe?download}}
 \newcommand{\numarrayExe}{\ulink{numarray-1.1.1.win32-py2.3.exe}
   {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.win32-py2.3.exe?download}}
 \newcommand{\QtNcExe}{\ulink{QtWin230-NonCommercial.exe}
@@ -59,16 +61,26 @@
   least one the Numerical Python extensions:
   \Numeric{} or its successor \numarray{}.
   I am using \NumericTarGz{} and \numarrayTarGz{}.
-  Versions of Numeric later than 21.0 are supported.
-  Numarray is newer and therefore less stable than Numeric, so get the latest!
+  PyQwt3D works with Numeric-21.3 and later.
+  Get the latest version of Numarray, since it is newer and therefore less
+  stable than Numeric.
+
+  \begin{notice}[note]
+    The PyQwt3D extension module containing statically linked sources of
+    QwtPlot3D-0.2.4 coexists very well with system wide shared libraries
+    of any version of QwtPlot3D.
+  \end{notice}
+
   \begin{notice}[warning]
     PyQwt3D may not work with numarray on Linux systems, possibly due to a bug
-    in the floating point excepion handling of glibc (occurs at least on
-    Mandrake-10.0 and SuSE-9.0).
-    More information is to be found
+    in the floating point excepion handling of glibc. 
+    More information is to be found in
     \ulink{here}{http://sourceforge.net/mailarchive/message.php?msg_id=9914816}
     and in related posts.
-    Your mileage may vary: PyQwt3D works with numarray on SuSE-9.1.
+    PyQwt3D does not work with numarray and Matrox graphic cards on
+    Mandrake-10.0 and SuSE-9.0.
+    Your mileage may vary: PyQwt3D works with numarray with an ATI graphic card
+    on SuSE-9.1.
   \end{notice}
 }
 
@@ -130,31 +142,40 @@ the Qt framework with widgets to visualize 3-dimensional data.
 
 \Future{}
 
-Build prerequisites for \PyQwtDddTarGz{} are:
+Installation prerequisites for \PyQwtDddTarGz{} are:
 \begin{enumerate}
 \item
   \ulink{Python}{http://www.python.org}.\\
   Supported versions: Python-2.4.x and Python-2.3.x.
 \item
-  \QwtPlotDdd{}.\\
-  Supported versions: QwtPlot3D-0.2.4.
-\item
   \ulink{Qt}{http://www.trolltech.com}.\\
   Supported versions: Qt-3.3.x, Qt-3.2.x, Qt-3.1.x, Qt-3.0.x,
-  and -- if you use PyQwt3D's patched version of QwtPlot3D -- Qt-2.3.x.
+  and also Qt-2.3.x if you use PyQwt3D's patched version of QwtPlot3D.
 \item
   \NewSip{}.\\
   Supported versions: SIP-4.2, -4.1.1, -4.1, -4.0.1, and -4.0,
-  but SIP-4.2.x is recommended. Only SIP-4.2.x is capable to wrap all of the
-  advanced C++ idioms of QwtPlot3D without hacks.
-  PyQwt3D looses some features, if you use SIP-4.1.x, and somewhat more if
-  you use SIP-4.0.x.\\
-  You may also try a \snapshot{} at your own risk.
+  but SIP-4.2.x is recommended.\\
+  Only SIP-4.2.x is capable to wrap all of the advanced C++ idioms of
+  QwtPlot3D without hacks.\\
+  If you use SIP-4.1.x, PyQwt3D is somewhat crippled,
+  and if you use SIP-4.0.x, PyQwt3D is somewhat more crippled.
 \item
   \PyQtGpl{}, \PyQtMac{} or \PyQtCom{}.\\
-  Supported versions: PyQt-3.13, -3.12, -3.11, and -3.10,
-  but the most recent version gets most testing.\\
-  You may also try a \snapshot{} at your own risk.
+  Supported versions: PyQt-3.14, -3.13, -3.12, -3.11, and -3.10,
+  but the most recent version gets most testing.
+\item
+  \QwtPlotDdd{}.\\
+  Supported versions: \PyQwtDddTarGz{} or \QwtPlotDddZip{}.
+  \PyQwtDddTarGz{} contains its own slightly patched version of \QwtPlotDdd{}.
+  You can (but unless you are using Windows do not have to) compile and link
+  the \QwtPlotDdd{} sources statically into the PyQwt3D extension module.
+\item
+  \ZLib{} is needed to enable compression in the PDF and PostScript output of
+  \QwtPlotDdd{}.\\
+  Supported versions: zlib-1.2.x, and zlib-1.1.x.
+  \PyQwtDddTarGz{} contains the necessary source files of zlib-1.2.1 to remove
+  the dependency on zlib (but you are free to use an already installed shared
+  or dynamic load library of zlib). 
 \end{enumerate}
 
 \PrerequisitesEnd{}
@@ -164,22 +185,20 @@ Build prerequisites for \PyQwtDddTarGz{} are:
 
 \Future{}
 
-\subsection{Install on Windows with MSVC\label{win-install}}
+\subsection{Installation on Windows with MSVC\label{win-install}}
 
 \Future{}
 
 \begin{notice}[note]
-  PyQwt3D compiled with MSVC-6.0 is slightly crippled to make it run on
-  Windows.  The install script assumes that the same workarounds are required
-  for MSVC-7.x.  I rely on your feedback to fix eventual installation
-  problems, since I have no commercial license for Qt and PyQt.
+  I rely on your feedback to support PyQwt3D on Windows, since I have no
+  commercial license for Qt and PyQt.
 \end{notice}
 
 
 The installation procedure contains three steps:
 \begin{enumerate}
 \item
-  Unpack \PyQwtDddTarGz{} and \QwtPlotDddZip{}.
+  Unpack \PyQwtDddTarGz{} or \QwtPlotDddZip{}.
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
@@ -208,13 +227,25 @@ nmake install
     library.
 \end{enumerate}
 
-Contact the \mailinglist{}, if you run into problems.
-
 \begin{notice}[note]
   The files \file{configure\textbackslash{}go.bat} for Qt-3.x and
   \file{configure\textbackslash{}nc-go.bat} for \QtNcExe{} are examples of
   how to automatize the invokations of \strong{configure.py}, \strong{nmake},
   and \strong{nmake install}.  Adapt and use one of those files.
+\end{notice}
+
+\begin{notice}[note]
+  If you run into problems, send a log to the \mailinglist{}.
+
+  Try
+\begin{verbatim}
+go.bat >LOG.txt
+\end{verbatim}
+  or
+\begin{verbatim}
+nc-go.bat >LOG.txt
+\end{verbatim}
+  to make a log.
 \end{notice}
 
 \begin{notice}[note]
@@ -300,12 +331,28 @@ make install
   \end{itemize}
 \end{enumerate}
 
-Contact the \mailinglist{}, if you run into problems.
+\begin{notice}[note]
+  \file{PyQwt-0.1/Makefile} is makefile for GNU make which contains more
+  examples of how to invoke \file{configure.py}.
+  Adapt and use it, if you have GNU make.
+\end{notice}
 
 \begin{notice}[note]
-  The Makefile for GNU make, \file{PyQwt-0.1/Makefile} contains more examples
-  of how to invoke \file{configure.py}.  Adapt and use it, if you have GNU
-  make.
+  If you run into problems, send a log to the \mailinglist{}.
+
+  There are at least two options to log the output of make:
+  \begin{enumerate}
+  \item Invoke make, tie stderr to stdout, and redirect stdout to LOG.txt:
+\begin{verbatim}
+make all-static 2&>1 >LOG.txt
+\end{verbatim}
+    However, you do not see what is going on.
+  \item Use script to capture all screen output of make to LOG.txt:
+\begin{verbatim}
+script -c 'make all-static' LOG.txt
+\end{verbatim}
+    The script command appeared in 3.0BSD and is part of util-linux.
+  \end{enumerate}
 \end{notice}
 
 \begin{notice}[note]
@@ -414,7 +461,7 @@ For instance:
 
 \verbatiminput{StdVectorExample.txt}
 
-\section{Class reference}
+\section{Class reference \label{classes}}
 
 \Future{}
 
@@ -728,7 +775,7 @@ wraps \ctype{std::vector<Triple>}. See \ref{wrappers} for details.
 \emph{is fully implemented}.
 \end{classdesc}
 
-\section{Function reference}
+\section{Function reference \label{functions}}
 
 \Future{}
 
