@@ -1,3 +1,4 @@
-REM example for "python configure.py [options]" on Windows
+REM Example for "python configure.py [options]" on Windows
+REM Edit the argument for the -Q option to suit your system
 
-python configure.py -Q C:\mystuff\qwtplot3d --extra-cxxflags=-GR --extra-cxxflags=-GX
+python configure.py -Q C:\mystuff\qwtplot3d

@@ -37,6 +37,7 @@ import os
 import pprint
 import re
 import shutil
+import sys
 
 from optparse import OptionParser
 
@@ -175,8 +176,10 @@ def check_compiler(configuration, options):
     """
     makefile = sipconfig.Makefile(configuration=configuration)
     generator = makefile.optional_string('MAKEFILE_GENERATOR', 'UNIX')
-    if generator == 'MSVC':
+    # FIXME: 'MSVC' should be worse than 'MSVC.NET'
+    if generator in ['MSVC', 'MSVC.NET']:
         options.excluded_features.append('-x NO_MSVC')
+        options.extra_cxxflags.extend(['-GR', '-GX'])
     else:
         options.excluded_features.append('-x IS_MSVC')
     
@@ -185,24 +188,41 @@ def check_compiler(configuration, options):
 # check_compiler()
 
 
-def main():
-    
-    # configuration
-    configuration = pyqtconfig.Configuration()
-    build_dir = "Qwt3D"
-    tmp_build_dir = "tmp-" + build_dir
-    build_file = "qwt3d.sbf"
-    mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
-    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
+def check_os(configuration, options):
+    """Adapt to different operating systems
+    """
+    print "Found '%s' operating system:" % os.name
+    print sys.version
+    print
 
-    # parser
-    parser = OptionParser(usage='%prog [options]')
+    if os.name == 'nt':
+        options.extra_defines.append('WIN32')
+
+    return options
+
+# check_os()
+
+
+def parse_args():
+    """Return the parsed options and args from the command line
+    """
+
+    usage = (
+        'python configure.py [options]'
+        '\n\nEach option takes at most one argument, but some options'
+        '\naccumulate arguments when repeated. For example, invoke:'
+        '\n\n\tpython configure.py -I %s -I %s'
+        '\n\nto search the current *and* parent directories for headers.'
+        ) % (os.curdir, os.pardir)
+
+    parser = OptionParser(usage=usage)
+    
     parser.add_option(
         '-Q', '--qwtplot3d-sources', default='', action='store',
-        type='string', metavar='/path/to/qwtplot3d',
+        type='string', metavar='/sources/of/qwtplot3d',
         help=('compile and link the QwtPlot3D source files in'
-              ' /path/to/qwtplot3d statically into PyQwt3D'
-              ' (PyQwt3D requires this option on Windows)'))
+              ' /sources/of/qwtplot3d statically into PyQwt3D'
+              ' (required on Windows)'))
     parser.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
@@ -218,7 +238,8 @@ def main():
     parser.add_option(
         '-x', '--excluded-features', default=[], action='append',
         type='string', metavar='EXTRA_SENSORY_PERCEPTION',
-        help='let SIP exclude one of the features in sip/features.sip')
+        help=('add a feature for SIP to exclude'
+              ' (normally one of the features in sip/features.sip)'))
     parser.add_option(
         '--debug', default=False, action='store_true',
         help='build with debugging symbols [default disabled]')              
@@ -229,49 +250,86 @@ def main():
         '--disable-numeric', default=False, action='store_true',
         help='disable detection and use of Numeric [default enabled]')
     parser.add_option(
-        '--extra-cflags', default=[], action='append', type='string',
+        '--extra-cflags', default=[], action='append',
+        type='string', metavar='EXTRA_CFLAG',
         help='add an extra C compiler flags')
     parser.add_option(
-        '--extra-cxxflags', default=[], action='append', type='string',
-        metavar='-GR',
-        help=('add an extra C++ compiler flags'
-              ' (MSVC may need the -GR and -GX flags to enable'
-              ' runtime type information and exception handling)'))
+        '--extra-cxxflags', default=[], action='append',
+        type='string', metavar='EXTRA_CXXFLAG',
+        help='add an extra C++ compiler flag')
     parser.add_option(
-        '--extra-defines', default=[], action='append', type='string',
-        help='add extra preprocessor definitions')
+        '--extra-defines', default=[], action='append',
+        type='string', metavar='EXTRA_DEFINE',
+        help='add an extra preprocessor definition')
     parser.add_option(
-        '--extra-lflags', default=[], action='append', type='string',
-        help='add extra linker flags')
+        '--extra-lflags', default=[], action='append',
+        type='string', metavar='EXTRA_LFLAG',
+        help='add an extra linker flag')
     parser.add_option(
-        '--extra-libs', default=[], action='append', type='string',
-        help='add extra libraries')
-                      
-    options, args = parser.parse_args()
-
+        '--extra-libs', default=[], action='append',
+        type='string', metavar='EXTRA_LIB',
+        help='add an extra library')
+    
+    options, args =  parser.parse_args()
+    
     # normalize the excluded features
     options.excluded_features = [
         ('-x %s' % f) for f in options.excluded_features
         ]
 
+    return options, args
+
+# parse_args()
+
+
+def main():
+    
+    # parse the command line
+    options, args = parse_args()
+
     print "Command line options:"
     pprint.pprint(options.__dict__)
     print
 
+    # initialize
+    configuration = pyqtconfig.Configuration()
+    build_dir = "Qwt3D"
+    tmp_build_dir = "tmp-" + build_dir
+    build_file = os.path.join(build_dir, "qwt3d.sbf")
+    mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
+    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
+    extra_sources = []
+    extra_headers = []
+    extra_moc_headers = []
+
     # extend the options
     options = check_sip(configuration, options)
+    options = check_os(configuration, options)
     options = check_compiler(configuration, options)
     options = check_numarray(configuration, options)
     options = check_numeric(configuration, options)
 
-    # do we compile and link QwtPlot3D statically into PyQwt3D?
+    # do we link against a QwtPlot3D library?
     if options.qwtplot3d_sources:
-        extra_sources = glob.glob(os.path.join(
+        # yes, zap all 'qwtplot3d'
+        while options.extra_libs.count():
+            options.extra_libs.remove('qwtplot3d')
+    elif 'qwtplot3d' not in options.extra_libs:
+        # no, add 'qwtplot3d' if needed
+        options.extra_libs.append('qwtplot3d')
+
+    print "Extended options:"
+    pprint.pprint(options.__dict__)
+    print
+    
+    # do we compile and link the sources of QwtPlot3D statically into PyQwt3D?
+    if options.qwtplot3d_sources:
+        extra_sources += glob.glob(os.path.join(
             options.qwtplot3d_sources, 'src', '*.cpp'))
-        extra_headers = glob.glob(os.path.join(
-            options.qwtplot3d_sources, 'include', '*.h'))
         extra_sources += glob.glob(os.path.join(
             options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.c'))
+        extra_headers += glob.glob(os.path.join(
+            options.qwtplot3d_sources, 'include', '*.h'))
         extra_headers += glob.glob(os.path.join(
             options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.h'))
         extra_moc_headers = []
@@ -279,42 +337,24 @@ def main():
             text = open(header).read()
             if re.compile(r'^\s*Q_OBJECT', re.M).search(text):
                 extra_moc_headers.append(header)
-    elif 'qwtplot3d' not in options.extra_libs:
-        options.extra_libs.append('qwtplot3d')
-        extra_sources = []
-        extra_headers = []
-        extra_moc_headers = []
 
     # add the interface to the numerical Python extensions
     extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
     extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
 
-    print "Extended options:"
-    pprint.pprint(options.__dict__)
-    print
-    
     # generate code into a temporary directory
     if not os.path.exists(tmp_build_dir):
         os.mkdir(tmp_build_dir)
+    # generate the build file into the build directory
     if not os.path.exists(build_dir):
         os.mkdir(build_dir)
-        open(os.path.join(build_dir, '__init__.py'), 'w').write(
-            'from _Qwt3D import *\n'
-            '\n'
-            '# Alias the helper classes away.\n'
-            'del PyFunction;\n'
-            'from _Qwt3D import PyFunction as Function\n'
-            'del PyParametricSurface\n'
-            'from _Qwt3D import PyParametricSurface as ParametricSurface\n'
-            )
-        compileall.compile_dir(build_dir, 1, mod_dir)
-
+        
     cmd = " ".join(
         [configuration.sip_bin,
          # SIP assumes POSIX style path separators
          "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
          "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
-         "-b", os.path.join(build_dir, build_file),
+         "-b", build_file,
          "-c", tmp_build_dir,
          ]
         + options.excluded_features
@@ -326,8 +366,12 @@ def main():
     print "sip invokation:"
     pprint.pprint(cmd)
     print
-    
+
+    if os.path.exists(build_file):
+        os.remove(build_file)
     os.system(cmd)
+    if not os.path.exists(build_file):
+        raise SystemExit, 'SIP failed to generate the C++ code.'
 
     # patch the tmp_build_dir/sip_Qwt3Dcmodule.cpp file for Windows
     text = open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp')).read()
@@ -336,18 +380,18 @@ def main():
     open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp'), 'w').write(text)
 
     # copy lazily to the build directory
-    copies = 0
+    lazy_copies = 0
     for pattern in ('*.cpp', '*.h'):
         for source in glob.glob(os.path.join(tmp_build_dir, pattern)):
             target = os.path.join(build_dir, os.path.basename(source))
             if lazy_copy_sip_output_file(source, target):
                 print "Copy %s -> %s." % (source, target)
-                copies += 1
-    print "%s file(s) copied." % copies
+                lazy_copies += 1
+    print "%s file(s) lazily copied." % lazy_copies
 
     # fix the sip-build-file
-    lines = open(os.path.join(build_dir, build_file)).readlines()
-    output = open(os.path.join(build_dir, build_file), "w")
+    lines = open(build_file).readlines()
+    output = open(build_file, "w")
     for line in lines:
         if line.startswith('sources'):
             chunks = [line.rstrip()]
@@ -377,8 +421,25 @@ def main():
     if options.qwtplot3d_sources:
         for header in [os.path.join('Qwt3D', 'qwt3d_io_gl2ps.cpp')]:
             text = open(header).read()
-            open(header, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
+            if -1 != text.find('../3rdparty/gl2ps/'): 
+                open(header, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
     
+    # generate __init__.py'
+    init_file = os.path.join(build_dir, '__init__.py')
+    if not os.path.exists(init_file):
+        open(init_file, 'w').write(os.linesep.join([
+            'from _Qwt3D import *',
+            '',
+            '# Alias the helper classes away.',
+            'del PyFunction;',
+            'from _Qwt3D import PyFunction as Function',
+            'del PyParametricSurface',
+            'from _Qwt3D import PyParametricSurface as ParametricSurface',
+            ]))
+
+    # byte-compile the Python files
+    compileall.compile_dir(build_dir, 1, mod_dir)
+
     # files to be installed
     installs = []
     installs.append([[os.path.basename(f) for f in glob.glob(
@@ -389,7 +450,7 @@ def main():
     # module makefile
     makefile = pyqtconfig.QtModuleMakefile(
         configuration = configuration,
-        build_file = build_file,
+        build_file = os.path.basename(build_file),
         dir = build_dir,
         install_dir = mod_dir,
         installs = installs,
