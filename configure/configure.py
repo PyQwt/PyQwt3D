@@ -191,30 +191,20 @@ def check_sip(configuration, options):
     
     print "Found SIP-%s.\n" % version_str
 
-    if version & 0xffff00 == 0x040100:
-        if version_str.startswith('snapshot-'):
-            options.excluded_features.extend([
-                "-x SIP0401",
-                "-x SIP0400",
-                ])
-            # SIP assumes POSIX style path separators
-            options.sip_include_dirs.append(
-                "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
-                )
-        else:
-            options.excluded_features.extend([
-                "-x SIP0402",
-                "-x SIP0400",
-                ])
-            # SIP assumes POSIX style path separators
-            options.sip_include_dirs.append(
-                "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
-                )
+    if version & 0xffff00 == 0x040200:
+        options.timelines.append('-t SIP_4_2')
+        # SIP assumes POSIX style path separators
+        options.sip_include_dirs.append(
+            "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
+            )
+    elif version & 0xffff00 == 0x040100:
+        options.timelines.append('-t SIP_4_1')
+        # SIP assumes POSIX style path separators
+        options.sip_include_dirs.append(
+            "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
+            )
     elif version & 0xffff00 == 0x040000: 
-        options.excluded_features.extend([
-            "-x SIP0402",
-            "-x SIP0401",
-            ])
+        options.timelines.append('-t SIP_4_0')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0400').replace('\\', '/')
@@ -381,6 +371,11 @@ def parse_args():
         help=('add a feature for SIP to exclude'
               ' (normally one of the features in sip/features.sip)'))
     sip_options.add_option(
+        '-t', '--timelines', default=[], action='append',
+        type='string', metavar='EXTRA_SENSORY_PERCEPTION',
+        help=('add a timeline for SIP'
+              ' (normally one of the timeline options in sip/timelines.sip)'))
+    sip_options.add_option(
         '--sip-include-dirs', default=[os.path.join(os.pardir, 'sip')],
         action='append', type='string', metavar='SIP_INCLUDE_DIR',
         help='add an extra directory for SIP to search')
@@ -416,6 +411,10 @@ def parse_args():
         ('-I %s' % f).replace('\\', '/') for f in options.sip_include_dirs
     ]
     
+    options.timelines = [
+        ('-t %s' % t) for t in options.timelines
+        ]
+
     if options.tracing:
         options.tracing = '-r'
     else:
@@ -538,6 +537,7 @@ def main():
          ]
         + options.sip_include_dirs
         + options.excluded_features
+        + options.timelines
         # SIP assumes POSIX style path separators
         + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
         )

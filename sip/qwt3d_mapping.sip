@@ -1,7 +1,7 @@
 // The SIP interface definition for:
 // - class Mapping
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -46,7 +46,7 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-%If (SIP0400)
+%If (SIP_4_0 - SIP_4_1)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const PyFunction *>(sipCpp))
@@ -64,29 +64,10 @@ public:
     else
         sipClass = 0;
 %End // ConvertToSubClassCode
-%End // SIP0400
+%End // (SIP_4_0 - SIP_4_1)
 
-%If (SIP0401)
-%ConvertToSubClassCode
-    // traverse the inheritance tree left->right and bottom->up.
-    if (dynamic_cast<const PyFunction *>(sipCpp))
-        sipClass = sipClass_PyFunction;
-    else if (dynamic_cast<const PyParametricSurface *>(sipCpp))
-        sipClass = sipClass_PyParametricSurface;
-    else if (dynamic_cast<const Function *>(sipCpp))
-        sipClass = sipClass_Function;
-    else if (dynamic_cast<const ParametricSurface *>(sipCpp))
-        sipClass = sipClass_ParametricSurface;
-    else if (dynamic_cast<const GridMapping *>(sipCpp))
-        sipClass = sipClass_GridMapping;
-    else if (dynamic_cast<const Mapping *>(sipCpp))
-        sipClass = sipClass_Mapping;
-    else
-        sipClass = 0;
-%End // ConvertToSubClassCode
-%End // SIP0401
 
-%If (SIP0402)
+%If (SIP_4_2 -)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const Function *>(sipCpp))
@@ -100,7 +81,7 @@ public:
     else
         sipClass = 0;
 %End // ConvertToSubClassCode
-%End // SIP0402
+%End // (SIP0402 -)
 
     virtual ~Mapping();
     virtual QString name() const;

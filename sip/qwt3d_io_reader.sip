@@ -1,7 +1,7 @@
 // The SIP interface definition for:
 // - class NativeReader
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -34,7 +34,7 @@
 // -- LICENSE --
 
 
-%If (SIP0401)
+%If (SIP_4_1 -)
 class NativeReader: IO::Functor
 {
 
@@ -47,10 +47,10 @@ public:
     NativeReader();
 
 }; // class NativeReader
-%End // SIP0401
+%End // (SIP_4_1 -)
 
 
-%If (SIP0400)
+%If (SIP_4_0 - SIP_4_1)
 class NativeReader //: IO::Functor
 {
 
@@ -63,7 +63,7 @@ public:
     NativeReader();
 
 }; // class NativeReader
-%End // SIP0400
+%End // (SIP_4_0 - SIP_4_1)
 
 
 // Local Variables:

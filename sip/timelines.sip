@@ -1,8 +1,10 @@
-// The SIP interface definition for the _Qwt3D module of PyQwt3D.
+// The timelines that PyQwt3D knows about.
 //
 // Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
+//
+// -- LICENSE --
 //
 // PyQwt3D is free software; you can redistribute it and/or modify it under the
 // terms of the GNU General Public License as published by the Free Software
@@ -27,62 +29,12 @@
 // If PyQwt3D is dynamically linked with commercial, non-commercial or
 // educational versions of Qt, PyQt and sip, PyQwt3D becomes a free plug-in for
 // a non-free program.
+//
+// -- LICENSE --
 
 
-%Module _Qwt3D 0
-
-%Include features.sip
-%Include timelines.sip
-%Include types.sip
-
-%Import qt/qtmod.sip
-%Import qtgl/qtglmod.sip
-
-%ModuleHeaderCode
-#include <qwt3d_python.h>
-%End
-
-%PostInitialisationCode
-#ifdef HAS_NUMARRAY
-    qwt3d_import_libnumarray();
-#endif
-#ifdef HAS_NUMERIC
-    qwt3d_import_array();
-#endif
-%End
-
-// automagically generated
-%Include qwt3d_axisvector.sip
-%Include qwt3d_cell.sip
-%Include qwt3d_cellfield.sip
-%Include qwt3d_colorvector.sip
-%Include qwt3d_doublevector.sip
-%Include qwt3d_freevectorfield.sip
-%Include qwt3d_triplefield.sip
-
-// blood, sweat and tears
-%Include qwt3d_autoscaler.sip
-%Include qwt3d_axis.sip
-%Include qwt3d_color.sip
-%Include qwt3d_colorlegend.sip
-%Include qwt3d_coordsys.sip
-%Include qwt3d_drawable.sip
-%Include qwt3d_enrichment.sip
-%Include qwt3d_enrichment_std.sip
-%Include qwt3d_function.sip
-%Include qwt3d_gridmapping.sip
-%Include qwt3d_io.sip
-%Include qwt3d_io_gl2ps.sip
-%Include qwt3d_io_reader.sip
-%Include qwt3d_label.sip
-%Include qwt3d_mapping.sip
-%Include qwt3d_openglhelper.sip
-%Include qwt3d_parametricsurface.sip
-%Include qwt3d_plot.sip
-%Include qwt3d_scale.sip
-%Include qwt3d_surfaceplot.sip
-%Include qwt3d_types.sip
-
+// Identify SIP-4.0.x, SIP-4.1.x or, SIP-4.2.x
+%Timeline {SIP_4_0 SIP_4_1 SIP_4_2}
 
 // Local Variables:
 // mode: C++
