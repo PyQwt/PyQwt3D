@@ -3,9 +3,14 @@
 # Edit INCDIR and LIBDIR to suit your QwtPlot3D installation.
 INCDIR := /usr/include/qwtplot3d
 LIBDIR := /usr/lib
+
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
 QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.4-beta-patched
 # QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
+
+# To compile and link the zlib sources statically into PyQwt3D.
+ZLIBDIR := $(shell pwd)/zlib-1.2.1
+# ZLIBDIR := /home/packer/RPM/BUILD/zlib-1.2.1
 
 
 .PHONY: dist
@@ -20,7 +25,7 @@ install:
 	(cd configure; make install)
 
 static:
-	(cd configure; python configure.py -Q $(QWT3DDIR))
+	(cd configure; python configure.py -Q $(QWT3DDIR) -Z $(ZLIBDIR))
 	(cd configure; $(MAKE))
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
