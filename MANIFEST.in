@@ -25,10 +25,23 @@ recursive-exclude numpy *cvsignore* *~
 
 # The internal version of QwtPlot3D patched for Qt-2.3.
 graft qwtplot3d-0.2.4-beta-patched
+recursive-exclude qwtplot3d-0.2.4-beta-patched *~
 
 # sip files
 graft sip
 recursive-exclude sip *cvsignore* *~
+
+# The zlib-1.2.1 library.
+graft zlib-1.2.1
+recursive-exclude zlib-1.2.1 amiga as400 contrib msdos old qnx win32
+prune zlib-1.2.1/amiga
+prune zlib-1.2.1/as400
+prune zlib-1.2.1/contrib
+prune zlib-1.2.1/msdos
+prune zlib-1.2.1/old
+prune zlib-1.2.1/qnx
+prune zlib-1.2.1/win32
+
 
 # Local Variables: ***
 # mode: sh ***
