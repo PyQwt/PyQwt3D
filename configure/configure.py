@@ -405,6 +405,8 @@ def main():
                 print "Copy %s -> %s." % (source, target)
                 lazy_copies += 1
     print "%s file(s) lazily copied." % lazy_copies
+    for source in glob.glob(os.path.join(tmp_build_dir, '*.py')):
+        shutil.copy2(source, os.path.join(build_dir, os.path.basename(source)))
 
     # fix the sip-build-file
     lines = open(build_file).readlines()
@@ -483,6 +485,9 @@ def main():
     makefile.extra_lflags.extend(options.extra_lflags)
     makefile.extra_libs.extend(options.extra_libs)
     makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
+    if configuration.sip_version < 0x040000:
+        makefile.extra_libs.insert(0, makefile.module_as_lib('qt'))
+        makefile.extra_libs.insert(0, makefile.module_as_lib('qtgl'))
     makefile.generate()
 
     # main makefile
