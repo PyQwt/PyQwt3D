@@ -33,7 +33,6 @@ recursive-exclude sip *cvsignore* *~
 
 # The zlib-1.2.1 library.
 graft zlib-1.2.1
-recursive-exclude zlib-1.2.1 amiga as400 contrib msdos old qnx win32
 prune zlib-1.2.1/amiga
 prune zlib-1.2.1/as400
 prune zlib-1.2.1/contrib
