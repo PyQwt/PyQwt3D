@@ -160,7 +160,7 @@ def check_sip(configuration, options):
         options.excluded_features.extend(["-x SIP0400", "-x OLDSIP"])
     elif sip_version & 0xffff00 == 0x030b00:
         # SIP-3.11.x works like SIP-4.1.x (except for bugs)
-        options.excluded_features.extend(["-x SIP0401", "-x NEWSIP"])
+        options.excluded_features.extend(["-x SIP0400", "-x NEWSIP"])
     else:
         raise SystemExit, (
             "PyQwt3D requires SIP-4.1.x, -4.0.x, or -3.11.x.\n"
