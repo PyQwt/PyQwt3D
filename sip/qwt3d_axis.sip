@@ -1,7 +1,7 @@
 // The SIP interface definition for:
 // - class Axis
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

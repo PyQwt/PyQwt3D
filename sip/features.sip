@@ -1,6 +1,6 @@
 // The SIP feature definitions for PyQwt3D.
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
