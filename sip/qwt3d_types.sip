@@ -67,12 +67,7 @@ enum PLOTSTYLE
     HIDDENLINE,
     FILLED,
     FILLEDMESH,
-%If (IS_MSVC)
-    // POINTS,
-%End
-%If (NO_MSVC)
     POINTS,
-%End
     USER,
 }; // enum PLOTSTYLE
 
