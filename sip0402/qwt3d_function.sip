@@ -43,6 +43,10 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
+    Function();
+    Function(SurfacePlot &);
+    Function(SurfacePlot *);
+
     virtual double operator()(double, double) = 0;
 
     void setMinZ(double);
@@ -52,10 +56,6 @@ public:
     virtual bool create();
     void assign(SurfacePlot &);
     void assign(SurfacePlot *);
-private:
-    Function();
-    Function(SurfacePlot &);
-    Function(SurfacePlot *);
 
 }; // class Function
 
