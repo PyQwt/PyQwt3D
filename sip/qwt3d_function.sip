@@ -44,6 +44,8 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
+    // SIP does not handle an 'abstract virtual operator()' well
+    // virtual double operator()(double x, double y) = 0;
     void setMinZ(double);
     void setMaxZ(double);
 
@@ -73,7 +75,10 @@ public:
     PyFunction(SurfacePlot &sp): Function(sp) {}
     PyFunction(SurfacePlot *sp): Function(sp) {} 
 
-    virtual double __call__(double x, double y) { return 0; }
+    // (1) __call__ anticipates a code generation bug in SIP-4.0 and SIP-4.1
+    // (2) __call__ is defined as a 'negative hat' to show that redefining
+    // __call__ in a subclass has no effect when using SIP-3.11.
+    virtual double __call__(double x, double y) { return -x*y; }
     virtual double operator()(double x, double y) { return __call__(x, y); }
 }; // class PyFunction
 
@@ -92,7 +97,7 @@ public:
 %End // NEWSIP
 
 %If (OLDSIP)
-    // sip-3.11.1: Operators cannot be virtual
+    // SIP-3.11.1: Operators cannot be virtual
     /*virtual*/ double operator()(double, double);
 %MethodCode
     sipRes = sipCpp->__call__(a0, a1);
