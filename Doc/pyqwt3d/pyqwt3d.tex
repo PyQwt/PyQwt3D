@@ -1,0 +1,204 @@
+\documentclass{manual}
+
+% Links
+\newcommand{\QwtPlotDDD}{\ulink{QwtPlot3D}{http://qwtplot3d.sourceforge.net}}
+
+% Source code
+\newcommand{\snapshot}{\ulink{snapshot}
+  {http://www.river-bank.demon.co.uk/download/snapshots}}
+\newcommand{\Numeric}{\ulink{Numeric}
+  {http://www.numpy.org}}
+\newcommand{\NumericTarGz}{\ulink{Numeric-23.6.tar.gz}
+  {http://prdownloads.sourceforge.net/numpy/Numeric-23.6.tar.gz?download}}
+\newcommand{\numarray}{\ulink{numarray}
+  {http://www.stsci.edu/resources/software_hardware/numarray}}
+\newcommand{\numarrayTarGz}{\ulink{numarray-1.1.1.tar.gz}
+  {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.tar.gz?download}}
+\newcommand{\optik}{\ulink{optik}
+  {http://optik.sourceforge.net}}
+\newcommand{\NewSip}{\ulink{sip-4.1.1.tar.gz}
+  {http://pyqwt.sourceforge.net/support/sip-4.1.1.tar.gz}}
+\newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.13.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.13.tar.gz}}
+\newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.13.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.13.tar.gz}}
+\newcommand{\PyQtCom}{\ulink{PyQt-commercial}
+  {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
+\newcommand{\PyQwtDDDTarGz}{\ulink{PyQwt3D-0.1.tar.gz}
+  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.tar.gz?download}}
+
+\newcommand{\PrerequisitesEnd}{
+  To exploit the full power of the PyQwt3D, you should install at
+  least one the Numerical Python extensions:
+  \Numeric{} or its successor \numarray{}.
+  I am using \NumericTarGz{} and \numarrayTarGz{}.
+  Versions of Numeric later than 21.0 are supported.
+  Numarray is newer and therefore less stable than Numeric, so get the latest!
+  \begin{notice}[warning]
+    PyQwt3D may not work with numarray on Linux systems, possibly due to a bug
+    in the floating point excepion handling of glibc (occurs at least on
+    Mandrake-10.0 and SuSE-9.0).
+    More information is to be found
+    \ulink{here}{http://sourceforge.net/mailarchive/message.php?msg_id=9914816}
+    and in related posts.
+    Your mileage may vary: PyQwt3D works with numarray on SuSE-9.1.
+  \end{notice}
+}
+
+\newcommand{\Future}{
+  \begin{notice}[warning]
+    The documentation is for the future PyQwt3D-0.1 which is only available
+    from CVS.
+  \end{notice}
+}
+
+%\renewcommand{\Future}{}
+
+\title{PyQwt3D Manual}
+
+% boilerplate.tex?D
+\author{Gerard Vermeulen}
+
+\date{\today}
+\release{0.1}
+\setshortversion{0.1}
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+% This makes the contents more accessible from the front page of the HTML.
+\ifhtml
+\chapter*{Front Matter \label{front}}
+\fi
+
+\input{copyright}
+
+
+\begin{abstract}
+
+\noindent
+PyQwt3D is a set of Python bindings for the \QwtPlotDDD{} library.
+
+\end{abstract}
+
+\tableofcontents
+
+\chapter{Introduction\label{introduction}}
+
+PyQwt3D is a set of Python bindings for the \QwtPlotDDD{} library.
+
+\chapter{Installation\label{installation}}
+
+\section{Build prerequisites\label{prerequisites}}
+
+\Future{}
+
+Build prerequisites for \PyQwtDDDTarGz{} are:
+\begin{enumerate}
+\item
+  \ulink{Python}{http://www.python.org}.\\
+  Supported versions: Python-2.4.x and Python-2.3.x.\\
+  PyQwt3D will also work with earlier versions of Python, if you install
+  \optik{}-1.4.1 or later.
+\item
+  \QwtPlotDDD{}.\\
+  Supported versions: QtPlot3D-0.2.4.
+\item
+  \ulink{Qt}{http://www.trolltech.com}.\\
+  Supported versions: Qt-3.3.x, Qt-3.2.x, Qt-3.1.x, Qt-3.0.x.
+\item
+  \NewSip{}.\\
+  Supported versions: SIP-4.1.1, -4.1, -4.0.1, and -4.0,
+  but PyQwt3D built with SIP-4.1.x is more powerful than PyQwt3D built with
+  SIP-4.0.x.\\
+  You may also try a \snapshot{} at your own risk.
+\item
+  \PyQtGpl{}, \PyQtMac{} or \PyQtCom{}.\\
+  Supported versions: PyQt-3.13, -3.12, -3.11, and -3.10,
+  but the most recent version gets most testing.\\
+  You may also try a \snapshot{} at your own risk.
+\end{enumerate}
+
+\PrerequisitesEnd{}
+  
+
+\section{Build and install\label{build}}
+
+\Future{}
+
+\begin{enumerate}
+\item
+  Unpack \PyQwtDDDTarGz{}
+\item
+  Configure PyQwt3D by running the following commands:
+\begin{verbatim}
+cd PyQwt3D-0.1
+cd configure
+python configure.py [options]
+\end{verbatim}
+  This assumes that the correct Python interpreter is on your path.
+  The configure.py script takes many options.
+  The command
+\begin{verbatim}
+python configure.py -h
+\end{verbatim}
+displays a full list of the available options:
+\verbatiminput{configure.help}
+  \begin{notice}[note]
+    PyQwt3D requires compilation of QwtPlot3D and PyQwt3D with runtime type
+    information (RTTI).
+  \end{notice}
+  \begin{notice}[note]
+    PyQwt3D in combination MSVC and Windows requires:
+\begin{verbatim}
+python configure.py -Q C:\sources\of\qwtplot3d
+\end{verbatim}
+    The folder
+    \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
+    must contain the folders \file{3rdparty}, \file{include} and \file{src}.
+    Edit \file{configure/go.bat} to suit your setup.
+    Use:
+\begin{verbatim}
+python configure.py -Q C:\sources\of\qwtplot3d \
+    --extra-libs=zlib --extra-defines=GL2PS_HAVE_ZLIB
+\end{verbatim}
+    to enable compression of PostScript and PDF files.
+\end{notice}
+
+\item
+  The next step is to build PyQwt3D using your platform's make command.
+\begin{verbatim}
+make
+\end{verbatim}
+  or
+\begin{verbatim}
+nmake
+\end{verbatim}
+  for MSVC.
+\item
+  The final step is to install PyQwt3D by running the following command.
+\begin{verbatim}
+make install
+\end{verbatim}
+  or
+\begin{verbatim}
+nmake install
+\end{verbatim}
+  for MSVC.
+\end{enumerate}
+
+\chapter{PyQwt3D Module Reference \label{reference}}
+
+%begin{latexonly}
+\renewcommand{\indexname}{Index}
+%end{latexonly}
+\input{\jobname.ind}
+
+\end{document}
+
+%% Local Variables:
+%% fill-column: 79
+%% End:

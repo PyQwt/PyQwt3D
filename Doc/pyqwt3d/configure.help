@@ -1,0 +1,39 @@
+usage: python configure.py [options]
+
+Each option takes at most one argument, but some options
+accumulate arguments when repeated. For example, invoke:
+
+	python configure.py -I . -I ..
+
+to search the current *and* parent directories for headers.
+
+options:
+  -h, --help            show this help message and exit
+  -Q/sources/of/qwtplot3d, --qwtplot3d-sources=/sources/of/qwtplot3d
+                        compile and link the QwtPlot3D source files in
+                        /sources/of/qwtplot3d statically into PyQwt3D (required
+                        on Windows)
+  -I/usr/include/qwtplot3d, --extra-include-dirs=/usr/include/qwtplot3d
+                        add an extra directory to search for headers (the
+                        compiler must be able to find the QwtPlot3D headers if
+                        you did not specify the -Q option)
+  -L/usr/lib/qt3/lib, --extra-lib-dirs=/usr/lib/qt3/lib
+                        add an extra directory to search for libraries (the
+                        linker must be able to find the QwtPlot3D library if you
+                        did not specify the -Q option)
+  -xEXTRA_SENSORY_PERCEPTION, --excluded-features=EXTRA_SENSORY_PERCEPTION
+                        add a feature for SIP to exclude (normally one of the
+                        features in sip/features.sip)
+  --debug               build with debugging symbols [default disabled]
+  --disable-numarray    disable detection and use of numarray [default enabled]
+  --disable-numeric     disable detection and use of Numeric [default enabled]
+  --extra-cflags=EXTRA_CFLAG
+                        add an extra C compiler flags
+  --extra-cxxflags=EXTRA_CXXFLAG
+                        add an extra C++ compiler flag
+  --extra-defines=EXTRA_DEFINE
+                        add an extra preprocessor definition
+  --extra-lflags=EXTRA_LFLAG
+                        add an extra linker flag
+  --extra-libs=EXTRA_LIB
+                        add an extra library
