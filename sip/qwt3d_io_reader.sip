@@ -34,7 +34,7 @@
 // -- LICENSE --
 
 
-%If (SIP_4_1 -)
+%If (SIP_4_1_0 -)
 class NativeReader: IO::Functor
 {
 
@@ -47,10 +47,10 @@ public:
     NativeReader();
 
 }; // class NativeReader
-%End // (SIP_4_1 -)
+%End // (SIP_4_1_0 -)
 
 
-%If (SIP_4_0 - SIP_4_1)
+%If (SIP_4_0_0 - SIP_4_1_0)
 class NativeReader //: IO::Functor
 {
 
@@ -63,7 +63,7 @@ public:
     NativeReader();
 
 }; // class NativeReader
-%End // (SIP_4_0 - SIP_4_1)
+%End // (SIP_4_0_0 - SIP_4_1_0)
 
 
 // Local Variables:

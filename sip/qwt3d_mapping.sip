@@ -46,7 +46,7 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-%If (SIP_4_0 - SIP_4_1)
+%If (SIP_4_0_0 - SIP_4_2_0)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const PyFunction *>(sipCpp))
@@ -64,10 +64,10 @@ public:
     else
         sipClass = 0;
 %End // ConvertToSubClassCode
-%End // (SIP_4_0 - SIP_4_1)
+%End // (SIP_4_0_0 - SIP_4_2_0)
 
 
-%If (SIP_4_2 -)
+%If (SIP_4_2_0 -)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const Function *>(sipCpp))
@@ -81,7 +81,7 @@ public:
     else
         sipClass = 0;
 %End // ConvertToSubClassCode
-%End // (SIP0402 -)
+%End // (SIP_0_4_2_0 -)
 
     virtual ~Mapping();
     virtual QString name() const;

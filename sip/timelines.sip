@@ -33,8 +33,8 @@
 // -- LICENSE --
 
 
-// Identify SIP-4.0.x, SIP-4.1.x or, SIP-4.2.x
-%Timeline {SIP_4_0 SIP_4_1 SIP_4_2}
+// Identify SIP
+%Timeline {SIP_4_0_0 SIP_4_1_0 SIP_4_2_0 SIP_4_2_1}
 
 // Local Variables:
 // mode: C++

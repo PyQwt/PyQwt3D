@@ -49,7 +49,24 @@ public:
     void turnOff(bool = false);
 };
 
-// FIXME: const GLubyte * gl_error(); // breaks SIP-4.2
+// SIP-4.2 fails to handle const GLubyte * gl_error();
+%If (SIP_4_0_0 - SIP_4_2_0)
+const GLubyte * gl_error();
+%End // SIP_4_0_0 - SIP_4_2_0
+
+%If (SIP_4_2_0 - SIP_4_2_1)
+%ModuleHeaderCode
+inline const char * _gl_error() {
+    return reinterpret_cast<const char *>(gl_error());
+}
+%End
+const char * _gl_error() /PyName=gl_error/;
+%End // SIP_4_2_0 - SIP_4_2_1
+
+%If (SIP_4_2_1 -)
+const GLubyte * gl_error();
+%End // (SIP_4_2_1 - )
+
 // FIXME: void SaveGlDeleteLists(GLuint &, GLsizei);
 // FIXME: void getMatrices(GLdouble *, GLdouble *, GLint *);
 bool ViewPort2World(double &, double &, double &, double, double, double);

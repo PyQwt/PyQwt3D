@@ -191,8 +191,17 @@ def check_sip(configuration, options):
     
     print "Found SIP-%s.\n" % version_str
 
-    if version & 0xffff00 == 0x040200:
-        options.timelines.append('-t SIP_4_2')
+    if 0x040200 < version & 0xffffff < 0x040300:
+        options.timelines.append('t SIP_4_2_1')
+        # SIP assumes POSIX style path separators
+        options.sip_include_dirs.append(
+            "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
+            )
+    elif version & 0xffffff == 0x040200:
+        if version_str >= 'snapshot-20050225':
+            options.timelines.append('-t SIP_4_2_1')
+        else:
+            options.timelines.append('-t SIP_4_2_0')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')

@@ -34,7 +34,7 @@
 // -- LICENSE --
 
 
-%If (SIP_4_2 -)
+%If (SIP_4_2_0 -)
 class VectorWriter: IO::Functor
 {
 
@@ -77,9 +77,9 @@ public:
     bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // (SIP_4_2 -)
+%End // (SIP_4_2_0 -)
 
-%If (SIP_4_1 - SIP_4_2)
+%If (SIP_4_1_0 - SIP_4_2_0)
 class VectorWriter: IO::Functor
 {
 
@@ -122,10 +122,10 @@ public:
     bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // (SIP_4_1 - SIP_4_2)
+%End // (SIP_4_1_0 - SIP_4_2_0)
 
 
-%If (SIP_4_0 - SIP_4_1)
+%If (SIP_4_0_0 - SIP_4_1_0)
 class VectorWriter //: IO::Functor
 {
 
@@ -168,7 +168,7 @@ public:
     bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // (SIP_4_0 - SIP_4_1)
+%End // (SIP_4_0_0 - SIP_4_1_0)
 
 
 %ModuleHeaderCode
