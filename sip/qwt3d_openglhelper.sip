@@ -49,7 +49,7 @@ public:
     void turnOff(bool = false);
 };
 
-const GLubyte * gl_error();
+// FIXME: const GLubyte * gl_error(); // breaks SIP-4.2
 // FIXME: void SaveGlDeleteLists(GLuint &, GLsizei);
 // FIXME: void getMatrices(GLdouble *, GLdouble *, GLint *);
 bool ViewPort2World(double &, double &, double &, double, double, double);
