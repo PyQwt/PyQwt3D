@@ -22,6 +22,17 @@ static:
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
 
+debug:
+	(cd configure; \
+         python configure.py -Q $(QWT3DDIR) -D PYQWT3D_DEBUG --debug --tracing)
+	(cd configure; $(MAKE))
+	(ln -sf configure/Qwt3D)
+	(cd examples; ln -sf ../configure/Qwt3D)
+
+links:
+	(ln -sf configure/Qwt3D)
+	(cd examples; ln -sf ../configure/Qwt3D)
+
 doc:
 	(cd Doc; make doc; make htdoc)
 

@@ -40,3 +40,5 @@ options:
                         add an extra C++ compiler flag
   --extra-lflags=EXTRA_LFLAG
                         add an extra linker flag
+  --tracing             build with tracing of the execution of the bindings
+                        [default disabled]

@@ -276,6 +276,10 @@ def parse_args():
         '--extra-lflags', default=[], action='append',
         type='string', metavar='EXTRA_LFLAG',
         help='add an extra linker flag')
+    parser.add_option(
+        '--tracing', default=False, action='store_true',
+        help=('build with tracing of the execution of the bindings'
+              ' [default disabled]'))
     
     options, args =  parser.parse_args()
     
@@ -287,6 +291,10 @@ def parse_args():
     options.excluded_features = [
         ('-x %s' % f) for f in options.excluded_features
         ]
+    if options.tracing:
+        options.tracing = '-r'
+    else:
+        options.tracing = ''
 
     return options, args
 
@@ -305,8 +313,8 @@ def main():
     # initialize
     configuration = pyqtconfig.Configuration()
     build_dir = "Qwt3D"
-    tmp_build_dir = "tmp-" + build_dir
-    build_file = os.path.join(tmp_build_dir, "qwt3d.sbf")
+    tmp_dir = "tmp-" + build_dir
+    build_file = os.path.join(tmp_dir, "qwt3d.sbf")
     mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
     sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
     extra_sources = []
@@ -355,11 +363,11 @@ def main():
 
     # generate code into a clean temporary directory
     try:
-        shutil.rmtree(tmp_build_dir)
+        shutil.rmtree(tmp_dir)
     except:
         pass
     try:
-        os.mkdir(tmp_build_dir)
+        os.mkdir(tmp_dir)
     except:
         raise SystemExit, "Failed to create the temporary build directory"
         
@@ -369,8 +377,9 @@ def main():
          "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
          "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
          "-b", build_file,
-         "-c", tmp_build_dir,
+         "-c", tmp_dir,
          options.jobs,
+         options.tracing,
          configuration.pyqt_qt_sip_flags,
          ]
         + options.excluded_features
@@ -389,7 +398,7 @@ def main():
         raise SystemExit, 'SIP failed to generate the C++ code.'
 
     # Windows fix: resolve the scope of POINTS in enumValues[]
-    for source in glob.glob(os.path.join(tmp_build_dir, '*.cpp')):
+    for source in glob.glob(os.path.join(tmp_dir, '*.cpp')):
         text = open(source).read()
         if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS}')):
             text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
@@ -397,7 +406,7 @@ def main():
             open(source, 'w').write(text)
 
     # generate __init__.py'
-    init_file = os.path.join(tmp_build_dir, '__init__.py')
+    init_file = os.path.join(tmp_dir, '__init__.py')
     open(init_file, 'w').write(os.linesep.join([
         'from _Qwt3D import *',
         '',
@@ -418,7 +427,7 @@ def main():
     # copy .cpp and .h files lazily to speed up recompilation
     lazy_copies = 0
     for pattern in ('*.cpp', '*.h'):
-        for source in glob.glob(os.path.join(tmp_build_dir, pattern)):
+        for source in glob.glob(os.path.join(tmp_dir, pattern)):
             target = os.path.join(build_dir, os.path.basename(source))
             if lazy_copy_sip_output_file(source, target):
                 print "Copy %s -> %s." % (source, target)
@@ -457,13 +466,13 @@ def main():
 
     # fix #include statement
     if options.qwtplot3d_sources:
-        for header in [os.path.join(builddir, 'qwt3d_io_gl2ps.cpp')]:
+        for header in [os.path.join(build_dir, 'qwt3d_io_gl2ps.cpp')]:
             text = open(header).read()
             if -1 != text.find('../3rdparty/gl2ps/'): 
                 open(header, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
     
     # copy and byte-compile the Python files
-    for source in glob.glob(os.path.join(tmp_build_dir, '*.py')):
+    for source in glob.glob(os.path.join(tmp_dir, '*.py')):
         shutil.copy2(source, os.path.join(build_dir, os.path.basename(source)))
     compileall.compile_dir(build_dir, 1, mod_dir)
 
