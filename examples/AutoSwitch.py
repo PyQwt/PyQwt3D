@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from qt import *
+from qt import QApplication, QSplitter, QTimer, SIGNAL
 from Qwt3D import *
 
 

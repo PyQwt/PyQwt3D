@@ -113,10 +113,9 @@ class Plot(SurfacePlot):
 
 def make():
     demo = Plot()
-    # Matrox bug on Linux: resize on makes title and part of axes disappear
-    demo.resize(800, 600)
     demo.show()
-    demo.paintGL()
+    # Matrox cards on Linux work better with a resize() after show()
+    demo.resize(600, 400)
     return demo
 
 # make()

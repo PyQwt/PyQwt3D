@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 import sys
-from Qwt3D import *
-from qt import *
 from math import cos, pi, sin
-
+from qt import QApplication
+from Qwt3D import ParametricSurface, SurfacePlot, Triple, NOCOORD
 
 class Sphere(ParametricSurface):
 
@@ -34,7 +33,7 @@ class Plot(SurfacePlot):
         sphere = Sphere(self)
         sphere.create()
 
-        self.setRotation(0,0,0)
+        self.setRotation(45, 15, 0)
         self.setCoordinateStyle(NOCOORD);
         self.updateData()
         self.updateGL()
@@ -46,8 +45,9 @@ class Plot(SurfacePlot):
 
 def make():
     demo = Plot()
-    demo.resize(800, 600)
     demo.show()
+    # Matrox cards on Linux work better with a resize() after show()
+    demo.resize(600, 400)
     return demo
 
 # make()
