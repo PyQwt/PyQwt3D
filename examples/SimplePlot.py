@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import sys
-from Qwt3D import *
-from qt import *
 from math import log
+from qt import QApplication
+from Qwt3D import Function, SurfacePlot, BOX, X1, Y1, Z1
 
 class Rosenbrock(Function):
 
@@ -34,9 +34,9 @@ class Plot(SurfacePlot):
         
         rosenbrock.create()
 
-        self.setRotation(30,0,15)
-        self.setScale(1,1,1)
-        self.setShift(0.15,0,0)
+        self.setRotation(30, 0, 15)
+        self.setScale(1, 1, 1)
+        self.setShift(0.15, 0, 0)
         self.setZoom(0.9)
 
         axes = self.coordinates().axes # alias
@@ -60,9 +60,9 @@ class Plot(SurfacePlot):
 
 def make():
     demo = Plot()
-    #demo.resize(800, 600) # resize makes title and part of axes disappear
     demo.show()
-    demo.paintGL()
+    # Matrox cards on Linux work better with a resize() after show()
+    demo.resize(600, 400)
     return demo
 
 # make()
