@@ -240,6 +240,12 @@ def parse_args():
               ' (the linker must be able to find the QwtPlot3D library'
               ' if you did not specify the -Q option)'))
     parser.add_option(
+        '-j', '--jobs', default=0, action='store',
+        type='int', metavar='N',
+        help=('concatenate the SIP generated code into N files'
+              ' [default 1 per class] (speeds up compilation and allows to'
+              ' take advantage of multiprocessor systems'))
+    parser.add_option(
         '-l', '--extra-libs', default=[], action='append',
         type='string', metavar='z',
         help=('add an extra library (to link the zlib library, you must'
@@ -273,7 +279,11 @@ def parse_args():
     
     options, args =  parser.parse_args()
     
-    # normalize the excluded features
+    # 'normalize' some options
+    if options.jobs < 1:
+        options.jobs = ''
+    else:
+        options.jobs = '-j %s' % options.jobs
     options.excluded_features = [
         ('-x %s' % f) for f in options.excluded_features
         ]
@@ -343,9 +353,12 @@ def main():
     extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
     extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
 
-    # generate code into a temporary directory
-    if not os.path.exists(tmp_build_dir):
-        os.mkdir(tmp_build_dir)
+    # generate code into a clean temporary directory
+    try:
+        shutil.rmtree(tmp_build_dir)
+    except:
+        pass
+    os.mkdir(tmp_build_dir)
     # generate the build file into the build directory
     if not os.path.exists(build_dir):
         os.mkdir(build_dir)
@@ -357,9 +370,10 @@ def main():
          "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
          "-b", build_file,
          "-c", tmp_build_dir,
+         options.jobs,
+         configuration.pyqt_qt_sip_flags,
          ]
         + options.excluded_features
-        + [configuration.pyqt_qt_sip_flags]
         # SIP assumes POSIX style path separators
         + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
         )
@@ -374,11 +388,13 @@ def main():
     if not os.path.exists(build_file):
         raise SystemExit, 'SIP failed to generate the C++ code.'
 
-    # patch the tmp_build_dir/sip_Qwt3Dcmodule.cpp file for Windows
-    text = open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp')).read()
-    text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
-                        '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
-    open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp'), 'w').write(text)
+    # Windows fix: resolve the scope of POINTS in enumValues[]
+    for source in glob.glob(os.path.join(tmp_build_dir, '*.cpp')):
+        text = open(source).read()
+        if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS}')):
+            text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
+                                '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
+            open(source, 'w').write(text)
 
     # copy lazily to the build directory
     lazy_copies = 0
