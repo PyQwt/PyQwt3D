@@ -183,7 +183,7 @@ def check_numeric(configuration, options):
 
 
 def check_sip(configuration, options):
-    """Adapt to SIP differences by means of mutually excluding features
+    """Account for SIP differences with a timeline and an include directory.
     """
     version = configuration.sip_version
     version_str = configuration.sip_version_str
@@ -192,7 +192,7 @@ def check_sip(configuration, options):
     print "Found SIP-%s.\n" % version_str
 
     if 0x040200 < version & 0xffffff < 0x040300:
-        options.timelines.append('t SIP_4_2_1')
+        options.timelines.append('-t SIP_4_2_1')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
