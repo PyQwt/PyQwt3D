@@ -255,14 +255,19 @@ def main():
     pprint.pprint(options.__dict__)
     print
     
-    cmd = " ".join([configuration.sip_bin,
-                    "-I", configuration.pyqt_sip_dir,
-                    "-b", os.path.join(build_dir, build_file),
-                    "-c", tmp_build_dir,
-                    ]
-                   + excluded_features
-                   + configuration.pyqt_qt_sip_flags.split()
-                   + [os.path.join(os.pardir, "sip", "qwt3dmod.sip")])
+    cmd = " ".join(
+        [configuration.sip_bin,
+         # SIP assumes POSIX style path separators
+         "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
+         "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
+         "-b", os.path.join(build_dir, build_file),
+         "-c", tmp_build_dir,
+         ]
+        + excluded_features
+        + configuration.pyqt_qt_sip_flags.split()
+        # SIP assumes POSIX style path separators
+        + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
+        )
 
     print "sip invokation:"
     pprint.pprint(cmd)
