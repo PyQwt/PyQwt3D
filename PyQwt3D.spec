@@ -64,7 +64,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc COPYING COPYING.PyQwt3D README examples
+%doc COPYING COPYING.PyQwt3D README Doc/html examples
 %dir %{_datadir}/sip/Qwt3D
 %{_datadir}/sip/Qwt3D/*
 %dir %{_libdir}/python%{pyver}/site-packages/Qwt3D/
