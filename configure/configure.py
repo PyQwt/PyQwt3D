@@ -90,19 +90,19 @@ def check_numarray(py_inc_dir, excluded_features, extra_defines, skip = False):
         # Try to find numarray/arrayobject.h.
         numarray_inc = os.path.join(py_inc_dir, "numarray", "arrayobject.h")
         if os.access(numarray_inc, os.F_OK):
-            print "Found numarray-%s." % numarray.__version__
+            print "Found numarray-%s.\n" % numarray.__version__
             extra_defines.append("HAS_NUMARRAY")
         else:
             print ("numarray has been installed, "
                    "but its headers are not in the standard location.\n"
                    "PyQwt will be build without support for numarray.\n"
-                   "(Linux users may have to install a development package)"
+                   "(Linux users may have to install a development package)\n"
                    )
             raise ImportError
     except ImportError:
         excluded_features.append("-x HAS_NUMARRAY")
         print ("Failed to import numarray: "
-               "PyQwt will be build without support for numarray."
+               "PyQwt will be build without support for numarray.\n"
                )
         
     return excluded_features, extra_defines
@@ -122,19 +122,19 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
         # Try to find Numeric/arrayobject.h.
         numeric_inc = os.path.join(py_inc_dir, "Numeric", "arrayobject.h")
         if os.access(numeric_inc, os.F_OK):
-            print "Found Numeric-%s." % Numeric.__version__
+            print "Found Numeric-%s.\n" % Numeric.__version__
             extra_defines.append("HAS_NUMERIC")
         else:
             print ("Numeric has been installed, "
                    "but its headers are not in the standard location.\n"
                    "PyQwt will be build without support for Numeric.\n"
-                   "(Linux users may have to install a development package)"
+                   "(Linux users may have to install a development package)\n"
                    )
             raise ImportError
     except ImportError:
         excluded_features.append("-x HAS_NUMERIC")
         print ("Failed to find Numeric: "
-               "PyQwt will be build without support for Numeric."
+               "PyQwt will be build without support for Numeric.\n"
                )
         
     return excluded_features, extra_defines
@@ -145,27 +145,53 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
 def main():
     
     from optparse import OptionParser
-    parser = OptionParser()
+    usage = 'python configure.py [options] or./configure.py [options]'
+    parser = OptionParser(usage=usage)
     parser.add_option(
-        '-I', '--include-dir', default=[], action='append', type='string',
-        help=('add an extra directory to search for headers'
+        '-I', '--extra-include-dirs', default=[], action='append',
+        type='string', metavar='/usr/include/qwtplot3d',
+        help=('add an extra directorys to search for headers'
               ' (the compiler must be able to find the QwtPlot3D headers)'))
     parser.add_option(
-        '-L', '--library-dir', default=[], action='append', type='string',
+        '-L', '--extra-lib-dirs', default=[], action='append',
+        type='string', metavar='/usr/lib/qt3/lib',
         help=('add the directory to search for libraries'
               ' (the linker must be able to find the QwtPlot3D library)'))
     parser.add_option(
         '--debug', default=False, action='store_true',
         help='build with debugging symbols [default disabled]')              
     parser.add_option(
+        '--disable-numarray', default=False, action='store_true',
+        help='disable detection and use of numarray [default enabled]')
+    parser.add_option(
         '--disable-numeric', default=False, action='store_true',
         help='disable detection and use of Numeric [default enabled]')
     parser.add_option(
-        '--disable-numarray', default=False, action='store_true',
-        help='disable detection and use of numarray [default enabled]')
+        '--extra-cflags', default=[], action='append', type='string',
+        help='add extra C compiler flags')
+    parser.add_option(
+        '--extra-cxxflags', default=[], action='append', type='string',
+        metavar='-GR',
+        help=('add extra C++ compiler flags'
+              ' (MSVC may need the -GR flag to enforce'
+              ' RTTI or runtime type information)'))
+    parser.add_option(
+        '--extra-defines', default=[], action='append', type='string',
+        help='add extra preprocessor definitions')
+    parser.add_option(
+        '--extra-lflags', default=[], action='append', type='string',
+        help='add extra linker flags')
+    parser.add_option(
+        '--extra-libs', default=[], action='append', type='string',
+        help='add extra libraries')
                       
     options, args = parser.parse_args()
+    print "Command line options:"
     pprint.pprint(options.__dict__)
+    print
+
+    if 'qwtplot3d' not in options.extra_libs:
+        options.extra_libs.append('qwtplot3d')
 
     # configuration
     configuration = pyqtconfig.Configuration()
@@ -176,12 +202,11 @@ def main():
     sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
     
     excluded_features = []
-    extra_defines = []
-    excluded_features, extra_defines = check_numarray(
-        configuration.py_inc_dir, excluded_features, extra_defines,
+    excluded_features, options.extra_defines = check_numarray(
+        configuration.py_inc_dir, excluded_features, options.extra_defines,
         options.disable_numarray)
-    excluded_features, extra_defines = check_numeric(
-        configuration.py_inc_dir, excluded_features, extra_defines,
+    excluded_features, options.extra_defines = check_numeric(
+        configuration.py_inc_dir, excluded_features, options.extra_defines,
         options.disable_numeric)    
 
     # generate code into a temporary directory
@@ -200,6 +225,10 @@ def main():
             )
         compileall.compile_dir(build_dir, 1, mod_dir)
 
+    print "Extended options:"
+    pprint.pprint(options.__dict__)
+    print
+    
     cmd = " ".join([configuration.sip_bin,
                     "-I", configuration.pyqt_sip_dir,
                     "-b", os.path.join(build_dir, build_file),
@@ -208,7 +237,11 @@ def main():
                    + excluded_features
                    + configuration.pyqt_qt_sip_flags.split()
                    + [os.path.join(os.pardir, "sip", "qwt3dmod.sip")])
+
+    print "sip invokation:"
     pprint.pprint(cmd)
+    print
+    
     os.system(cmd)
 
     # fill the build directory lazily
@@ -263,9 +296,13 @@ def main():
         warnings = 1,
         debug = options.debug,
         )
-    makefile.extra_defines.extend(extra_defines)
-    makefile.extra_include_dirs.extend(options.include_dir)
-    makefile.extra_libs.extend(['qwtplot3d'])
+    makefile.extra_cflags.extend(options.extra_cflags)
+    makefile.extra_cxxflags.extend(options.extra_cxxflags)
+    makefile.extra_defines.extend(options.extra_defines)
+    makefile.extra_include_dirs.extend(options.extra_include_dirs)
+    makefile.extra_lflags.extend(options.extra_lflags)
+    makefile.extra_libs.extend(options.extra_libs)
+    makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
     makefile.generate()
 
     # main makefile
