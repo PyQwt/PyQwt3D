@@ -22,8 +22,9 @@ The home page of PyQwt3D is http://pyqwt.sourceforge.net.
 PyQwt3D-0.1 supports:
 
 1. Python-2.4 downto -2.3.
-2. PyQt-3.14 downto -3.10.
+2. PyQt-3.14 downto -3.12.
 3. SIP-4.2 downto -4.0, but SIP-4.2 is recommended.
+   PyQwt3D does *not* support SIP-3.x (I tried, but failed).
 4. Qt-3.3.4 downto -2.3.0.
 5. QwtPlot3D-0.2.4-beta.
 
