@@ -52,7 +52,7 @@ public:
     public:
         virtual ~Functor();
         virtual IO::Functor * clone() const = 0;
-        // FIXME: virtual bool operator()(Plot3D *, const QString &) = 0;
+        virtual bool operator()(Plot3D *, const QString &) = 0;
     };
 %End // SIP0402
 
@@ -111,9 +111,6 @@ using namespace Qwt3D;
 public:
     PixmapWriter();
     void setQuality(int);
-private:
-    IO::Functor* clone() const;
-    //bool operator()(Plot3D *, const QString &);
 };
 %End // SIP0402
 
@@ -130,9 +127,6 @@ using namespace Qwt3D;
 public:
     PixmapWriter();
     void setQuality(int);
-private:
-    IO::Functor* clone() const;
-    //bool operator()(Plot3D *, const QString &);
 };
 %End // SIP0401
 
