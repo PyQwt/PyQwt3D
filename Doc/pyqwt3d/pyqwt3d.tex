@@ -155,13 +155,11 @@ Build prerequisites for \PyQwtDddTarGz{} are:
 
 \Future{}
 
-\begin{notice}[warning]
-  Loading the PyQwt3D module -- compiled with MSCV-6.0 for Windows -- renders
-  the Python interpreter unstable (PyQwt3D runs fine on MacOS/X and Linux).
-  We are debugging with \QtNcExe{} and a backport of \QwtPlotDdd{} to Qt-2.3.
-% (and assumes that MSVC-7.x
-%  requires the same workarounds). I rely on your feedback to fix eventual
-%  installation problems, since I have no commercial license for Qt and PyQt.
+\begin{notice}[note]
+  PyQwt3D compiled with MSVC-6.0 is slightly crippled to make it run on
+  Windows.  The install script assumes that the same workarounds are required
+  for MSVC-7.x.  I rely on your feedback to fix eventual installation
+  problems, since I have no commercial license for Qt and PyQt.
 \end{notice}
 
 
@@ -181,7 +179,7 @@ nmake install
   where the folder
   \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
   must contain the folders \file{3rdparty}, \file{include} and \file{src}.
-  You can also edit the \file{go.bat} to suit your setup.
+  You can also edit the file \file{go.bat} to suit your setup.
 \item
   Fine tune (optional) by running the commands:
 \begin{verbatim}
