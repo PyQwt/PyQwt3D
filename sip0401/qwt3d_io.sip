@@ -44,7 +44,7 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-    // FIXME: typedef bool (*Function)(Plot3D*, QString const& fname);
+    typedef bool (*Function)(Plot3D*, const QString &);
 
     class Functor /Abstract/
     {
