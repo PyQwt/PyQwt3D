@@ -44,8 +44,8 @@ framework with widgets to visualize 3-dimensional data.
 
 %build
 cd configure
-python configure.py -I /usr/include/qwtplot3d
-make CXX="$(which ccache) g++"
+python configure.py -j $(getconf _NPROCESSORS_ONLN) -I /usr/include/qwtplot3d
+make CXX="$(which ccache) g++" -j $(getconf _NPROCESSORS_ONLN)
 
 %install
 rm -rf %{buildroot}
