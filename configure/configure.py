@@ -570,10 +570,11 @@ def main():
     # Windows fix: resolve the scope of POINTS in enumValues[]
     for source in glob.glob(os.path.join(tmp_dir, '*.cpp')):
         text = open(source).read()
-        if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS}')):
-            text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
-                                '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
-            open(source, 'w').write(text)
+        # sipNm__Qwt3D_POINTS changed between: SIP-4.2 and SIP-4.2.1
+        if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS')):
+                text = text.replace('{sipNm__Qwt3D_POINTS, POINTS',
+                                    '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS')
+                open(source, 'w').write(text)
 
     # generate __init__.py'
     generate_init_py(os.path.join(tmp_dir, '__init__.py'), configuration)
