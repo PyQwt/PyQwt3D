@@ -6,6 +6,7 @@ import iqt
 def main():
     for demo in ['ParametricSurfaceDemo',
                  'SimplePlot',
+                 'TestNumeric',
                  ]:
         result = __import__(demo).make()
         raw_input("Is the demo looking HAPPY? ")
