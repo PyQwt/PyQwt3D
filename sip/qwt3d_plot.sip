@@ -44,6 +44,7 @@ using namespace Qwt3D;
 
 public:
 
+%If (NO_MSVC)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const SurfacePlot *>(sipCpp))
@@ -52,6 +53,7 @@ public:
         sipClass = sipClass_Plot3D;
     else
         sipClass = 0;
+%End
 %End
 
     Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
