@@ -23,5 +23,5 @@ htdoc: doc $(SOURCES)
 	python tools/sourceforge.py html/htdoc/*.html
 	date -u "+%Y-%m-%d %T" > htdoc
 
-configure.help:
+pyqwt3d/configure.help: ../configure/configure.py
 	../configure/configure.py --help > pyqwt3d/configure.help
