@@ -1,3 +1,4 @@
+*.pyc
 Makefile
 Qwt3D
 tmp-Qwt3D
