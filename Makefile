@@ -16,6 +16,9 @@ all:
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
 
+install:
+	(cd configure; make install)
+
 static:
 	(cd configure; python configure.py -Q $(QWT3DDIR))
 	(cd configure; $(MAKE))
