@@ -3,7 +3,7 @@
 import sys
 from math import cos, pi, sin
 from qt import QApplication
-from Qwt3D import ParametricSurface, SurfacePlot, Triple, NOCOORD
+from Qwt3D import ParametricSurface, RGBA, SurfacePlot, Triple, NOCOORD
 
 class Sphere(ParametricSurface):
 
@@ -28,7 +28,8 @@ class Plot(SurfacePlot):
 
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
-        self.setTitle("A Simple SurfacePlot Demonstration")
+        self.setTitle("A Simple Parametric Surface Demonstration")
+        self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
 
         sphere = Sphere(self)
         sphere.create()

@@ -96,22 +96,22 @@ def make():
     saddle = Saddle(plot1)
     saddle.create()
     plot1.setTitle("Autoswitching axes")
-    plot1.setBackgroundColor(RGBA(1,1, 157./255));
-    plot1.makeCurrent();
-    plot1.updateData();
-    plot1.updateGL();
+    plot1.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
+    plot1.makeCurrent()
+    plot1.updateData()
+    plot1.updateGL()
     
     plot2 = Plot(demo ,80)
     plot2.setZoom(0.8)
     hat = Hat(plot2)
-    hat.create();
-    plot2.setPlotStyle(HIDDENLINE);
-    plot2.setFloorStyle(FLOORDATA);
-    plot2.setCoordinateStyle(FRAME);
-    plot2.setBackgroundColor(RGBA(1,1, 157./255));
-    plot2.makeCurrent();
-    plot2.updateData();
-    plot2.updateGL();
+    hat.create()
+    plot2.setPlotStyle(HIDDENLINE)
+    plot2.setFloorStyle(FLOORDATA)
+    plot2.setCoordinateStyle(FRAME)
+    plot2.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
+    plot2.makeCurrent()
+    plot2.updateData()
+    plot2.updateGL()
 
     demo.resize(800, 400)
     demo.show()

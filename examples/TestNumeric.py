@@ -19,10 +19,9 @@ except ImportError:
 
 
 def matrix2d(nx, ny, minx, maxx, miny, maxy, function):
-    """Return a data matrix for the interface to the C++ member function 
+    """Return a data matrix to test the interface to the C++ member function 
     bool SurfacePlot::loadFromData(
-        double **, unsigned int, unsigned int,
-        double , double , double, double);
+        double **, unsigned int, unsigned int, double, double, double, double);
     """
     # columns
     xs = multiply.outer(
@@ -64,6 +63,7 @@ class Plot(SurfacePlot):
 
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
+        self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
         
         self.setRotation(30, 0, 15)
         self.setScale(1.0, 1.0, 1.0)
@@ -76,28 +76,17 @@ class Plot(SurfacePlot):
             self.loadFromData(zs, minx, maxx, miny, maxy)
         else:
             xyzs = matrix3d(nx, ny, minx, maxx, miny, maxy, saddle)
+            print type(zs)
             print xyzs
             self.loadFromData(xyzs)
         
         axes = self.coordinates().axes # alias
 
-        for axis in axes:
-            axis.setAutoScale(False)
-            axis.setMajors(5) # 6 major ticks
-            axis.setMinors(3) # 2 minor ticks
-
-        axes[X1].setLabelString("x")
-        axes[Y1].setLabelString("y")
-        axes[Z1].setLabelString("z")
-        axes[X2].setLabelString("x")
-        axes[Y2].setLabelString("y")
-        axes[Z2].setLabelString("z")
-        axes[X3].setLabelString("x")
-        axes[Y3].setLabelString("y")
-        axes[Z3].setLabelString("z")
-        axes[X4].setLabelString("x")
-        axes[Y4].setLabelString("y")
-        axes[Z4].setLabelString("z")
+        for axis, label in ((X1, "x"), (Y1, "y"), (Z1, "z")):
+            axes[axis].setAutoScale(False)
+            axes[axis].setMajors(5) # 6 major ticks
+            axes[axis].setMinors(3) # 2 minor ticks
+            axes[axis].setLabelString(label)
 
         self.setCoordinateStyle(BOX)
         self.coordinates().setGridLines(True, True)
@@ -138,7 +127,3 @@ if __name__ == '__main__':
 # Local Variables: ***
 # mode: python ***
 # End: ***
-
-
-                        
-                       

@@ -3,7 +3,7 @@
 import sys
 from math import log
 from qt import QApplication
-from Qwt3D import Function, SurfacePlot, BOX, X1, Y1, Z1
+from Qwt3D import Function, RGBA, SurfacePlot, BOX, X1, Y1, Z1
 
 class Rosenbrock(Function):
 
@@ -25,6 +25,7 @@ class Plot(SurfacePlot):
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
         self.setTitle('A Simple SurfacePlot Demonstration');
+        self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
 
         rosenbrock = Rosenbrock(self)
 

@@ -2,9 +2,10 @@ What is PyQwt3D?
 
 - it is a set of Python bindings for the QwtPlot3D C++ class library
   which extends the Qt framework with widgets for 3D data visualization.
-  (Py)QwtPlot3D is simple to use and feels very snappy.
-  See http://pyqwt.sourceforge.net/pyqwt3d-examples.html for a few examples
-  and how to save a 3D plot to an image or an (E)PS/PDF file.
+  PyQwt3D inherits the snappy feel from QwtPlot3D.
+  The examples at http://pyqwt.sourceforge.net/pyqwt3d-examples.html
+  show how easy it is to make a 3D plot and how to save a 3D plot to
+  an image or an (E)PS/PDF file.
 
 - it requires and extends PyQt, a set of Python bindings for Qt.
 
