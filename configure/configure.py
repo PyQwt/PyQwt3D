@@ -244,7 +244,7 @@ def parse_args():
         type='int', metavar='N',
         help=('concatenate the SIP generated code into N files'
               ' [default 1 per class] (speeds up compilation and allows to'
-              ' take advantage of multiprocessor systems'))
+              ' take advantage of multiprocessor systems)'))
     parser.add_option(
         '-l', '--extra-libs', default=[], action='append',
         type='string', metavar='z',

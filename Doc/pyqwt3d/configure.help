@@ -25,7 +25,7 @@ options:
                         did not specify the -Q option)
   -jN, --jobs=N         concatenate the SIP generated code into N files [default
                         1 per class] (speeds up compilation and allows to take
-                        advantage of multiprocessor systems
+                        advantage of multiprocessor systems)
   -lz, --extra-libs=z   add an extra library (to link the zlib library, you must
                         specify "zlib" on Windows and "z" on POSIX and MacOS/X)
   -xEXTRA_SENSORY_PERCEPTION, --excluded-features=EXTRA_SENSORY_PERCEPTION
