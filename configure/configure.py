@@ -323,7 +323,7 @@ def main():
     # do we link against a QwtPlot3D library?
     if options.qwtplot3d_sources:
         # yes, zap all 'qwtplot3d'
-        while options.extra_libs.count():
+        while options.extra_libs.count('qwtplot3d'):
             options.extra_libs.remove('qwtplot3d')
     elif 'qwtplot3d' not in options.extra_libs:
         # no, add 'qwtplot3d' if needed
