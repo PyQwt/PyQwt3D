@@ -2,7 +2,7 @@
 #
 # Generate the build tree and Makefiles for PyQwt3D.
 #
-# Copyright (C) 2004 Gerard Vermeulen
+# Copyright (C) 2004-2005 Gerard Vermeulen
 #
 # This file is part of PyQwt3D.
 #
@@ -102,8 +102,7 @@ def generate_init_py(target, configuration):
         'from _Qwt3D import *',
         '',
         ]))
-    if (not version_str.startswith('snapshot-')
-        or version & 0xffff00 >= 0x040200):
+    if (version & 0xffff00 < 0x040200):
         init_py.write(os.linesep.join([
             '# Alias the helper classes away.',
             'del PyFunction',
