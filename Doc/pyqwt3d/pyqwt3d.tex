@@ -87,7 +87,8 @@
 \begin{abstract}
 
 \noindent
-PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library.
+PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library which extends
+the Qt framework with widgets to visualize 3-dimensional data.
 
 \end{abstract}
 
@@ -95,7 +96,9 @@ PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library.
 
 \chapter{Introduction\label{introduction}}
 
-PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library.
+PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library which extends
+the Qt framework with widgets to visualize 3-dimensional data.
+
 
 \chapter{Installation\label{installation}}
 
@@ -267,6 +270,275 @@ python configure.py -h
 
 \chapter{PyQwt3D Module Reference \label{reference}}
 
+The reference should be used in conjunction with the \QwtPlotDdd{} manual.
+Only the differences specific to the Python bindings are documented here.
+
+In this chapter, \emph{is not yet implemented} implies that the feature can
+be easily implemented if needed, \emph{is not implemented} implies that the
+feature is not easily implemented, and \emph{is not Pythonic} implies that
+the feature will not be implemented because it violates the Python philosophy
+(e.g. may use dangling pointers).
+
+If a class is described as being \emph{fully implemented} then all non-private
+member functions and all public class variables have been implemented.
+
+Undocumented classes have not yet been implemented or are still experimental.
+
+The classes in the QwtPlot3D library have quite a few protected attributes.
+They are not yet available in Python (as far as I know, sip wraps protected
+member function, but not protected attributes).
+I may try to implement protected attributes on demand.
+
+\section{Wrappers for \ctype{std::vector<T>}}
+
+PyQwt3D has a partial interface to the following C++ std::vector templates:
+\begin{enumerate}
+\item
+  \class{AxisVector} for \ctype{std::vector<Axis>}
+\item
+  \class{Cell} for \ctype{std::vector<unsigned>}
+\item
+  \class{CellField} for \ctype{std::vector<Cell>}
+\item
+  \class{ColorVector} for \ctype{std::vector<RGBA>}
+\item
+  \class{DoubleVector} for \ctype{std::vector<double>}
+\item
+  \class{FreeVectorField} for \ctype{std::vector<FreeVectorField>}
+\item
+  \class{TripleField} for \ctype{std::vector<Triple>}
+\end{enumerate}
+
+The interface implements four constructors for each template instantianation --
+taking Cell as example:
+\begin{enumerate}
+\item
+  \code{Cell()}
+\item
+  \code{Cell(size)}
+\item
+  \code{Cell(size, item)}
+\item
+  \code{Cell(otherCell)}
+\end{enumerate}
+
+and 13 member functions -- taking Cell as example:
+\begin{enumerate}
+\item
+  \code{result = cell.capacity()}
+\item
+  \code{cell.clear()}
+\item
+  \code{result = cell.empty()}
+\item
+  \code{result = cell.back()}
+\item
+  \code{result = cell.front()}
+\item
+  \code{result = cell.max_size()}
+\item
+  \code{cell.pop_back()}
+\item
+  \code{cell.push_back(item)}
+\item
+  \code{cell.reserve(size)}
+\item
+  \code{cell.reserve(size, item = 0)}
+\item
+  \code{cell.resize(size, item = 0)}
+\item
+  \code{result = cell.size()}
+\item
+  \code{cell.swap(otherCell)}
+\end{enumerate}
+
+Iterators are not yet implemented. However, the implementation of the
+Python slots \function{__getitem__}, \function{__len__} and
+\function{__setitem__} let you use those classes almost as a sequence.
+For instance:
+
+\verbatiminput{StdVectorExample.txt}
+
+\section{Class reference}
+
+FIXME: supposes you have the latest version of SIP):
+
+\begin{classdesc}{Arrow}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{AutoScaler}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Axis}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{AxisVector}{*args}
+wraps \ctype{std::vector<Axis>}.
+\end{classdesc}
+
+\begin{classdesc}{Cell}{*args}
+wraps \ctype{std::vector<unsigned>}.
+\end{classdesc}
+
+\begin{classdesc}{CellData}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{CellField}{*args}
+wraps \ctype{std::vector<Cell>}.
+\end{classdesc}
+
+\begin{classdesc}{Color}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{ColorLegend}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Cone}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{CoordinateSystem}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{CrossHair}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Data}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Dot}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{DoubleVector}{*args}
+wraps \ctype{std::vector<double>}.
+\end{classdesc}
+
+\begin{classdesc}{Drawable}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Enrichment}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Freevector}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{FreeVectorField}{*args}
+wraps \ctype{std::vector<FreeVector>}.
+\end{classdesc}
+
+\begin{classdesc}{Function}{*args}
+FIXME: hack \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{GLStateBewarer}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{GridData}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{GridMapping}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{IO}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Label}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{LinearAutoscaler}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{LinearScale}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{LogScale}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Mapping}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{NativeReader}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{ParallelEpiped}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{ParametricSurface}{*args}
+FIXME: hack hack \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{PixmapWriter}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Plot3D}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{RGBA}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Scale}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{StandardColor}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{SurfacePlot}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{Triple}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{TripleField}{*args}
+wraps \ctype{std::vector<Triple>}.
+\end{classdesc}
+
+\begin{classdesc}{Tuple}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{VectorWriter}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{VertexEnrichment}{*args}
+FIXME: \emph{is fully implemented}.
+\end{classdesc}
+
+\section{Function reference}
+
+FIXME
+
 %begin{latexonly}
 \renewcommand{\indexname}{Index}
 %end{latexonly}
@@ -277,3 +549,4 @@ python configure.py -h
 %% Local Variables:
 %% fill-column: 79
 %% End:
+
