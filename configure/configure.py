@@ -87,7 +87,6 @@ def lazy_copy_file(source, target):
 def copy_files(sources, directory):
     """Copy a list of files to a directory
     """ 
-
     for source in sources:
         shutil.copy2(source, os.path.join(directory, os.path.basename(source)))
 
@@ -434,6 +433,7 @@ def main():
             if -1 != text.find('../3rdparty/gl2ps/'): 
                 open(source, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
 
+    # invoke SIP
     cmd = " ".join(
         [configuration.sip_bin,
          # SIP assumes POSIX style path separators
@@ -484,6 +484,7 @@ def main():
         'from _Qwt3D import PyFunction as Function',
         'del PyParametricSurface',
         'from _Qwt3D import PyParametricSurface as ParametricSurface',
+        '',
         ]))
 
     # copy lazily to the build directory to speed up recompilation
