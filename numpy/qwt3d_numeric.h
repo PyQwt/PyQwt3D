@@ -1,6 +1,6 @@
 // qwt3d_numeric.h: encapsulates all PyQwt3D's calls to the Numeric C-API.
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

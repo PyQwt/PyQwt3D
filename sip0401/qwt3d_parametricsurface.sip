@@ -2,7 +2,7 @@
 // - class ParametricSurface
 // - class PyParametricSurface (a hack around a limitation of SIP-4.1.x)
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

@@ -1,7 +1,7 @@
 // qwt3d_python.cpp:
 // - return a handle to the data of contiguous numarray and Numeric arrays.
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
