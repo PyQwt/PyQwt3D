@@ -35,6 +35,7 @@ import compileall
 import glob
 import os
 import pprint
+import re
 import shutil
 
 import sipconfig
@@ -186,6 +187,10 @@ def main():
     usage = 'python configure.py [options] or ./configure.py [options]'
     parser = OptionParser(usage=usage)
     parser.add_option(
+        '-Q', '--qwtplot3d-sources', default='', action='store',
+        type='string', metavar='/path/to/qwtplot3d/sources',
+        help='compile and link the QwtPlot3D sources statically into PyQwt3D')
+    parser.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
         help=('add an extra directorys to search for headers'
@@ -211,8 +216,8 @@ def main():
         '--extra-cxxflags', default=[], action='append', type='string',
         metavar='-GR',
         help=('add extra C++ compiler flags'
-              ' (MSVC may need the -GR flag to enforce'
-              ' RTTI or runtime type information)'))
+              ' (MSVC may need the -GR and -GX flags to enable'
+              ' runtime type information and exception handling)'))
     parser.add_option(
         '--extra-defines', default=[], action='append', type='string',
         help='add extra preprocessor definitions')
@@ -227,9 +232,6 @@ def main():
     print "Command line options:"
     pprint.pprint(options.__dict__)
     print
-
-    if 'qwtplot3d' not in options.extra_libs:
-        options.extra_libs.append('qwtplot3d')
 
     # configuration
     configuration = pyqtconfig.Configuration()
@@ -280,7 +282,7 @@ def main():
          "-c", tmp_build_dir,
          ]
         + excluded_features
-        + configuration.pyqt_qt_sip_flags.split()
+        + [configuration.pyqt_qt_sip_flags]
         # SIP assumes POSIX style path separators
         + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
         )
@@ -290,6 +292,12 @@ def main():
     print
     
     os.system(cmd)
+
+    # patch the tmp_build_dir/sip_Qwt3Dcmodule.cpp file for Windows
+    text = open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp')).read()
+    text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
+                        '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
+    open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp'), 'w').write(text)
 
     # fill the build directory lazily
     copies = 0
@@ -301,10 +309,33 @@ def main():
                 copies += 1
     print "%s file(s) copied." % copies
 
-    # add the interface to the numerical Python extensions and fix build_file
-    extra_sources = glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
-    extra_headers = glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
+    # do we compile and link QwtPlot3D statically into PyQwt3D?
+    if options.qwtplot3d_sources:
+        extra_sources = glob.glob(os.path.join(
+            options.qwtplot3d_sources, 'src', '*.cpp'))
+        extra_headers = glob.glob(os.path.join(
+            options.qwtplot3d_sources, 'include', '*.h'))
+        extra_sources += glob.glob(os.path.join(
+            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.c'))
+        extra_headers += glob.glob(os.path.join(
+            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.h'))
+        extra_moc_headers = []
+        for header in extra_headers:
+            text = open(header).read()
+            if re.compile(r'^\s*Q_OBJECT', re.M).search(text):
+                extra_moc_headers.append(header)
+    elif 'qwtplot3d' not in options.extra_libs:
+        options.extra_libs.append('qwtplot3d')
+        extra_sources = []
+        extra_headers = []
+        extra_moc_headers = []
+
+    # add the interface to the numerical Python extensions
+    extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
+    extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
     lines = open(os.path.join(build_dir, build_file)).readlines()
+
+    # fix the sip-build-file
     output = open(os.path.join(build_dir, build_file), "w")
     for line in lines:
         if line.startswith('sources'):
@@ -314,15 +345,28 @@ def main():
                 chunks.append(target)
                 shutil.copy2(source, os.path.join(build_dir, target))
             line = ' '.join(chunks)
-        if line.startswith('headers'):
+        elif line.startswith('headers'):
             chunks = [line.rstrip()]
             for source in extra_headers:
                 target = os.path.basename(source)
                 chunks.append(target)
                 shutil.copy2(source, os.path.join(build_dir, target))
             line = ' '.join(chunks)
+        elif line.startswith('moc_headers'):
+            chunks = [line.rstrip()]
+            for source in extra_moc_headers:
+                target = os.path.basename(source)
+                chunks.append(target)
+                shutil.copy2(source, os.path.join(build_dir, target))
+            line = ' '.join(chunks)
         print >> output, line
     output.close()
+
+    # fix #include statement
+    if options.qwtplot3d_sources:
+        for header in [os.path.join('Qwt3D', 'qwt3d_io_gl2ps.cpp')]:
+            text = open(header).read()
+            open(header, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
     
     # files to be installed
     installs = []

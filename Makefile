@@ -3,6 +3,8 @@
 # Edit INCDIR and LIBDIR to suit your QwtPlot3D installation.
 INCDIR := /usr/include/qwtplot3d
 LIBDIR := /usr/lib
+# To compile and link QwtPlot3D statically into PyQwt3D
+QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
 
 PKG := $(shell basename $$(pwd))
 
@@ -10,6 +12,12 @@ PKG := $(shell basename $$(pwd))
 
 all:
 	(cd configure; python configure.py -I $(INCDIR) -L $(LIBDIR))
+	(cd configure; $(MAKE))
+	(ln -sf configure/Qwt3D)
+	(cd examples; ln -sf ../configure/Qwt3D)
+
+static:
+	(cd configure; python configure.py -Q $(QWT3DDIR))
 	(cd configure; $(MAKE))
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
