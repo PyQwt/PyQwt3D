@@ -218,7 +218,7 @@ def check_sip(configuration, options):
             ])
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
-            "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
+            "-I %s" % os.path.join(os.pardir, 'sip0400').replace('\\', '/')
             )
     else:
         raise SystemExit, required
