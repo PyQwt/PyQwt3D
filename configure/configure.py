@@ -198,16 +198,28 @@ def check_sip(configuration, options):
                 "-x SIP0401",
                 "-x SIP0400",
                 ])
+            # SIP assumes POSIX style path separators
+            options.sip_include_dirs.append(
+                "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
+                )
         else:
             options.excluded_features.extend([
                 "-x SIP0402",
                 "-x SIP0400",
                 ])
+            # SIP assumes POSIX style path separators
+            options.sip_include_dirs.append(
+                "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
+                )
     elif version & 0xffff00 == 0x040000: 
         options.excluded_features.extend([
             "-x SIP0402",
             "-x SIP0401",
             ])
+        # SIP assumes POSIX style path separators
+        options.sip_include_dirs.append(
+            "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
+            )
     else:
         raise SystemExit, required
 
@@ -368,6 +380,10 @@ def parse_args():
         type='string', metavar='EXTRA_LFLAG',
         help='add an extra linker flag')
     parser.add_option(
+        '--sip-include-dirs', default=[os.path.join(os.pardir, 'sip')],
+        action='append', type='string', metavar='SIP_INCLUDE_DIR',
+        help='add an extra directory for SIP to search')
+    parser.add_option(
         '--tracing', default=False, action='store_true',
         help=('build with tracing of the execution of the bindings'
               ' [default disabled]'))
@@ -383,6 +399,11 @@ def parse_args():
     options.excluded_features = [
         ('-x %s' % f) for f in options.excluded_features
         ]
+
+    # SIP assumes POSIX style path separators
+    options.sip_include_dirs = [
+        ('-I %s' % f).replace('\\', '/') for f in options.sip_include_dirs
+    ]
     
     if options.tracing:
         options.tracing = '-r'
@@ -496,7 +517,7 @@ def main():
     cmd = " ".join(
         [configuration.sip_bin,
          # SIP assumes POSIX style path separators
-         "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
+         #"-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
          "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
          "-b", build_file,
          "-c", tmp_dir,
@@ -504,6 +525,7 @@ def main():
          options.tracing,
          configuration.pyqt_qt_sip_flags,
          ]
+        + options.sip_include_dirs
         + options.excluded_features
         # SIP assumes POSIX style path separators
         + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
