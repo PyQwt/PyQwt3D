@@ -44,17 +44,19 @@ using namespace Qwt3D;
 
 public:
 
-%If (NO_MSVC)
+//%If (NO_MSVC)
 %ConvertToSubClassCode
-    // traverse the inheritance tree left->right and bottom->up.
-    if (dynamic_cast<const SurfacePlot *>(sipCpp))
-        sipClass = sipClass_SurfacePlot;
-    else if (dynamic_cast<const Plot3D *>(sipCpp))
-        sipClass = sipClass_Plot3D;
-    else
-        sipClass = 0;
-%End
-%End
+    // The table of Python class objects indexed by their names.
+    // The table must be sorted by name.
+    static sipStringTypeClassMap map[] = {
+        { sipName_Plot3D, &sipClass_Plot3D },
+        { sipName_SurfacePlot, &sipClass_SurfacePlot },
+    };
+
+    sipClass = sipMapStringToClass(
+        sipCpp->className(), map, sizeof(map)/sizeof(map[0]));
+%End // ConvertToSubClassCode
+//%End
 
     Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
     virtual ~Plot3D();
