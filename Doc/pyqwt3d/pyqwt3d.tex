@@ -3,6 +3,10 @@
 % Links
 \newcommand{\QwtPlotDdd}{\ulink{QwtPlot3D}
   {http://qwtplot3d.sourceforge.net}}
+\newcommand{\QwtPlotDddApi}{\ulink{QwtPlot3D API documentation}
+  {http://qwtplot3d.sourceforge.net/web/navigation/api_frame.html}}
+\newcommand{\QwtPlotDddManual}{\ulink{QwtPlot3D manual}
+  {http://qwtplot3d.sourceforge.net/web/navigation/manual_frame.html}}
 \newcommand{\mailinglist}{\ulink{mailing list}
   {mailto:pyqwt-users@lists.sourceforge.net}}
 
@@ -112,11 +116,15 @@ the Qt framework with widgets to visualize 3-dimensional data.
 
 \chapter{Introduction\label{introduction}}
 
+\Future{}
+
 PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library which extends
 the Qt framework with widgets to visualize 3-dimensional data.
 
 
 \chapter{Installation\label{installation}}
+
+\Future{}
 
 \section{Installation prerequisites\label{prerequisites}}
 
@@ -153,6 +161,8 @@ Build prerequisites for \PyQwtDddTarGz{} are:
   
 
 \section{Installation\label{install}}
+
+\Future{}
 
 \subsection{Install on Windows with MSVC\label{win-install}}
 
@@ -201,10 +211,12 @@ nmake install
 Contact the \mailinglist{}, if you run into problems.
 
 \begin{notice}[note]
-  The Makefile for GNU make, \file{PyQwt-0.1/Makefile}, contains more examples
-  of how to invoke \file{configure.py}.  Adapt and use it, if you have GNU
-  make.
+  The files \file{configure\textbackslash{}go.bat} for Qt-3.x and
+  \file{configure\textbackslash{}nc-go.bat} for \QtNcExe{} are examples of
+  how to automatize the invokations of \strong{configure.py}, \strong{nmake},
+  and \strong{nmake install}.  Adapt and use one of those files.
 \end{notice}
+
 \begin{notice}[note]
   The configure.py script takes many options. The command
 \begin{verbatim}
@@ -212,6 +224,12 @@ python configure.py -h
 \end{verbatim}
   displays a full list of the available options:
   \verbatiminput{configure.help}
+\end{notice}
+
+\begin{notice}[note]
+  Since PyQwt3D wraps some classes and functions that are not exported from
+  a QwtPlot3D dynamic load library, you have to compile and link the QwtPlot3D
+  sources into PyQwt3D's extension module.
 \end{notice}
 
 
@@ -285,6 +303,12 @@ make install
 Contact the \mailinglist{}, if you run into problems.
 
 \begin{notice}[note]
+  The Makefile for GNU make, \file{PyQwt-0.1/Makefile} contains more examples
+  of how to invoke \file{configure.py}.  Adapt and use it, if you have GNU
+  make.
+\end{notice}
+
+\begin{notice}[note]
   The configure.py script takes many options. The command
 \begin{verbatim}
 python configure.py -h
@@ -296,7 +320,10 @@ python configure.py -h
 
 \chapter{PyQwt3D Module Reference \label{reference}}
 
-The reference should be used in conjunction with the \QwtPlotDdd{} manual.
+\Future{}
+
+The reference should be used in conjunction with the \QwtPlotDddManual{}
+and the \QwtPlotDddApi{}.
 Only the differences specific to the Python bindings are documented here.
 
 In this chapter, \emph{is not yet implemented} implies that the feature can
@@ -316,6 +343,8 @@ member function, but not protected attributes).
 I may try to implement protected attributes on demand.
 
 \section{Wrappers for \ctype{std::vector<T>} \label{wrappers}}
+
+\Future{}
 
 PyQwt3D has a partial interface to the following C++ std::vector templates:
 \begin{enumerate}
@@ -387,8 +416,7 @@ For instance:
 
 \section{Class reference}
 
-The documentation supposes that you PyQwt3D has been built with SIP-4.2.0
-or later.
+\Future{}
 
 \begin{classdesc}{Arrow}{*args}
 \emph{is fully implemented}.
@@ -411,7 +439,7 @@ wraps \ctype{std::vector<unsigned>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{CellData}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{CellField}{*args}
@@ -419,19 +447,20 @@ wraps \ctype{std::vector<Cell>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Color}{*args}
-\emph{is fully implemented}.
+\emph{is fully implemented}.\\
+The abstract operator()() does not work with SIP-4.0.x and SIP-4.1.x.
 \end{classdesc}
 
 \begin{classdesc}{ColorLegend}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Cone}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{CoordinateSystem}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{CrossHair}{*args}
@@ -439,7 +468,8 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Data}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?
 \end{classdesc}
 
 \begin{classdesc}{Dot}{*args}
@@ -451,15 +481,16 @@ wraps \ctype{std::vector<double>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Drawable}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?
 \end{classdesc}
 
 \begin{classdesc}{Enrichment}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Freevector}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{FreeVectorField}{*args}
@@ -467,83 +498,218 @@ wraps \ctype{std::vector<FreeVector>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Function}{*args}
-FIXME: hack \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+The abstract operator()() works also with SIP-4.0.x and SIP-4.1.x thanks to
+a hack.
 \end{classdesc}
 
 \begin{classdesc}{GLStateBewarer}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{GridData}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{GridMapping}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{IO}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{Label}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{LinearAutoscaler}{*args}
-FIXME: \emph{is fully implemented}.
-\end{classdesc}
-
-\begin{classdesc}{LinearScale}{*args}
 \emph{is fully implemented}.
 \end{classdesc}
 
+\begin{classdesc}{GridData}{*args}
+  \begin{itemize}
+  \item{vertices}. The public data member:
+\begin{verbatim}
+DataMatrix vertices;
+\end{verbatim}
+    is not accessible. FIXME: how to wrap \class{DataMatrix} safely?
+  \item{normals}. The public data member:
+\begin{verbatim}
+DataMatrix normals;
+\end{verbatim}
+    is not accessible. FIXME: how to wrap \class{DataMatrix} safely?
+  \end{itemize}
+\end{classdesc}
+
+\begin{classdesc}{GridMapping}{*args}
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?
+\end{classdesc}
+
+\begin{classdesc}{IO}{*args}
+  \begin{itemize}
+  \item{defineInputHandler}. C++ declaration:
+\begin{verbatim}
+static bool defineInputHandler(QString const& format, Function func);
+\end{verbatim}
+    is not implemented (it is impossible to implement callbacks without an
+    extra void pointer to hold a Python callable).
+  \item{defineOutputHandler}. C++ declaration:
+\begin{verbatim}
+static bool defineOutputHandler(QString const& format, Function func);
+\end{verbatim}
+    is not implemented (it is impossible to implement callbacks without an
+    extra void pointer to hold a Python callable).
+  \end{itemize}
+  SIP-4.1.x does not allow to wrap the operator
+  \cfunction{bool IO::Function::operator()(Plot3D *, const QString \&) = 0}.\\
+  SIP-4.0.x does not allow to wrap the class \code{IO::Functor} and all member
+  functions using \code{IO::Functor}.
+\end{classdesc}
+
+\begin{classdesc}{Label}{*args}
+\emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{LinearAutoscaler}{*args}
+\emph{is fully implemented}.
+\end{classdesc}
+
+\begin{classdesc}{LinearScale}{*args}
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?
+\end{classdesc}
+
 \begin{classdesc}{LogScale}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Mapping}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{NativeReader}{*args}
-FIXME: \emph{is fully implemented}.
+SIP-4.0.x does not allow to implement the fact that \class{NativeReader} is a
+subclass of \class{IO.Function}.
 \end{classdesc}
 
 \begin{classdesc}{ParallelEpiped}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{ParametricSurface}{*args}
-FIXME: hack hack \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+The abstract operator()() works also with SIP-4.0.x and SIP-4.1.x thanks to
+a hack.
 \end{classdesc}
 
 \begin{classdesc}{PixmapWriter}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+SIP-4.0.x does not allow to implement the fact that \class{PixmapWriter} is a
+subclass of \class{IO.Function}.
 \end{classdesc}
 
 \begin{classdesc}{Plot3D}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?\\
+FIXME: the ConvertToSubClassCode is disabled on Windows, since it crashes.
 \end{classdesc}
 
 \begin{classdesc}{RGBA}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Scale}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+FIXME: what to do with the protected data members?
 \end{classdesc}
 
 \begin{classdesc}{StandardColor}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.\\
+FIXME: does the operator()() work with SIP-4.0.x and SIP-4.1.x?\\
+FIXME: what to do with the protected data members?
 \end{classdesc}
 
 \begin{classdesc}{SurfacePlot}{*args}
-FIXME: \emph{is fully implemented}.
+  \emph{is fully implemented}.
+  \begin{itemize}
+  \item{facets}. C++ declaration:
+\begin{verbatim}
+std::pair<int,int> facets() const;
+\end{verbatim}
+    returns a tuple of two Python ints.
+  \item{loadFromData}. C++ declaration:
+\begin{verbatim}
+bool loadFromData(Qwt3D::Triple** data,
+                  unsigned int columns, unsigned int rows,
+                  bool uperiodic = false, bool vperiodic = false);
+\end{verbatim}
+    is wrapped by:
+\begin{verbatim}
+success = surfacePlot.loadFromData(data, uperiodic = False, vperiodic = False)
+\end{verbatim}
+    where \var{success} is \constant{True} or \constant{False}, \var{data}
+    is convertable to a Numeric or numarray array of Python floats with a shape
+    (N, M, 3), and \var{uperiodic} and \var{vperiodic} are Python bools.\\
+    C++ declaration:
+\begin{verbatim}
+bool loadFromData(double** data, unsigned int columns, unsigned int rows,
+                  double minx, double maxx, double miny, double maxy);
+\end{verbatim}
+    is wrapped by:
+\begin{verbatim}
+success = surfacePlot.loadFromData(data, minx, maxx, miny, maxy)
+\end{verbatim}
+    where \var{success} is \constant{True} or \constant{False}, \var{data}
+    is convertable to a Numeric or numarray array of Python floats with a shape
+    (N, M), and \var{minx}, \var{maxx}, \var{miny} and \var{maxy} are
+    convertable to Python floats.\\
+    C++ declaration:
+\begin{verbatim}
+bool loadFromData(Qwt3D::TripleField const& data,
+                  Qwt3D::CellField const& poly);
+\end{verbatim}
+    is wrapped by:
+\begin{verbatim}
+success = surfacePlot.loadFromData(tripleField, cellField)
+\end{verbatim}
+    where \var{success} is \constant{True} or \constant{False},
+    \var{tripleField} is a \class{TripleField}, and \var{cellField} is a
+    \class{CellField}.
+  \item{createDataRepresentation}. C++ declarations:
+\begin{verbatim}
+bool createDataRepresentation(
+     Qwt3D::Triple** data, unsigned int columns, unsigned int rows,
+     bool uperiodic = false, bool vperiodic = false);
+bool createDataRepresentation(
+     double** data, unsigned int columns, unsigned int rows,
+     double minx, double maxx, double miny, double maxy);
+bool createDataRepresentation(
+     Qwt3D::TripleField const& data, Qwt3D::CellFieldconst& poly)
+\end{verbatim}
+    are deprecated and therefore not implemented.
+  \item{readIn}. C++ declaration:
+\begin{verbatim}
+void readIn(Qwt3D::GridData& grid, Triple** data,
+            unsigned int columns, unsigned int rows);
+\end{verbatim}
+    is wrapped by:
+\begin{verbatim}
+surfacePlot.readIn(gridData, data) 
+\end{verbatim}
+    where \var{gridData} is a \class{GridData}, and \var{data} is convertable
+    to a Numeric or numarray array of Python floats with a shape (N, M, 3).\\
+    C++ declaration:
+\begin{verbatim}
+void readIn(Qwt3D::GridData& grid, double** data,
+            unsigned int columns, unsigned int rows,
+            double minx, double maxx, double miny, double maxy);
+\end{verbatim}
+    is wrapped by:
+\begin{verbatim}
+surfacePlot.readIn(gridData, data, minx, maxx, miny, maxy)
+\end{verbatim}
+    where \var{gridData} is a \class{GridData}, \var{data} is convertable to
+    a Numeric or numarray array of Python floats with a shape (N, M), and
+    \var{minx}, \var{maxx}, \var{miny} and \var{maxy} are convertable to Python
+    floats.
+  \end{itemize}
 \end{classdesc}
 
 \begin{classdesc}{Triple}{*args}
-FIXME: \emph{is fully implemented}.
+  \begin{itemize}
+  \item{operator *()}. C++ declaration:
+\begin{verbatim}
+Triple operator*(double, const Triple &);
+\end{verbatim}
+    is not implemented (not supported by SIP-4.2.x).
+  \item{operator /()}. C++ declaration:
+\begin{verbatim}
+Triple operator/(double, const Triple &);
+\end{verbatim}
+    is not implemented (not supported by SIP-4.2.x).
+  \end{itemize}
 \end{classdesc}
 
 \begin{classdesc}{TripleField}{*args}
@@ -551,18 +717,20 @@ wraps \ctype{std::vector<Triple>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Tuple}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{VectorWriter}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{VertexEnrichment}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \section{Function reference}
+
+\Future{}
 
 FIXME
 
