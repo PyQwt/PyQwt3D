@@ -207,13 +207,13 @@ def check_sip(configuration, options):
             "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
             )
     elif version & 0xffff00 == 0x040100:
-        options.timelines.append('-t SIP_4_1')
+        options.timelines.append('-t SIP_4_1_0')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
             )
     elif version & 0xffff00 == 0x040000: 
-        options.timelines.append('-t SIP_4_0')
+        options.timelines.append('-t SIP_4_0_0')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0400').replace('\\', '/')
