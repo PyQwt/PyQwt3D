@@ -22,6 +22,9 @@ static:
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
 
+doc:
+	(cd Doc; make doc; make htdoc)
+
 clean:
 	rm -f *~ */*~ */*/*~
 
@@ -29,5 +32,5 @@ distclean: clean
 	rm -rf configure/Makefile configure/Qwt3D configure/tmp-Qwt3D
 	rm -f Qwt3D examples/Qwt3D 
 
-dist:
+dist: doc
 	python setup.py sdist
