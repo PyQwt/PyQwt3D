@@ -34,8 +34,11 @@
 
 
 // Identify sip
-%Feature SIP0400
-%Feature SIP0401
+%Feature SIP0400 // SIP-4.0.x
+%Feature SIP0401 // SIP-4.1.x or SIP-3.11.x
+
+%Feature NEWSIP  // SIP-4.x.x
+%Feature OLDSIP  // SIP-3.x.x
 
 // Numerical Python extensions
 %Feature HAS_NUMARRAY

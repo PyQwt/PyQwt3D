@@ -82,10 +82,19 @@ public:
     PyParametricSurface(SurfacePlot &);
     PyParametricSurface(SurfacePlot *);
 
+%If (NEWSIP)
     virtual Triple operator()(double, double);
 %MethodCode
     sipRes = new Triple(sipCpp -> __call__(a0, a1));
-%End    
+%End // %MethodCode
+%End // NEWSIP
+
+%If (OLDSIP)
+    /*virtual*/ Triple operator()(double, double);
+%MethodCode
+    sipRes = new Triple(sipCpp -> __call__(a0, a1));
+%End // %MethodCode
+%End // OLDSIP
 
 }; // class PyParametricSurface
 

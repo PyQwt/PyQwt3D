@@ -142,14 +142,22 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
 # check_numeric()
 
 
-def check_sip(sip_version, excluded_features):
+def check_sip(sip_version, sip_version_str, excluded_features):
     """Adapt to SIP differences by means of mutually excluding features
     """
+    print "Found SIP-%s.\n" % sip_version_str
     if sip_version & 0xffff00 == 0x040000: 
-        excluded_features.append("-x SIP41")
+        excluded_features.extend(["-x SIP0401", "-x OLDSIP"])
     elif sip_version & 0xffff00 == 0x040100:
-        excluded_features.append("-x SIP40")
-        
+        excluded_features.extend(["-x SIP0400", "-x OLDSIP"])
+    elif sip_version & 0xffff00 == 0x030b00:
+        # SIP-3.11.x works like SIP-4.1.x (except for bugs)
+        excluded_features.extend(["-x SIP0401", "-x NEWSIP"])
+    else:
+        raise SystemExit, (
+            "PyQwt3D requires SIP-4.1.x, -4.0.x, or -3.11.x.\n"
+            )
+
     return excluded_features
 
 # check_sip()
@@ -215,6 +223,9 @@ def main():
     sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
     
     excluded_features = []
+    excluded_features = check_sip(
+        configuration.sip_version, configuration.sip_version_str,
+        excluded_features)
     excluded_features, options.extra_defines = check_numarray(
         configuration.py_inc_dir,
         excluded_features, options.extra_defines,
@@ -223,9 +234,6 @@ def main():
         configuration.py_inc_dir,
         excluded_features, options.extra_defines,
         options.disable_numeric)    
-    excluded_features = check_sip(
-        configuration.sip_version,
-        excluded_features)
 
     # generate code into a temporary directory
     if not os.path.exists(tmp_build_dir):
