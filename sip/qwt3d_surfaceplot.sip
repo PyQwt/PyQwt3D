@@ -80,7 +80,8 @@ public:
         return 0;
     }
 
-    Triple **data = new (Triple *)[nx];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    Triple **data = new Triple * [nx];
     for (unsigned int i=0; i<nx; i++)
         data[i] = reinterpret_cast<Triple *>(
             &array[i*ny*sizeof(Triple)/sizeof(double)]);
@@ -109,14 +110,17 @@ public:
             a0, &out, &array, &nx, &ny))
         return 0;
 
-    double **data = new (double *)[nx];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    double **data = new double * [nx];
     for (unsigned int i=0; i<nx; i++)
         data[i] = &array[i*ny];
 #else
     nx = 3;
     ny = 5;
-    array = new (double)[nx*ny];
-    double **data = new (double *)[nx];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    array = new double [nx*ny];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    double **data = new double * [nx];
     for (unsigned int i=0; i<nx; i++)
         data[i] = &array[i*ny];
 
@@ -205,7 +209,8 @@ protected:
         return 0;
     }
 
-    Triple **data = new (Triple *)[nx];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    Triple **data = new Triple * [nx];
     for (unsigned int i=0; i<nx; i++)
         data[i] = reinterpret_cast<Triple *>(
             &array[i*ny*sizeof(Triple)/sizeof(double)]);
@@ -230,7 +235,8 @@ void readIn(GridData &, SIP_PYOBJECT, double, double, double, double)
             a1, &out, &array, &nx, &ny))
         return 0;
 
-    double **data = new (double *)[nx];
+    // MSVC-6.0 does not like: new (foo)[bar];
+    double **data = new double * [nx];
     for (unsigned int i=0; i<nx; i++)
         data[i] = &array[i*ny];
 

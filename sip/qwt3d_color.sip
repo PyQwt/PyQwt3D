@@ -83,10 +83,22 @@ using namespace Qwt3D;
 
 public:
     StandardColor(Plot3D *, unsigned = 100);
+
+%If (IS_MSVC)
+    RGBA operator()(double, double, double) const;
+%MethodCode
+    RGBA rgba = sipCpp -> operator()(a0, a1, a2);
+    sipRes = new RGBA(rgba);
+%End // %MethodCode
+%End // IS_MSVC
+
+%If (NO_MSVC)
     RGBA operator()(double, double, double) const;
 %MethodCode
     sipRes = new RGBA(sipCpp -> operator()(a0, a1, a2));
-%End
+%End // %MethodCode
+%End // NO_MSVC
+
     void setColorVector(const ColorVector &);
     void reset(unsigned = 100);
     void setAlpha(double);

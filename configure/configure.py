@@ -37,8 +37,8 @@ import os
 import pprint
 import shutil
 
-import pyqtconfig
 import sipconfig
+import pyqtconfig
 
 
 def lazy_copy_sip_output_file(source, target):
@@ -142,10 +142,12 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
 # check_numeric()
 
 
-def check_sip(sip_version, sip_version_str, excluded_features):
+def check_sip(configuration, excluded_features):
     """Adapt to SIP differences by means of mutually excluding features
     """
-    print "Found SIP-%s.\n" % sip_version_str
+    print "Found SIP-%s.\n" % configuration.sip_version_str
+
+    sip_version = configuration.sip_version
     if sip_version & 0xffff00 == 0x040000: 
         excluded_features.extend(["-x SIP0401", "-x OLDSIP"])
     elif sip_version & 0xffff00 == 0x040100:
@@ -161,6 +163,21 @@ def check_sip(sip_version, sip_version_str, excluded_features):
     return excluded_features
 
 # check_sip()
+
+
+def check_compiler(configuration, excluded_features):
+    """Adapt to different compilers by means of mutually excluding features
+    """
+    makefile = sipconfig.Makefile(configuration=configuration)
+    generator = makefile.optional_string('MAKEFILE_GENERATOR', 'UNIX')
+    if generator == 'MSVC':
+        excluded_features.append('-x NO_MSVC')
+    else:
+        excluded_features.append('-x IS_MSVC')
+    
+    return excluded_features
+
+# check_compiler()
 
 
 def main():
@@ -223,9 +240,8 @@ def main():
     sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
     
     excluded_features = []
-    excluded_features = check_sip(
-        configuration.sip_version, configuration.sip_version_str,
-        excluded_features)
+    excluded_features = check_sip(configuration, excluded_features)
+    excluded_features = check_compiler(configuration, excluded_features)
     excluded_features, options.extra_defines = check_numarray(
         configuration.py_inc_dir,
         excluded_features, options.extra_defines,

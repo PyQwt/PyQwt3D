@@ -83,9 +83,19 @@ public:
     PyParametricSurface(SurfacePlot *);
 
 %If (NEWSIP)
+%If (IS_MSVC)
+    virtual Triple operator()(double, double);
+%MethodCode
+    Triple triple = sipCpp -> __call__(a0, a1);
+    sipRes = new Triple(triple);
+%End // %MethodCode
+%End // IS_MSVC
+
+%If (NO_MSVC)
     virtual Triple operator()(double, double);
 %MethodCode
     sipRes = new Triple(sipCpp -> __call__(a0, a1));
+%End // NO_MSVC
 %End // %MethodCode
 %End // NEWSIP
 

@@ -40,6 +40,10 @@
 %Feature NEWSIP  // SIP-4.x.x
 %Feature OLDSIP  // SIP-3.x.x
 
+// Identify compiler
+%Feature IS_MSVC // is MSVC-6.0
+%Feature NO_MSVC // no MSVC-6.0
+
 // Numerical Python extensions
 %Feature HAS_NUMARRAY
 %Feature HAS_NUMERIC
