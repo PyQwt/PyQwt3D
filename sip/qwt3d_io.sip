@@ -45,6 +45,8 @@ using namespace Qwt3D;
 
 public:
     // FIXME: typedef bool (*Function)(Plot3D*, QString const& fname);
+
+%If (SIP41) 
     class Functor /Abstract/
     {
     public:
@@ -52,21 +54,32 @@ public:
         virtual IO::Functor * clone() const = 0;
         // FIXME: virtual bool operator()(Plot3D *, const QString &) = 0;
     };
+%End
 
     IO();
+
     // FIXME: static bool defineInputHandler(const QString &, Function);
     // FIXME: static bool defineOutputHandler(const QString &, Function);
+
+%If (SIP41)
     static bool defineInputHandler(const QString &, const Functor &);
     static bool defineOutputHandler(const QString &, const Functor &);
+%End
+
     static bool save(Plot3D *, const QString &, const QString &);
     static bool load(Plot3D *, const QString &, const QString &);
     static QStringList inputFormatList();
     static QStringList outputFormatList();
+
+%If (SIP41) 
     static IO::Functor * outputHandler(const QString &);
     static IO::Functor * inputHandler(const QString &);
+%End
+
 };
 
 
+%If (SIP41) 
 class PixmapWriter: IO::Functor
 {
 
@@ -82,6 +95,7 @@ private:
     IO::Functor* clone() const;
     //bool operator()(Plot3D *, const QString &);
 };
+%End
 
 
 // Local Variables:

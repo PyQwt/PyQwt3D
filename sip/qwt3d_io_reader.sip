@@ -33,6 +33,8 @@
 //
 // -- LICENSE --
 
+
+%If (SIP41)
 class NativeReader: IO::Functor
 {
 
@@ -45,6 +47,23 @@ public:
     NativeReader();
 
 }; // class NativeReader
+%End // SIP41
+
+
+%If (SIP40)
+class NativeReader //: IO::Functor
+{
+
+%TypeHeaderCode
+#include <qwt3d_io_reader.h>
+using namespace Qwt3D;
+%End // %TypeHeaderCode
+
+public:
+    NativeReader();
+
+}; // class NativeReader
+%End // SIP40
 
 
 // Local Variables:

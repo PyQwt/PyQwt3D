@@ -33,6 +33,11 @@
 // -- LICENSE --
 
 
+// Identify sip
+%Feature SIP40
+%Feature SIP41
+
+// Numerical Python extensions
 %Feature HAS_NUMARRAY
 %Feature HAS_NUMERIC
 

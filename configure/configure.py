@@ -142,6 +142,19 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
 # check_numeric()
 
 
+def check_sip(sip_version, excluded_features):
+    """Adapt to SIP differences by means of mutually excluding features
+    """
+    if sip_version & 0xffff00 == 0x040000: 
+        excluded_features.append("-x SIP41")
+    elif sip_version & 0xffff00 == 0x040100:
+        excluded_features.append("-x SIP40")
+        
+    return excluded_features
+
+# check_sip()
+
+
 def main():
     
     from optparse import OptionParser
@@ -203,11 +216,16 @@ def main():
     
     excluded_features = []
     excluded_features, options.extra_defines = check_numarray(
-        configuration.py_inc_dir, excluded_features, options.extra_defines,
+        configuration.py_inc_dir,
+        excluded_features, options.extra_defines,
         options.disable_numarray)
     excluded_features, options.extra_defines = check_numeric(
-        configuration.py_inc_dir, excluded_features, options.extra_defines,
+        configuration.py_inc_dir,
+        excluded_features, options.extra_defines,
         options.disable_numeric)    
+    excluded_features = check_sip(
+        configuration.sip_version,
+        excluded_features)
 
     # generate code into a temporary directory
     if not os.path.exists(tmp_build_dir):

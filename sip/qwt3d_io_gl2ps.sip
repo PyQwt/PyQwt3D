@@ -34,11 +34,7 @@
 // -- LICENSE --
 
 
-%ModuleHeaderCode
-#include <qwt3d_io_gl2ps.h>
-using namespace Qwt3D;
-%End // %ModuleHeaderCode
-
+%If (SIP41)
 class VectorWriter: IO::Functor
 {
 
@@ -81,7 +77,58 @@ public:
   bool setFormat(const QString &);
 
 }; // class VectorWriter
+%End // SIP41
 
+%If (SIP40)
+class VectorWriter //: IO::Functor
+{
+
+%TypeHeaderCode
+#include <qwt3d_io_gl2ps.h>
+using namespace Qwt3D;
+%End // %TypeHeaderCode
+
+public:
+    enum TEXTMODE {
+        PIXEL,
+        NATIVE,
+        TEX,
+    };
+    enum LANDSCAPEMODE {
+        ON,
+        OFF,
+        AUTO,
+    };
+  enum SORTMODE {
+      NOSORT,
+      SIMPLESORT,
+      BSPSORT,
+  };
+
+  VectorWriter();
+
+  void setLandscape(LANDSCAPEMODE);
+  LANDSCAPEMODE landscape() const;
+
+  void setTextMode(TEXTMODE, QString = QString::null);
+  TEXTMODE textMode() const;
+
+  void setSortMode(SORTMODE);
+  SORTMODE sortMode() const;
+
+  void setCompressed(bool);
+  bool compressed() const;
+
+  bool setFormat(const QString &);
+
+}; // class VectorWriter
+%End // SIP40
+
+
+%ModuleHeaderCode
+#include <qwt3d_io_gl2ps.h>
+using namespace Qwt3D;
+%End // %ModuleHeaderCode
 
 GLint setDeviceLineWidth(GLfloat);
 GLint setDevicePointSize(GLfloat);
