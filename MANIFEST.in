@@ -1,0 +1,13 @@
+# MANIFEST template file to make a distribution tarball
+
+# Package stuff
+include COPYING* MANIFEST.in Makefile PyQwt3D.spec TODO
+
+graft configure
+graft examples
+graft numpy
+graft sip
+
+# Local Variables: ***
+# mode: sh ***
+# End: ***

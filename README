@@ -1,0 +1,44 @@
+INTRODUCTION
+
+PyQwt3D is a set of Python bindings for the QwtPlot3D library.
+
+
+PREREQUISITES
+
+- Python-2.3 or later (tested with Python-2.3.x)
+- sip-4.0 or later (tested with sip-4.1.1)
+- PyQt-3.10 or later (tested with PyQt-3.13)
+- qwtplot3d-0.2.4 (http://qwtplot3d.sourceforge.net)
+- Qt-3.0 or later (tested with Qt-3.2.x and Qt-3.3.x)
+- numarray (optional, tested with numarray-1.x)
+- Numeric (optional, tested with Numeric-23.x)
+
+
+INSTALLATION
+
+If you do not have GNU make, do:
+(1) cd configure
+(2) python configure.py (run 'python configure.py -h' to see all options)
+(3) make ('nmake' for MSVC)
+(4) make install ('nmake install' for MSVC)
+
+If you have GNU make, edit INCDIR and LIBDIR in the Makefile and do:
+(1) make
+(2) make install
+
+
+FEATURES
+
+__call__ in PyFunction, PyParametricSurface
+
+
+BUGS
+
+PyQwt3D may not work with libnumarray, possibly to a bug in the
+floating point  excepion handling of glibc (occurs at least on
+Mandrake-10.0 and SuSE-9.0).
+See http://sourceforge.net/mailarchive/message.php?msg_id=9914816 for
+more information.  Your mileage may vary.
+
+
+Have fun -- Gerard Vermeulen
