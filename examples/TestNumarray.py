@@ -9,6 +9,15 @@ import sys
 from Qwt3D import *
 from qt import *
 
+# enable all tracing options of the SIP generated bindings (requires -r option)
+try:
+    import sip
+    sip.settracemask(0x3f)
+except ImportError:
+    import libsip
+    libsip.settracemask(0x3f)
+
+
 def matrix2d(nx, ny, minx, maxx, miny, maxy, function):
     """Return a data matrix for the interface to the C++ member function 
     bool SurfacePlot::loadFromData(
@@ -60,7 +69,7 @@ class Plot(SurfacePlot):
         self.setScale(1.0, 1.0, 1.0)
 
         nx, ny, minx, maxx, miny, maxy = 3, 5, -1.0, 1.0, -1.0, 1.0
-        if 1:
+        if True:
             zs = matrix2d(nx, ny, minx, maxx, miny, maxy, saddle)
             print type(zs)
             print zs
@@ -104,7 +113,8 @@ class Plot(SurfacePlot):
 
 def make():
     demo = Plot()
-    #demo.resize(800, 600) # resize makes title and part of axes disappear
+    # Matrox bug on Linux: resize on makes title and part of axes disappear
+    demo.resize(800, 600)
     demo.show()
     demo.paintGL()
     return demo
