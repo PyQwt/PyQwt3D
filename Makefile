@@ -9,7 +9,7 @@ PKG := $(shell basename $$(pwd))
 .PHONY: dist
 
 all:
-	(cd configure; ./configure.py -I $(INCDIR) -L $(LIBDIR))
+	(cd configure; python configure.py -I $(INCDIR) -L $(LIBDIR))
 	(cd configure; $(MAKE))
 	(ln -sf configure/Qwt3D)
 	(cd examples; ln -sf ../configure/Qwt3D)
