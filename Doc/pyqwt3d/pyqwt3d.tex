@@ -80,7 +80,7 @@
   \begin{notice}[warning]
     PyQwt3D may not work with numarray on Linux systems, possibly due to a bug
     in the floating point excepion handling of glibc. 
-    More information is to be found in
+    More information is to be found
     \ulink{here}{http://sourceforge.net/mailarchive/message.php?msg_id=9914816}
     and in related posts.
     PyQwt3D does not work with numarray and Matrox graphic cards on
@@ -97,7 +97,7 @@
   \end{notice}
 }
 
-%\renewcommand{\Future}{}
+\renewcommand{\Future}{}
 
 \title{PyQwt3D Manual}
 
@@ -127,6 +127,9 @@
 \noindent
 PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library which extends
 the Qt framework with widgets to visualize 3-dimensional data.
+It allows you to integrate PyQt, Qt, QwtPlot3D, the Numerical Python
+extensions, and optionally SciPy in a GUI Python application or in an
+interactive Python session.
 
 \end{abstract}
 
@@ -164,7 +167,7 @@ Installation prerequisites for \PyQwtDddTarGz{} are:
   and also Qt-2.3.x if you use PyQwt3D's patched version of QwtPlot3D.
 \item
   \NewSip{}.\\
-  Supported versions: SIP-4.2, -4.1.1, -4.1, -4.0.1, and -4.0,
+  Supported versions: SIP-4.2.1 -4.2, -4.1.1, -4.1, -4.0.1, and -4.0,
   but SIP-4.2.x is recommended.\\
   Only SIP-4.2.x is capable to wrap all of the advanced C++ idioms of
   QwtPlot3D without hacks.\\
