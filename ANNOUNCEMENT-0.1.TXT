@@ -14,7 +14,9 @@ What is PyQwt3D?
 - it runs on POSIX, MacOS/X and Windows platforms (practically any
   platform supported by Qt and Python).
 
-The home page of PyQwt is http://pyqwt.sourceforge.net.
+The home page of PyQwt3D is http://pyqwt.sourceforge.net and a few
+examples are shown at http://pyqwt.sourceforge.net/pyqwt3d-examples.html.
+
 
 PyQwt3D-0.1 supports:
 
