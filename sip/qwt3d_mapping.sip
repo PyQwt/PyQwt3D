@@ -46,6 +46,7 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
+%If (SIP0400)
 %ConvertToSubClassCode
     // traverse the inheritance tree left->right and bottom->up.
     if (dynamic_cast<const PyFunction *>(sipCpp))
@@ -62,7 +63,44 @@ public:
         sipClass = sipClass_Mapping;
     else
         sipClass = 0;
-%End
+%End // ConvertToSubClassCode
+%End // SIP0400
+
+%If (SIP0401)
+%ConvertToSubClassCode
+    // traverse the inheritance tree left->right and bottom->up.
+    if (dynamic_cast<const PyFunction *>(sipCpp))
+        sipClass = sipClass_PyFunction;
+    else if (dynamic_cast<const PyParametricSurface *>(sipCpp))
+        sipClass = sipClass_PyParametricSurface;
+    else if (dynamic_cast<const Function *>(sipCpp))
+        sipClass = sipClass_Function;
+    else if (dynamic_cast<const ParametricSurface *>(sipCpp))
+        sipClass = sipClass_ParametricSurface;
+    else if (dynamic_cast<const GridMapping *>(sipCpp))
+        sipClass = sipClass_GridMapping;
+    else if (dynamic_cast<const Mapping *>(sipCpp))
+        sipClass = sipClass_Mapping;
+    else
+        sipClass = 0;
+%End // ConvertToSubClassCode
+%End // SIP0401
+
+%If (SIP0402)
+%ConvertToSubClassCode
+    // traverse the inheritance tree left->right and bottom->up.
+    if (dynamic_cast<const Function *>(sipCpp))
+        sipClass = sipClass_Function;
+    else if (dynamic_cast<const ParametricSurface *>(sipCpp))
+        sipClass = sipClass_ParametricSurface;
+    else if (dynamic_cast<const GridMapping *>(sipCpp))
+        sipClass = sipClass_GridMapping;
+    else if (dynamic_cast<const Mapping *>(sipCpp))
+        sipClass = sipClass_Mapping;
+    else
+        sipClass = 0;
+%End // ConvertToSubClassCode
+%End // SIP0402
 
     virtual ~Mapping();
     virtual QString name() const;
