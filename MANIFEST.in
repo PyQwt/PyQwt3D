@@ -3,6 +3,11 @@
 # Package stuff
 include COPYING* MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
 
+# Documentation
+graft Doc/html
+prune Doc/html/htdoc
+recursive-exclude *cvsignore*
+
 # configure
 graft configure
 prune configure/Qwt3D
