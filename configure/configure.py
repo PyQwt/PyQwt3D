@@ -224,6 +224,10 @@ def parse_args():
               ' /sources/of/qwtplot3d statically into PyQwt3D'
               ' (required on Windows)'))
     parser.add_option(
+        '-D', '--extra-defines', default=[], action='append',
+        type='string', metavar='GL2PS_HAVE_ZLIB',
+        help='add an extra preprocessor definition')
+    parser.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
         help=('add an extra directory to search for headers'
@@ -235,6 +239,11 @@ def parse_args():
         help=('add an extra directory to search for libraries'
               ' (the linker must be able to find the QwtPlot3D library'
               ' if you did not specify the -Q option)'))
+    parser.add_option(
+        '-l', '--extra-libs', default=[], action='append',
+        type='string', metavar='z',
+        help=('add an extra library (to link the zlib library, you must'
+              ' specify "zlib" on Windows and "z" on POSIX and MacOS/X)'))
     parser.add_option(
         '-x', '--excluded-features', default=[], action='append',
         type='string', metavar='EXTRA_SENSORY_PERCEPTION',
@@ -258,17 +267,9 @@ def parse_args():
         type='string', metavar='EXTRA_CXXFLAG',
         help='add an extra C++ compiler flag')
     parser.add_option(
-        '--extra-defines', default=[], action='append',
-        type='string', metavar='EXTRA_DEFINE',
-        help='add an extra preprocessor definition')
-    parser.add_option(
         '--extra-lflags', default=[], action='append',
         type='string', metavar='EXTRA_LFLAG',
         help='add an extra linker flag')
-    parser.add_option(
-        '--extra-libs', default=[], action='append',
-        type='string', metavar='EXTRA_LIB',
-        help='add an extra library')
     
     options, args =  parser.parse_args()
     

@@ -13,6 +13,8 @@ options:
                         compile and link the QwtPlot3D source files in
                         /sources/of/qwtplot3d statically into PyQwt3D (required
                         on Windows)
+  -DGL2PS_HAVE_ZLIB, --extra-defines=GL2PS_HAVE_ZLIB
+                        add an extra preprocessor definition
   -I/usr/include/qwtplot3d, --extra-include-dirs=/usr/include/qwtplot3d
                         add an extra directory to search for headers (the
                         compiler must be able to find the QwtPlot3D headers if
@@ -21,6 +23,8 @@ options:
                         add an extra directory to search for libraries (the
                         linker must be able to find the QwtPlot3D library if you
                         did not specify the -Q option)
+  -lz, --extra-libs=z   add an extra library (to link the zlib library, you must
+                        specify "zlib" on Windows and "z" on POSIX and MacOS/X)
   -xEXTRA_SENSORY_PERCEPTION, --excluded-features=EXTRA_SENSORY_PERCEPTION
                         add a feature for SIP to exclude (normally one of the
                         features in sip/features.sip)
@@ -31,9 +35,5 @@ options:
                         add an extra C compiler flags
   --extra-cxxflags=EXTRA_CXXFLAG
                         add an extra C++ compiler flag
-  --extra-defines=EXTRA_DEFINE
-                        add an extra preprocessor definition
   --extra-lflags=EXTRA_LFLAG
                         add an extra linker flag
-  --extra-libs=EXTRA_LIB
-                        add an extra library

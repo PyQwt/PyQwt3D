@@ -1,7 +1,10 @@
 \documentclass{manual}
 
 % Links
-\newcommand{\QwtPlotDDD}{\ulink{QwtPlot3D}{http://qwtplot3d.sourceforge.net}}
+\newcommand{\QwtPlotDdd}{\ulink{QwtPlot3D}
+  {http://qwtplot3d.sourceforge.net}}
+\newcommand{\mailinglist}{\ulink{mailing list}
+  {mailto:pyqwt-users@lists.sourceforge.net}}
 
 % Source code
 \newcommand{\snapshot}{\ulink{snapshot}
@@ -24,8 +27,12 @@
   {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.13.tar.gz}}
 \newcommand{\PyQtCom}{\ulink{PyQt-commercial}
   {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
-\newcommand{\PyQwtDDDTarGz}{\ulink{PyQwt3D-0.1.tar.gz}
+\newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.tar.gz}
   {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.tar.gz?download}}
+\newcommand{\QwtPlotDddTgz}{\ulink{qwtplot3d-0.2.4-beta.tgz}
+  {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.4-beta.tgz?download}}
+\newcommand{\QwtPlotDddZip}{\ulink{qwtplot3d-0.2.4-beta.zip}
+  {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.4-beta.zip?download}}
 
 \newcommand{\PrerequisitesEnd}{
   To exploit the full power of the PyQwt3D, you should install at
@@ -56,7 +63,7 @@
 
 \title{PyQwt3D Manual}
 
-% boilerplate.tex?D
+% boilerplate.tex?
 \author{Gerard Vermeulen}
 
 \date{\today}
@@ -80,7 +87,7 @@
 \begin{abstract}
 
 \noindent
-PyQwt3D is a set of Python bindings for the \QwtPlotDDD{} library.
+PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library.
 
 \end{abstract}
 
@@ -88,15 +95,15 @@ PyQwt3D is a set of Python bindings for the \QwtPlotDDD{} library.
 
 \chapter{Introduction\label{introduction}}
 
-PyQwt3D is a set of Python bindings for the \QwtPlotDDD{} library.
+PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library.
 
 \chapter{Installation\label{installation}}
 
-\section{Build prerequisites\label{prerequisites}}
+\section{Installation prerequisites\label{prerequisites}}
 
 \Future{}
 
-Build prerequisites for \PyQwtDDDTarGz{} are:
+Build prerequisites for \PyQwtDddTarGz{} are:
 \begin{enumerate}
 \item
   \ulink{Python}{http://www.python.org}.\\
@@ -104,7 +111,7 @@ Build prerequisites for \PyQwtDDDTarGz{} are:
   PyQwt3D will also work with earlier versions of Python, if you install
   \optik{}-1.4.1 or later.
 \item
-  \QwtPlotDDD{}.\\
+  \QwtPlotDdd{}.\\
   Supported versions: QtPlot3D-0.2.4.
 \item
   \ulink{Qt}{http://www.trolltech.com}.\\
@@ -125,70 +132,138 @@ Build prerequisites for \PyQwtDDDTarGz{} are:
 \PrerequisitesEnd{}
   
 
-\section{Build and install\label{build}}
+\section{Installation\label{install}}
+
+\subsection{Install on Windows with MSVC\label{win-install}}
 
 \Future{}
 
+\begin{notice}[warning]
+  PyQwt3D only be tested on Windows with MSCV-6.0 and assumes that MSVC-7.x
+  requires the same workarounds. I rely on your feedback to fix eventual
+  installation problems, since I have no commercial license for Qt and PyQt.
+\end{notice}
+
+The installation procedure contains three steps:
 \begin{enumerate}
 \item
-  Unpack \PyQwtDDDTarGz{}
+  Unpack \PyQwtDddTarGz{} and \QwtPlotDddZip{}.
 \item
-  Configure PyQwt3D by running the following commands:
+  Do a quick start to test the installation by running the commands:
 \begin{verbatim}
 cd PyQwt3D-0.1
 cd configure
-python configure.py [options]
+python configure.py -Q C:\sources\of\qwtplot3
+nmake
+nmake install
 \end{verbatim}
-  This assumes that the correct Python interpreter is on your path.
-  The configure.py script takes many options.
-  The command
+  where the folder
+  \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
+  must contain the folders \file{3rdparty}, \file{include} and \file{src}.
+  You can also edit the \file{go.bat} to suit your setup.
+\item
+  Fine tune (optional) by running the commands:
+\begin{verbatim}
+python configure.py -Q C:\sources\of\qwtplot3d -l zlib -D GL2PS_HAVE_ZLIB
+nmake
+nmake install
+\end{verbatim}
+    to enable compression of PostScript and PDF files. Add
+\begin{verbatim}
+-L C:\folder\containing\zlib.lib
+\end{verbatim}
+    to the \file{configure.py} options, if the linker fails to find the zlib
+    library.
+\end{enumerate}
+
+Contact the \mailinglist{}, if you run into problems.
+
+\begin{notice}[note]
+  The configure.py script takes many options. The command
 \begin{verbatim}
 python configure.py -h
 \end{verbatim}
-displays a full list of the available options:
-\verbatiminput{configure.help}
-  \begin{notice}[note]
-    PyQwt3D requires compilation of QwtPlot3D and PyQwt3D with runtime type
-    information (RTTI).
-  \end{notice}
-  \begin{notice}[note]
-    PyQwt3D in combination MSVC and Windows requires:
-\begin{verbatim}
-python configure.py -Q C:\sources\of\qwtplot3d
-\end{verbatim}
-    The folder
-    \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
-    must contain the folders \file{3rdparty}, \file{include} and \file{src}.
-    Edit \file{configure/go.bat} to suit your setup.
-    Use:
-\begin{verbatim}
-python configure.py -Q C:\sources\of\qwtplot3d \
-    --extra-libs=zlib --extra-defines=GL2PS_HAVE_ZLIB
-\end{verbatim}
-    to enable compression of PostScript and PDF files.
+  displays a full list of the available options:
+  \verbatiminput{configure.help}
 \end{notice}
 
+
+\subsection{Installation on \POSIX{} and MacOS/X\label{posix-install}}
+
+\Future{}
+
+The installation procedure contains three steps:
+\begin{enumerate}
 \item
-  The next step is to build PyQwt3D using your platform's make command.
+  Unpack \PyQwtDddTarGz{} and \QwtPlotDddTgz{}.
+\item
+  Do a quick start to test the installation by running the commands:
 \begin{verbatim}
+cd PyQwt3D-0.1
+cd configure
+python configure.py -Q /sources/of/qwtplot3
 make
-\end{verbatim}
-  or
-\begin{verbatim}
-nmake
-\end{verbatim}
-  for MSVC.
-\item
-  The final step is to install PyQwt3D by running the following command.
-\begin{verbatim}
 make install
 \end{verbatim}
-  or
+  where the directory
+  \file{/sources/of/qwtplot3d} must contain the directories \file{3rdparty},
+  \file{include} and \file{src}.\\
+  The installation will fail if Qt has been configured without runtime type
+  information (RTTI).  In this case, run the commands:
 \begin{verbatim}
-nmake install
+cd PyQwt3D-0.1
+cd configure
+python configure.py -Q /sources/of/qwtplot3 --extra-cxxflags=-frtti
+make
+make install
 \end{verbatim}
-  for MSVC.
+  where \code{-frtti} enables RTTI for g++.  Check your compiler documention
+  for other C++ compilers.
+\item
+  Fine tune (optional)
+  \begin{itemize}
+    \item
+      to enable compression of PostScript and PDF files by running the
+      commands:
+\begin{verbatim}
+python configure.py -Q /sources/of/qwtplot3d -l z -D GL2PS_HAVE_ZLIB
+make
+make install
+\end{verbatim}
+      Add
+\begin{verbatim}
+-L /directory/with/libz.*
+\end{verbatim}
+      to the \file{configure.py} options, if the linker fails to find the zlib
+      library.
+    \item
+      to use a the QwtPlot3D library on your system by running the commands:
+\begin{verbatim}
+rm -rf Qwt3D
+python configure.py -I /usr/include/qwtplot3d
+make
+make install
+\end{verbatim}
+    Add
+\begin{verbatim}
+-L /directory/with/libqwtplot3d.*
+\end{verbatim}
+    to the \file{configure.py} options, if the linker fails to find the
+    QwtPlot3D library.
+  \end{itemize}
 \end{enumerate}
+
+Contact the \mailinglist{}, if you run into problems.
+
+\begin{notice}[note]
+  The configure.py script takes many options. The command
+\begin{verbatim}
+python configure.py -h
+\end{verbatim}
+  displays a full list of the available options:
+  \verbatiminput{configure.help}
+\end{notice}
+
 
 \chapter{PyQwt3D Module Reference \label{reference}}
 
