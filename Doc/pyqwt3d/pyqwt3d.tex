@@ -21,8 +21,8 @@
   {http://prdownloads.sourceforge.net/numpy/Numeric-23.7.tar.gz?download}}
 \newcommand{\numarray}{\ulink{numarray}
   {http://www.stsci.edu/resources/software_hardware/numarray}}
-\newcommand{\numarrayTarGz}{\ulink{numarray-1.1.1.tar.gz}
-  {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.tar.gz?download}}
+\newcommand{\numarrayTarGz}{\ulink{numarray-1.2.2.tar.gz}
+  {http://prdownloads.sourceforge.net/numpy/numarray-1.2.2.tar.gz?download}}
 \newcommand{\optik}{\ulink{optik}
   {http://optik.sourceforge.net}}
 \newcommand{\NewSip}{\ulink{sip-4.2.tar.gz}
@@ -41,12 +41,18 @@
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.4-beta.zip?download}}
 
 % Installers for MS-Windows
+\newcommand{\PythonMsi}{\ulink{python-2.4.msi}
+  {http://python.org/ftp/python/2.4/python-2.4.msi}}
+\newcommand{\NumericNewExe}{\ulink{Numeric-23.7.win32-py2.4.exe}
+  {http://prdownloads.sourceforge.net/numpy/Numeric-23.7.win32-py2.4.exe?download}}
+\newcommand{\numarrayNewExe}{\ulink{numarray-1.2.2.win32-py2.4.exe}
+  {http://prdownloads.sourceforge.net/numpy/numarray-1.2.2.win32-py2.4.exe?download}}
 \newcommand{\PythonExe}{\ulink{Python-2.3.5.exe}
   {http://www.python.org/ftp/python/2.3.5/Python-2.3.5.exe}}
 \newcommand{\NumericExe}{\ulink{Numeric-23.7.win32-py2.3.exe}
   {http://prdownloads.sourceforge.net/numpy/Numeric-23.7.win32-py2.3.exe?download}}
-\newcommand{\numarrayExe}{\ulink{numarray-1.1.1.win32-py2.3.exe}
-  {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.win32-py2.3.exe?download}}
+\newcommand{\numarrayExe}{\ulink{numarray-1.2.2.win32-py2.3.exe}
+  {http://prdownloads.sourceforge.net/numpy/numarray-1.2.2.win32-py2.3.exe?download}}
 \newcommand{\QtNcExe}{\ulink{QtWin230-NonCommercial.exe}
   {ftp://ftp.trolltech.com/qt/non-commercial/QtWin230-NonCommercial.exe}}
 \newcommand{\PyQtExe}{\ulink{PyQt-win-nc-msvc-3.13.exe}
@@ -142,6 +148,11 @@ the Qt framework with widgets to visualize 3-dimensional data.
 
 \Future{}
 
+\begin{notice}[note]
+  Go immediately to \ref{win-nc-install}, if you want to install PyQwt3D for
+  \QtNcExe{}. 
+\end{notice}
+
 Installation prerequisites for \PyQwtDddTarGz{} are:
 \begin{enumerate}
 \item
@@ -185,90 +196,11 @@ Installation prerequisites for \PyQwtDddTarGz{} are:
 
 \Future{}
 
-\subsection{Installation on Windows with MSVC\label{win-install}}
-
-\Future{}
-
-\begin{notice}[note]
-  I rely on your feedback to support PyQwt3D on Windows, since I have no
-  commercial license for Qt and PyQt.
-\end{notice}
-
-
-The installation procedure contains three steps:
-\begin{enumerate}
-\item
-  Unpack \PyQwtDddTarGz{} or \QwtPlotDddZip{}.
-\item
-  Do a quick start to test the installation by running the commands:
-\begin{verbatim}
-cd PyQwt3D-0.1
-cd configure
-python configure.py -Q C:\sources\of\qwtplot3d
-nmake
-nmake install
-\end{verbatim}
-  where the folder
-  \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
-  must contain the folders \file{3rdparty}, \file{include} and \file{src}.
-  You can also edit the file \file{go.bat} to suit your setup.
-\item
-  Fine tune (optional) by running the commands:
-\begin{verbatim}
-python configure.py -Q C:\sources\of\qwtplot3d -l zlib -D GL2PS_HAVE_ZLIB
-nmake
-nmake install
-\end{verbatim}
-    to enable compression of PostScript and PDF files. Add
-\begin{verbatim}
--L C:\folder\containing\zlib.lib
-\end{verbatim}
-    to the \file{configure.py} options, if the linker fails to find the zlib
-    library.
-\end{enumerate}
-
-\begin{notice}[note]
-  The files \file{configure\textbackslash{}go.bat} for Qt-3.x and
-  \file{configure\textbackslash{}nc-go.bat} for \QtNcExe{} are examples of
-  how to automatize the invokations of \strong{configure.py}, \strong{nmake},
-  and \strong{nmake install}.  Adapt and use one of those files.
-\end{notice}
-
-\begin{notice}[note]
-  If you run into problems, send a log to the \mailinglist{}.
-
-  Try
-\begin{verbatim}
-go.bat >LOG.txt
-\end{verbatim}
-  or
-\begin{verbatim}
-nc-go.bat >LOG.txt
-\end{verbatim}
-  to make a log.
-\end{notice}
-
-\begin{notice}[note]
-  The configure.py script takes many options. The command
-\begin{verbatim}
-python configure.py -h
-\end{verbatim}
-  displays a full list of the available options:
-  \verbatiminput{configure.help}
-\end{notice}
-
-\begin{notice}[note]
-  Since PyQwt3D wraps some classes and functions that are not exported from
-  a QwtPlot3D dynamic load library, you have to compile and link the QwtPlot3D
-  sources into PyQwt3D's extension module.
-\end{notice}
-
-
 \subsection{Installation on \POSIX{} and MacOS/X\label{posix-install}}
 
 \Future{}
 
-The installation procedure contains three steps:
+The installation procedure consists of three steps:
 \begin{enumerate}
 \item
   Unpack \PyQwtDddTarGz{} and \QwtPlotDddTgz{}.
@@ -365,6 +297,121 @@ python configure.py -h
 \end{notice}
 
 
+\subsection{Installation on Windows with MSVC\label{win-install}}
+
+\Future{}
+
+\begin{notice}[note]
+  I rely on your feedback to support PyQwt3D on Windows, since I have no
+  commercial license for Qt and PyQt.
+\end{notice}
+
+The installation procedure consists of three steps:
+\begin{enumerate}
+\item
+  Unpack \PyQwtDddTarGz{} or \QwtPlotDddZip{}.
+\item
+  Do a quick start to test the installation by running the commands:
+\begin{verbatim}
+cd PyQwt3D-0.1
+cd configure
+python configure.py -Q C:\sources\of\qwtplot3d
+nmake
+nmake install
+\end{verbatim}
+  where the folder
+  \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
+  must contain the folders \file{3rdparty}, \file{include} and \file{src}.
+  You can also edit the file \file{go.bat} to suit your setup.
+\item
+  Fine tune (optional) by running the commands:
+\begin{verbatim}
+python configure.py -Q C:\sources\of\qwtplot3d -l zlib -D GL2PS_HAVE_ZLIB
+nmake
+nmake install
+\end{verbatim}
+    to enable compression of PostScript and PDF files. Add
+\begin{verbatim}
+-L C:\folder\containing\zlib.lib
+\end{verbatim}
+    to the \file{configure.py} options, if the linker fails to find the zlib
+    library.
+\end{enumerate}
+
+\begin{notice}[note]
+  The files \file{configure\textbackslash{}go.bat} for Qt-3.x and
+  \file{configure\textbackslash{}nc-go.bat} for \QtNcExe{} are examples of
+  how to automatize the invokations of \strong{configure.py}, \strong{nmake},
+  and \strong{nmake install}.  Adapt and use one of those files.
+\end{notice}
+
+\begin{notice}[note]
+  If you run into problems, send a log to the \mailinglist{}.
+
+  Try
+\begin{verbatim}
+go.bat >LOG.txt
+\end{verbatim}
+  to make a log.
+\end{notice}
+
+\begin{notice}[note]
+  The configure.py script takes many options. The command
+\begin{verbatim}
+python configure.py -h
+\end{verbatim}
+  displays a full list of the available options:
+  \verbatiminput{configure.help}
+\end{notice}
+
+\begin{notice}[note]
+  Since PyQwt3D wraps some classes and functions that are not exported from
+  a QwtPlot3D dynamic load library, you have to compile and link the QwtPlot3D
+  sources into PyQwt3D's extension module.
+\end{notice}
+
+
+\subsection{Installation for \QtNcExe{}\label{win-nc-install}}
+
+\Future{}
+
+First, you have to install Python, Numeric, Qt-Non-Commercial and
+PyQt-Non-Commercial by executing the following installation programs:
+\begin{enumerate}
+  \item
+    \QtNcExe{}
+  \item
+    \PythonExe{}
+  \item
+    \PyQtExe{} and make sure that you install the development tools.
+  \item
+    \NumericExe{}
+\end{enumerate}
+
+The installation procedure consists of two steps:
+\begin{enumerate}
+\item
+  Unpack \PyQwtDddTarGz{} or \QwtPlotDddZip{}.
+\item
+  Do a quick start to test the installation by running the commands:
+\begin{verbatim}
+cd PyQwt3D-0.1
+cd configure
+nc-go.bat
+\end{verbatim}
+\end{enumerate}
+
+\begin{notice}[note]
+  If you run into problems, send a log to the \mailinglist{}.
+
+  Try
+\begin{verbatim}
+nc-go.bat >LOG.txt
+\end{verbatim}
+  to make a log.
+\end{notice}
+
+
 \chapter{PyQwt3D Module Reference \label{reference}}
 
 \Future{}
@@ -389,77 +436,6 @@ They are not yet available in Python (as far as I know, sip wraps protected
 member function, but not protected attributes).
 I may try to implement protected attributes on demand.
 
-\section{Wrappers for \ctype{std::vector<T>} \label{wrappers}}
-
-\Future{}
-
-PyQwt3D has a partial interface to the following C++ std::vector templates:
-\begin{enumerate}
-\item
-  \class{AxisVector} for \ctype{std::vector<Axis>}
-\item
-  \class{Cell} for \ctype{std::vector<unsigned>}
-\item
-  \class{CellField} for \ctype{std::vector<Cell>}
-\item
-  \class{ColorVector} for \ctype{std::vector<RGBA>}
-\item
-  \class{DoubleVector} for \ctype{std::vector<double>}
-\item
-  \class{FreeVectorField} for \ctype{std::vector<FreeVectorField>}
-\item
-  \class{TripleField} for \ctype{std::vector<Triple>}
-\end{enumerate}
-
-The interface implements four constructors for each template instantianation --
-taking Cell as example:
-\begin{enumerate}
-\item
-  \code{Cell()}
-\item
-  \code{Cell(size)}
-\item
-  \code{Cell(size, item)}
-\item
-  \code{Cell(otherCell)}
-\end{enumerate}
-
-and 13 member functions -- taking Cell as example:
-\begin{enumerate}
-\item
-  \code{result = cell.capacity()}
-\item
-  \code{cell.clear()}
-\item
-  \code{result = cell.empty()}
-\item
-  \code{result = cell.back()}
-\item
-  \code{result = cell.front()}
-\item
-  \code{result = cell.max_size()}
-\item
-  \code{cell.pop_back()}
-\item
-  \code{cell.push_back(item)}
-\item
-  \code{cell.reserve(size)}
-\item
-  \code{cell.reserve(size, item = 0)}
-\item
-  \code{cell.resize(size, item = 0)}
-\item
-  \code{result = cell.size()}
-\item
-  \code{cell.swap(otherCell)}
-\end{enumerate}
-
-Iterators are not yet implemented. However, the implementation of the
-Python slots \function{__getitem__}, \function{__len__} and
-\function{__setitem__} let you use those classes almost as a sequence.
-For instance:
-
-\verbatiminput{StdVectorExample.txt}
 
 \section{Class reference \label{classes}}
 
@@ -774,6 +750,78 @@ wraps \ctype{std::vector<Triple>}. See \ref{wrappers} for details.
 \begin{classdesc}{VertexEnrichment}{*args}
 \emph{is fully implemented}.
 \end{classdesc}
+
+\section{Wrappers for \ctype{std::vector<T>} \label{wrappers}}
+
+\Future{}
+
+PyQwt3D has a partial interface to the following C++ std::vector templates:
+\begin{enumerate}
+\item
+  \class{AxisVector} for \ctype{std::vector<Axis>}
+\item
+  \class{Cell} for \ctype{std::vector<unsigned>}
+\item
+  \class{CellField} for \ctype{std::vector<Cell>}
+\item
+  \class{ColorVector} for \ctype{std::vector<RGBA>}
+\item
+  \class{DoubleVector} for \ctype{std::vector<double>}
+\item
+  \class{FreeVectorField} for \ctype{std::vector<FreeVectorField>}
+\item
+  \class{TripleField} for \ctype{std::vector<Triple>}
+\end{enumerate}
+
+The interface implements four constructors for each template instantianation --
+taking Cell as example:
+\begin{enumerate}
+\item
+  \code{Cell()}
+\item
+  \code{Cell(size)}
+\item
+  \code{Cell(size, item)}
+\item
+  \code{Cell(otherCell)}
+\end{enumerate}
+
+and 13 member functions -- taking Cell as example:
+\begin{enumerate}
+\item
+  \code{result = cell.capacity()}
+\item
+  \code{cell.clear()}
+\item
+  \code{result = cell.empty()}
+\item
+  \code{result = cell.back()}
+\item
+  \code{result = cell.front()}
+\item
+  \code{result = cell.max_size()}
+\item
+  \code{cell.pop_back()}
+\item
+  \code{cell.push_back(item)}
+\item
+  \code{cell.reserve(size)}
+\item
+  \code{cell.reserve(size, item = 0)}
+\item
+  \code{cell.resize(size, item = 0)}
+\item
+  \code{result = cell.size()}
+\item
+  \code{cell.swap(otherCell)}
+\end{enumerate}
+
+Iterators are not yet implemented. However, the implementation of the
+Python slots \function{__getitem__}, \function{__len__} and
+\function{__setitem__} let you use those classes almost as a sequence.
+For instance:
+
+\verbatiminput{StdVectorExample.txt}
 
 \section{Function reference \label{functions}}
 
