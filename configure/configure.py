@@ -82,6 +82,16 @@ def lazy_copy_sip_output_file(source, target):
 # lazy_copy_sip_output_file()
 
 
+def copy_files(sources, directory):
+    """Copy a list of files to a directory
+    """ 
+
+    for source in sources:
+        shutil.copy2(source, os.path.join(directory, os.path.basename(source)))
+
+# copy_files()
+
+
 def check_numarray(configuration, options):
     """See if the numarray extension has been installed.
     """
@@ -201,6 +211,45 @@ def check_os(configuration, options):
     return options
 
 # check_os()
+
+
+def fix_build_file(name, extra_sources, extra_headers, extra_moc_headers):
+    """Extend the targets of a SIP build file with extra files 
+    """
+    
+    keys = ('target', 'sources', 'headers', 'moc_headers')
+    sbf = {}
+    for key in keys:
+        sbf[key] = []
+
+    # Parse,
+    nr = 0
+    for line in open(name, 'r'):
+        nr += 1
+        if line[0] != '#':
+            eq = line.find('=')
+            if eq == -1:
+                raise SystemExit, (
+                    '"%s\" line %d: Line must be in the form '
+                    '"key = value value...."' % (name, nr)
+                    )
+        key = line[:eq].strip()
+        value = line[eq+1:].strip()
+        if key in keys:
+            sbf[key].append(value)
+
+    # extend,
+    sbf['sources'].extend(extra_sources)
+    sbf['headers'].extend(extra_headers)
+    sbf['moc_headers'].extend(extra_moc_headers)
+
+    # and write.
+    output = open(name, 'w')
+    for key in keys:
+        if sbf[key]:
+            print >> output, '%s = %s' % (key, ' '.join(sbf[key]))
+
+# fix_build_file()
 
 
 def parse_args():
@@ -434,35 +483,17 @@ def main():
                 lazy_copies += 1
     print "%s file(s) lazily copied." % lazy_copies
 
+    copy_files(extra_sources, build_dir)
+    copy_files(extra_headers, build_dir)
+    copy_files(extra_moc_headers, build_dir)
+
     # fix the sip-build-file and copy it to the build directory 
-    lines = open(build_file).readlines()
-    output = open(build_file, "w")
-    for line in lines:
-        if line.startswith('sources'):
-            chunks = [line.rstrip()]
-            for source in extra_sources:
-                target = os.path.basename(source)
-                chunks.append(target)
-                shutil.copy2(source, os.path.join(build_dir, target))
-            line = ' '.join(chunks)
-        elif line.startswith('headers'):
-            chunks = [line.rstrip()]
-            for source in extra_headers:
-                target = os.path.basename(source)
-                chunks.append(target)
-                shutil.copy2(source, os.path.join(build_dir, target))
-            line = ' '.join(chunks)
-        elif line.startswith('moc_headers'):
-            chunks = [line.rstrip()]
-            for source in extra_moc_headers:
-                target = os.path.basename(source)
-                chunks.append(target)
-                shutil.copy2(source, os.path.join(build_dir, target))
-            line = ' '.join(chunks)
-        print >> output, line
-    output.close()
-    shutil.copy2(
-        build_file, os.path.join(build_dir, os.path.basename(build_file)))
+    fix_build_file(build_file,
+                   [os.path.basename(f) for f in extra_sources],
+                   [os.path.basename(f) for f in extra_headers],
+                   [os.path.basename(f) for f in extra_moc_headers])
+    shutil.copy2(build_file,
+                 os.path.join(build_dir, os.path.basename(build_file)))
 
     # fix #include statement
     if options.qwtplot3d_sources:
