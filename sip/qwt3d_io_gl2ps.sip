@@ -1,7 +1,7 @@
 // The SIP interface definition for:
 // - class VectorWriter
 //
-// Copyright (C) 2004 Gerard Vermeulen
+// Copyright (C) 2004-2005 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -34,7 +34,7 @@
 // -- LICENSE --
 
 
-%If (SIP0402)
+%If (SIP_4_2 -)
 class VectorWriter: IO::Functor
 {
 
@@ -54,33 +54,32 @@ public:
         OFF,
         AUTO,
     };
-  enum SORTMODE {
-      NOSORT,
-      SIMPLESORT,
-      BSPSORT,
-  };
+    enum SORTMODE {
+        NOSORT,
+        SIMPLESORT,
+        BSPSORT,
+    };
 
-  VectorWriter();
+    VectorWriter();
+    
+    void setLandscape(LANDSCAPEMODE);
+    LANDSCAPEMODE landscape() const;
 
-  void setLandscape(LANDSCAPEMODE);
-  LANDSCAPEMODE landscape() const;
+    void setTextMode(TEXTMODE, QString = QString::null);
+    TEXTMODE textMode() const;
 
-  void setTextMode(TEXTMODE, QString = QString::null);
-  TEXTMODE textMode() const;
+    void setSortMode(SORTMODE);
+    SORTMODE sortMode() const;
 
-  void setSortMode(SORTMODE);
-  SORTMODE sortMode() const;
+    void setCompressed(bool);
+    bool compressed() const;
 
-  void setCompressed(bool);
-  bool compressed() const;
-
-  bool setFormat(const QString &);
+    bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // SIP0402
+%End // (SIP_4_2 -)
 
-
-%If (SIP0401)
+%If (SIP_4_1 - SIP_4_2)
 class VectorWriter: IO::Functor
 {
 
@@ -100,33 +99,33 @@ public:
         OFF,
         AUTO,
     };
-  enum SORTMODE {
-      NOSORT,
-      SIMPLESORT,
-      BSPSORT,
-  };
+    enum SORTMODE {
+        NOSORT,
+        SIMPLESORT,
+        BSPSORT,
+    };
+    
+    VectorWriter();
 
-  VectorWriter();
+    void setLandscape(LANDSCAPEMODE);
+    LANDSCAPEMODE landscape() const;
 
-  void setLandscape(LANDSCAPEMODE);
-  LANDSCAPEMODE landscape() const;
+    void setTextMode(TEXTMODE, QString = QString::null);
+    TEXTMODE textMode() const;
+    
+    void setSortMode(SORTMODE);
+    SORTMODE sortMode() const;
 
-  void setTextMode(TEXTMODE, QString = QString::null);
-  TEXTMODE textMode() const;
+    void setCompressed(bool);
+    bool compressed() const;
 
-  void setSortMode(SORTMODE);
-  SORTMODE sortMode() const;
-
-  void setCompressed(bool);
-  bool compressed() const;
-
-  bool setFormat(const QString &);
+    bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // SIP0401
+%End // (SIP_4_1 - SIP_4_2)
 
 
-%If (SIP0400)
+%If (SIP_4_0 - SIP_4_1)
 class VectorWriter //: IO::Functor
 {
 
@@ -146,30 +145,30 @@ public:
         OFF,
         AUTO,
     };
-  enum SORTMODE {
-      NOSORT,
-      SIMPLESORT,
-      BSPSORT,
-  };
+    enum SORTMODE {
+        NOSORT,
+        SIMPLESORT,
+        BSPSORT,
+    };
 
-  VectorWriter();
+    VectorWriter();
 
-  void setLandscape(LANDSCAPEMODE);
-  LANDSCAPEMODE landscape() const;
+    void setLandscape(LANDSCAPEMODE);
+    LANDSCAPEMODE landscape() const;
 
-  void setTextMode(TEXTMODE, QString = QString::null);
-  TEXTMODE textMode() const;
+    void setTextMode(TEXTMODE, QString = QString::null);
+    TEXTMODE textMode() const;
 
-  void setSortMode(SORTMODE);
-  SORTMODE sortMode() const;
+    void setSortMode(SORTMODE);
+    SORTMODE sortMode() const;
 
-  void setCompressed(bool);
-  bool compressed() const;
+    void setCompressed(bool);
+    bool compressed() const;
 
-  bool setFormat(const QString &);
+    bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // SIP0400
+%End // (SIP_4_0 - SIP_4_1)
 
 
 %ModuleHeaderCode
