@@ -6,27 +6,29 @@ include COPYING* MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
 # Documentation
 graft Doc
 prune Doc/html/htdoc
-recursive-exclude Doc *cvsignore*
+recursive-exclude Doc *cvsignore* *~
 
 # configure
 graft configure
 prune configure/Qwt3D
 prune configure/tmp-Qwt3D
-recursive-exclude configure Makefile *.pyc *cvsignore*
+recursive-exclude configure Makefile *.pyc *cvsignore* *~
 
 # examples
 graft examples
 prune examples/Qwt3D
-recursive-exclude examples *.pyc *cvsignore*
+recursive-exclude examples *.pyc *cvsignore* *~
 
 # Numerical Python interface
 graft numpy
+recursive-exclude numpy *cvsignore* *~
 
 # The internal version of QwtPlot3D patched for Qt-2.3.
 graft qwtplot3d-0.2.4-beta-patched
 
 # sip files
 graft sip
+recursive-exclude sip *cvsignore* *~
 
 # Local Variables: ***
 # mode: sh ***
