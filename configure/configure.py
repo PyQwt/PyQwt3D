@@ -274,6 +274,12 @@ def parse_args():
               ' /sources/of/qwtplot3d statically into PyQwt3D'
               ' (required on Windows)'))
     parser.add_option(
+        '-Z', '--zlib-sources', default='', action='store',
+        type='string', metavar='/sources/of/zlib',
+        help=('compile and link the QwtPlot3D source files in'
+              ' /sources/of/zlib statically into PyQwt3D'
+              ' (the -Z option is ignored in case of no -Q option)'))
+    parser.add_option(
         '-D', '--extra-defines', default=[], action='append',
         type='string', metavar='GL2PS_HAVE_ZLIB',
         help='add an extra preprocessor definition')
@@ -299,7 +305,8 @@ def parse_args():
         '-l', '--extra-libs', default=[], action='append',
         type='string', metavar='z',
         help=('add an extra library (to link the zlib library, you must'
-              ' specify "zlib" on Windows and "z" on POSIX and MacOS/X)'))
+              ' specify "zlib" or "zlib1" on Windows'
+              ' and "z" on POSIX and MacOS/X)'))
     parser.add_option(
         '-x', '--excluded-features', default=[], action='append',
         type='string', metavar='EXTRA_SENSORY_PERCEPTION',
@@ -333,18 +340,23 @@ def parse_args():
     
     options, args =  parser.parse_args()
     
-    # 'normalize' some options
+    # tweak some of the options to facilitate later processing
     if options.jobs < 1:
         options.jobs = ''
     else:
         options.jobs = '-j %s' % options.jobs
+        
     options.excluded_features = [
         ('-x %s' % f) for f in options.excluded_features
         ]
+    
     if options.tracing:
         options.tracing = '-r'
     else:
         options.tracing = ''
+        
+    if options.qwtplot3d_sources == '':
+        options.zlib_sources = ''
 
     return options, args
 
@@ -378,7 +390,7 @@ def main():
     options = check_numarray(configuration, options)
     options = check_numeric(configuration, options)
 
-    # do we link against a QwtPlot3D library?
+    # do we compile and link the sources of QwtPlot3D into PyQwt3D?
     if options.qwtplot3d_sources:
         # yes, zap all 'qwtplot3d'
         while options.extra_libs.count('qwtplot3d'):
@@ -386,6 +398,10 @@ def main():
     elif 'qwtplot3d' not in options.extra_libs:
         # no, add 'qwtplot3d' if needed
         options.extra_libs.append('qwtplot3d')
+
+    # do we also compile and link the sources of zlib into PyQwt3D?
+    if options.zlib_sources:
+        options.extra_defines.append('GL2PS_HAVE_ZLIB')
 
     print "Extended options:"
     pprint.pprint(options.__dict__)
@@ -406,6 +422,15 @@ def main():
             text = open(header).read()
             if re.compile(r'^\s*Q_OBJECT', re.M).search(text):
                 extra_moc_headers.append(header)
+
+    # do we compile and link the sources of zlib statically into PyQwt3D?
+    if options.zlib_sources:
+        examples = ('example.c', 'minigzip.c')
+        for source in glob.glob(os.path.join(options.zlib_sources, '*.c')):
+            if os.path.basename(source) not in examples:
+                extra_sources.append(source)
+        extra_headers += glob.glob(os.path.join(
+            options.zlib_sources, '*.h'))
 
     # add the interface to the numerical Python extensions
     extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
