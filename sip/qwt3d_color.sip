@@ -53,15 +53,7 @@ public:
 //    sipRes = new RGBA(sipCpp -> operator()(a0));
 //%End
 
-%If (NEWSIP)
     virtual ColorVector & createVector(ColorVector &);
-%End // NEWSIP
-
-%If (OLDSIP)
-    // g++: `sipResErr' undeclared (first use this function)
-    /*virtual*/ ColorVector & createVector(ColorVector &);
-%End // OLDSIP
-    
     void destroy() const;
 
 protected:

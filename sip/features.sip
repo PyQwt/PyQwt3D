@@ -33,12 +33,10 @@
 // -- LICENSE --
 
 
-// Identify sip
+// Identify SIP
 %Feature SIP0400 // SIP-4.0.x
-%Feature SIP0401 // SIP-4.1.x or SIP-3.11.x
-
-%Feature NEWSIP  // SIP-4.x.x
-%Feature OLDSIP  // SIP-3.x.x
+%Feature SIP0401 // SIP-4.1.x
+%Feature SIP0402 // SIP-4.2.x
 
 // Identify compiler
 %Feature IS_MSVC // is MSVC-6.0

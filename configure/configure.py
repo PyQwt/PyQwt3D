@@ -162,20 +162,30 @@ def check_numeric(configuration, options):
 def check_sip(configuration, options):
     """Adapt to SIP differences by means of mutually excluding features
     """
-    print "Found SIP-%s.\n" % configuration.sip_version_str
+    version = configuration.sip_version
+    version_str = configuration.sip_version_str
+    required = 'PyQwt3D requires SIP-4.2.x, -SIP-4.1.x, or SIP-4.0.x.'
+    
+    print "Found SIP-%s.\n" % version_str
 
-    sip_version = configuration.sip_version
-    if sip_version & 0xffff00 == 0x040000: 
-        options.excluded_features.extend(["-x SIP0401", "-x OLDSIP"])
-    elif sip_version & 0xffff00 == 0x040100:
-        options.excluded_features.extend(["-x SIP0400", "-x OLDSIP"])
-    elif sip_version & 0xffff00 == 0x030b00:
-        # SIP-3.11.x works like SIP-4.1.x (except for bugs)
-        options.excluded_features.extend(["-x SIP0400", "-x NEWSIP"])
+    if version & 0xffff00 == 0x040100:
+        if version_str.startswith('snapshot-'):
+            options.excluded_features.extend([
+                "-x SIP0401",
+                "-x SIP0400",
+                ])
+        else:
+            options.excluded_features.extend([
+                "-x SIP0402",
+                "-x SIP0400",
+                ])
+    elif sip_version & 0xffff00 == 0x040000: 
+        options.excluded_features.extend([
+            "-x SIP0402",
+            "-x SIP0401",
+            ])
     else:
-        raise SystemExit, (
-            "PyQwt3D requires SIP-4.1.x, -4.0.x, or -3.11.x.\n"
-            )
+        raise SystemExit, required
 
     return options
 
@@ -539,7 +549,7 @@ def main():
         os.path.join(os.pardir, "sip", "*.sip"))], sip_dir])
 
     # module makefile
-    makefile = pyqtconfig.QtModuleMakefile(
+    makefile = sipconfig.ModuleMakefile(
         configuration = configuration,
         build_file = os.path.basename(build_file),
         dir = build_dir,

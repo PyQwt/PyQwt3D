@@ -89,20 +89,10 @@ public:
     PyFunction(SurfacePlot &);
     PyFunction(SurfacePlot *);
 
-%If (NEWSIP)
     virtual double operator()(double, double);
 %MethodCode
     sipRes = sipCpp->__call__(a0, a1);
 %End // %MethodCode
-%End // NEWSIP
-
-%If (OLDSIP)
-    // SIP-3.11.1: Operators cannot be virtual
-    /*virtual*/ double operator()(double, double);
-%MethodCode
-    sipRes = sipCpp->__call__(a0, a1);
-%End // %MethodCode
-%End // OLDSIP
 
 }; // class PyFunction
 
