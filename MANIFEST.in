@@ -4,8 +4,9 @@
 include COPYING* MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
 
 # Documentation
-graft Doc/html/pyqwt3d
-recursive-exclude *cvsignore*
+graft Doc
+prune Doc/html/htdoc
+recursive-exclude Doc *cvsignore*
 
 # configure
 graft configure
