@@ -34,6 +34,22 @@
 \newcommand{\QwtPlotDddZip}{\ulink{qwtplot3d-0.2.4-beta.zip}
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.4-beta.zip?download}}
 
+% Installers for MS-Windows
+\newcommand{\PythonExe}{\ulink{Python-2.3.4.exe}
+  {http://www.python.org/ftp/python/2.3.4/Python-2.3.4.exe}}
+\newcommand{\NumericExe}{\ulink{Numeric-23.6.win32-py2.3.exe}
+  {http://prdownloads.sourceforge.net/numpy/Numeric-23.6.win32-py2.3.exe?download}}
+\newcommand{\numarrayExe}{\ulink{numarray-1.1.1.win32-py2.3.exe}
+  {http://prdownloads.sourceforge.net/numpy/numarray-1.1.1.win32-py2.3.exe?download}}
+\newcommand{\QtNcExe}{\ulink{QtWin230-NonCommercial.exe}
+  {ftp://ftp.trolltech.com/qt/non-commercial/QtWin230-NonCommercial.exe}}
+\newcommand{\PyQtExe}{\ulink{PyQt-win-nc-msvc-3.13.exe}
+  {http://pyqwt.sourceforge.net/support/PyQt-win-nc-msvc-3.13.exe}}
+\newcommand{\PyQtEdu}{\ulink{PyQt-win-edu-msvc-3.13.exe}
+  {http://pyqwt.sourceforge.net/support/PyQt-win-edu-msvc-3.13.exe}}
+\newcommand{\PyQwtExe}{\ulink{PyQwt\_Qt230-4.1.win32-py2.3.exe}
+  {http://prdownloads.sourceforge.net/pyqwt/PyQwt\_Qt230-4.1.win32-py2.3.exe?download}}
+
 \newcommand{\PrerequisitesEnd}{
   To exploit the full power of the PyQwt3D, you should install at
   least one the Numerical Python extensions:
@@ -140,10 +156,14 @@ Build prerequisites for \PyQwtDddTarGz{} are:
 \Future{}
 
 \begin{notice}[warning]
-  PyQwt3D only be tested on Windows with MSCV-6.0 and assumes that MSVC-7.x
-  requires the same workarounds. I rely on your feedback to fix eventual
-  installation problems, since I have no commercial license for Qt and PyQt.
+  Loading the PyQwt3D module -- compiled with MSCV-6.0 for Windows -- renders
+  the Python interpreter unstable (PyQwt3D runs fine on MacOS/X and Linux).
+  We are debugging with \QtNcExe{} and a backport of \QwtPlotDdd{} to Qt-2.3.
+% (and assumes that MSVC-7.x
+%  requires the same workarounds). I rely on your feedback to fix eventual
+%  installation problems, since I have no commercial license for Qt and PyQt.
 \end{notice}
+
 
 The installation procedure contains three steps:
 \begin{enumerate}
