@@ -33,13 +33,12 @@
 
 import compileall
 import glob
+import optparse
 import os
 import pprint
 import re
 import shutil
 import sys
-
-from optparse import OptionParser
 
 import sipconfig
 import pyqtconfig
@@ -311,83 +310,95 @@ def parse_args():
         '\n\nto search the current *and* parent directories for headers.'
         ) % (os.curdir, os.pardir)
 
-    parser = OptionParser(usage=usage)
-    
-    parser.add_option(
+    parser = optparse.OptionParser(usage=usage)
+
+    common_options = optparse.OptionGroup(parser, 'Common options')
+    common_options.add_option(
         '-Q', '--qwtplot3d-sources', default='', action='store',
         type='string', metavar='/sources/of/qwtplot3d',
         help=('compile and link the QwtPlot3D source files in'
               ' /sources/of/qwtplot3d statically into PyQwt3D'
               ' (required on Windows)'))
-    parser.add_option(
+    common_options.add_option(
         '-Z', '--zlib-sources', default='', action='store',
         type='string', metavar='/sources/of/zlib',
         help=('compile and link the QwtPlot3D source files in'
               ' /sources/of/zlib statically into PyQwt3D'
-              ' (the -Z option is ignored in case of no -Q option)'))
-    parser.add_option(
+              ' (the -Z option is ignored without the -Q option)'))
+    common_options.add_option(
         '-D', '--extra-defines', default=[], action='append',
         type='string', metavar='GL2PS_HAVE_ZLIB',
-        help='add an extra preprocessor definition')
-    parser.add_option(
+        help=('add an extra preprocessor definition'
+              ' (to enable compressed EPS/PDF/PS output with the -Q option)'))
+    common_options.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
         help=('add an extra directory to search for headers'
               ' (the compiler must be able to find the QwtPlot3D headers'
-              ' if you did not specify the -Q option)'))
-    parser.add_option(
+              ' without the -Q option)'))
+    common_options.add_option(
         '-L', '--extra-lib-dirs', default=[], action='append',
         type='string', metavar='/usr/lib/qt3/lib',
         help=('add an extra directory to search for libraries'
               ' (the linker must be able to find the QwtPlot3D library'
-              ' if you did not specify the -Q option)'))
-    parser.add_option(
+              ' without the -Q option)'))
+    common_options.add_option(
         '-j', '--jobs', default=0, action='store',
         type='int', metavar='N',
         help=('concatenate the SIP generated code into N files'
-              ' [default 1 per class] (speeds up compilation and allows to'
-              ' take advantage of multiprocessor systems)'))
-    parser.add_option(
+              ' [default 1 per class] (to speed up make by running '
+              ' simultaneous jobs on multiprocessor systems)'))
+    common_options.add_option(
         '-l', '--extra-libs', default=[], action='append',
         type='string', metavar='z',
         help=('add an extra library (to link the zlib library, you must'
               ' specify "zlib" or "zlib1" on Windows'
               ' and "z" on POSIX and MacOS/X)'))
-    parser.add_option(
+    parser.add_option_group(common_options)
+
+    make_options = optparse.OptionGroup(parser, 'Make options')
+    make_options.add_option(
+        '--debug', default=False, action='store_true',
+        help='enable debugging symbols [default disabled]')
+    make_options.add_option(
+        '--extra-cflags', default=[], action='append',
+        type='string', metavar='EXTRA_CFLAG',
+        help='add an extra C compiler flag')
+    make_options.add_option(
+        '--extra-cxxflags', default=[], action='append',
+        type='string', metavar='EXTRA_CXXFLAG',
+        help='add an extra C++ compiler flag')
+    make_options.add_option(
+        '--extra-lflags', default=[], action='append',
+        type='string', metavar='EXTRA_LFLAG',
+        help='add an extra linker flag')
+    parser.add_option_group(make_options)
+
+    sip_options = optparse.OptionGroup(parser, 'SIP options')
+    sip_options.add_option(
         '-x', '--excluded-features', default=[], action='append',
         type='string', metavar='EXTRA_SENSORY_PERCEPTION',
         help=('add a feature for SIP to exclude'
               ' (normally one of the features in sip/features.sip)'))
-    parser.add_option(
-        '--debug', default=False, action='store_true',
-        help='build with debugging symbols [default disabled]')              
-    parser.add_option(
-        '--disable-numarray', default=False, action='store_true',
-        help='disable detection and use of numarray [default enabled]')
-    parser.add_option(
-        '--disable-numeric', default=False, action='store_true',
-        help='disable detection and use of Numeric [default enabled]')
-    parser.add_option(
-        '--extra-cflags', default=[], action='append',
-        type='string', metavar='EXTRA_CFLAG',
-        help='add an extra C compiler flags')
-    parser.add_option(
-        '--extra-cxxflags', default=[], action='append',
-        type='string', metavar='EXTRA_CXXFLAG',
-        help='add an extra C++ compiler flag')
-    parser.add_option(
-        '--extra-lflags', default=[], action='append',
-        type='string', metavar='EXTRA_LFLAG',
-        help='add an extra linker flag')
-    parser.add_option(
+    sip_options.add_option(
         '--sip-include-dirs', default=[os.path.join(os.pardir, 'sip')],
         action='append', type='string', metavar='SIP_INCLUDE_DIR',
         help='add an extra directory for SIP to search')
-    parser.add_option(
+    sip_options.add_option(
         '--tracing', default=False, action='store_true',
-        help=('build with tracing of the execution of the bindings'
+        help=('enable tracing of the execution of the bindings'
               ' [default disabled]'))
+    parser.add_option_group(sip_options)
     
+    detection_options = optparse.OptionGroup(parser, 'Detection options')
+    detection_options.add_option(
+        '--disable-numarray', default=False, action='store_true',
+        help='disable detection and use of numarray [default enabled]')
+    detection_options.add_option(
+        '--disable-numeric', default=False, action='store_true',
+        help='disable detection and use of Numeric [default enabled]')
+    parser.add_option_group(detection_options)
+
     options, args =  parser.parse_args()
     
     # tweak some of the options to facilitate later processing
@@ -581,8 +592,12 @@ def main():
     installs = []
     installs.append([[os.path.basename(f) for f in glob.glob(
         os.path.join(build_dir, '*.py*'))], mod_dir])
-    installs.append([[os.path.join(os.pardir, f) for f in glob.glob(
-        os.path.join(os.pardir, "sip", "*.sip"))], sip_dir])
+    for option in options.sip_include_dirs:
+        # split and undo the POSIX style path separator
+        directory = option.split()[-1].replace('/', os.sep)
+        if directory.startswith(os.pardir):
+            installs.append([[os.path.join(os.pardir, f) for f in glob.glob(
+                os.path.join(directory, "*.sip"))], sip_dir])
 
     # module makefile
     makefile = sipconfig.ModuleMakefile(
