@@ -4,9 +4,9 @@
 INCDIR := /usr/include/qwtplot3d
 LIBDIR := /usr/lib
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
-QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
+QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.4-beta-patched
+# QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
 
-PKG := $(shell basename $$(pwd))
 
 .PHONY: dist
 

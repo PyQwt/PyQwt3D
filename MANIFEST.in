@@ -22,6 +22,9 @@ recursive-exclude examples *.pyc *cvsignore*
 # Numerical Python interface
 graft numpy
 
+# The internal version of QwtPlot3D patched for Qt-2.3.
+graft qwtplot3d-0.2.4-beta-patched
+
 # sip files
 graft sip
 
