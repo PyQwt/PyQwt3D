@@ -46,15 +46,12 @@ using namespace Qwt3D;
 
 public:
     virtual RGBA operator()(double, double, double) const = 0;
-    // FIXME: added '= 0' to make it compile
-    virtual RGBA operator()(const Triple &) const = 0;
+    virtual RGBA operator()(const Triple &) const;
     virtual ColorVector & createVector(ColorVector &);
     void destroy() const;
 
 protected:
     virtual ~Color();
-private:
-    Color(const Color &);
 
 }; // class Color
 
@@ -70,8 +67,7 @@ using namespace Qwt3D;
 
 public:
     StandardColor(Plot3D *, unsigned = 100);
-    // FIXME: added '= 0' to make it compile
-    virtual RGBA operator()(double, double, double) const = 0;
+    virtual RGBA operator()(double, double, double) const;
     void setColorVector(const ColorVector &);
     void reset(unsigned = 100);
     void setAlpha(double);
