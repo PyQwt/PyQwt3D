@@ -36,8 +36,6 @@
 #ifdef HAS_NUMARRAY
 
 #include <Python.h>
-#include <iostream>
-using namespace std;
 
 #undef NO_IMPORT // to force: void **PyQwt3D_Numarray_PyArray_API;
 #define PY_ARRAY_UNIQUE_SYMBOL PyQwt3D_Numarray_PyArray_API
