@@ -11,8 +11,8 @@
   {http://www.river-bank.demon.co.uk/download/snapshots}}
 \newcommand{\Numeric}{\ulink{Numeric}
   {http://www.numpy.org}}
-\newcommand{\NumericTarGz}{\ulink{Numeric-23.6.tar.gz}
-  {http://prdownloads.sourceforge.net/numpy/Numeric-23.6.tar.gz?download}}
+\newcommand{\NumericTarGz}{\ulink{Numeric-23.7.tar.gz}
+  {http://prdownloads.sourceforge.net/numpy/Numeric-23.7.tar.gz?download}}
 \newcommand{\numarray}{\ulink{numarray}
   {http://www.stsci.edu/resources/software_hardware/numarray}}
 \newcommand{\numarrayTarGz}{\ulink{numarray-1.1.1.tar.gz}
@@ -132,12 +132,15 @@ Build prerequisites for \PyQwtDddTarGz{} are:
   Supported versions: QwtPlot3D-0.2.4.
 \item
   \ulink{Qt}{http://www.trolltech.com}.\\
-  Supported versions: Qt-3.3.x, Qt-3.2.x, Qt-3.1.x, Qt-3.0.x.
+  Supported versions: Qt-3.3.x, Qt-3.2.x, Qt-3.1.x, Qt-3.0.x,
+  and -- if you use PyQwt3D's patched version of QwtPlot3D -- Qt-2.3.x.
 \item
   \NewSip{}.\\
-  Supported versions: SIP-4.1.1, -4.1, -4.0.1, and -4.0,
-  but PyQwt3D built with SIP-4.1.x is more powerful than PyQwt3D built with
-  SIP-4.0.x.\\
+  Supported versions: SIP-4.2, -4.1.1, -4.1, -4.0.1, and -4.0,
+  but SIP-4.2.x is recommended. Only SIP-4.2.x is capable to wrap all of the
+  advanced C++ idioms of QwtPlot3D without hacks.
+  PyQwt3D looses some features, if you use SIP-4.1.x, and somewhat more if
+  you use SIP-4.0.x.\\
   You may also try a \snapshot{} at your own risk.
 \item
   \PyQtGpl{}, \PyQtMac{} or \PyQtCom{}.\\
@@ -197,6 +200,11 @@ nmake install
 
 Contact the \mailinglist{}, if you run into problems.
 
+\begin{notice}[note]
+  The Makefile for GNU make, \file{PyQwt-0.1/Makefile}, contains more examples
+  of how to invoke \file{configure.py}.  Adapt and use it, if you have GNU
+  make.
+\end{notice}
 \begin{notice}[note]
   The configure.py script takes many options. The command
 \begin{verbatim}
@@ -307,7 +315,7 @@ They are not yet available in Python (as far as I know, sip wraps protected
 member function, but not protected attributes).
 I may try to implement protected attributes on demand.
 
-\section{Wrappers for \ctype{std::vector<T>}}
+\section{Wrappers for \ctype{std::vector<T>} \label{wrappers}}
 
 PyQwt3D has a partial interface to the following C++ std::vector templates:
 \begin{enumerate}
@@ -379,26 +387,27 @@ For instance:
 
 \section{Class reference}
 
-FIXME: supposes you have the latest version of SIP):
+The documentation supposes that you PyQwt3D has been built with SIP-4.2.0
+or later.
 
 \begin{classdesc}{Arrow}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{AutoScaler}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Axis}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{AxisVector}{*args}
-wraps \ctype{std::vector<Axis>}.
+wraps \ctype{std::vector<Axis>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Cell}{*args}
-wraps \ctype{std::vector<unsigned>}.
+wraps \ctype{std::vector<unsigned>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{CellData}{*args}
@@ -406,11 +415,11 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{CellField}{*args}
-wraps \ctype{std::vector<Cell>}.
+wraps \ctype{std::vector<Cell>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Color}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{ColorLegend}{*args}
@@ -426,7 +435,7 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{CrossHair}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Data}{*args}
@@ -434,11 +443,11 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{Dot}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{DoubleVector}{*args}
-wraps \ctype{std::vector<double>}.
+wraps \ctype{std::vector<double>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Drawable}{*args}
@@ -454,7 +463,7 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{FreeVectorField}{*args}
-wraps \ctype{std::vector<FreeVector>}.
+wraps \ctype{std::vector<FreeVector>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Function}{*args}
@@ -486,7 +495,7 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{LinearScale}{*args}
-FIXME: \emph{is fully implemented}.
+\emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{LogScale}{*args}
@@ -538,7 +547,7 @@ FIXME: \emph{is fully implemented}.
 \end{classdesc}
 
 \begin{classdesc}{TripleField}{*args}
-wraps \ctype{std::vector<Triple>}.
+wraps \ctype{std::vector<Triple>}. See \ref{wrappers} for details.
 \end{classdesc}
 
 \begin{classdesc}{Tuple}{*args}
