@@ -22,7 +22,7 @@
 #
 # In addition, as a special exception, Gerard Vermeulen gives permission to
 # link PyQwt3D dynamically with commercial, non-commercial or educational
-# versions of Qt, PyQt and sip, and distribute PyQwt in this form, provided
+# versions of Qt, PyQt and sip, and distribute PyQwt3D in this form, provided
 # that equally powerful versions of Qt, PyQt and sip have been released under
 # the terms of the GNU General Public License.
 #
