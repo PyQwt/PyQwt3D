@@ -306,7 +306,7 @@ def main():
     configuration = pyqtconfig.Configuration()
     build_dir = "Qwt3D"
     tmp_build_dir = "tmp-" + build_dir
-    build_file = os.path.join(build_dir, "qwt3d.sbf")
+    build_file = os.path.join(tmp_build_dir, "qwt3d.sbf")
     mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
     sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
     extra_sources = []
@@ -358,10 +358,10 @@ def main():
         shutil.rmtree(tmp_build_dir)
     except:
         pass
-    os.mkdir(tmp_build_dir)
-    # generate the build file into the build directory
-    if not os.path.exists(build_dir):
-        os.mkdir(build_dir)
+    try:
+        os.mkdir(tmp_build_dir)
+    except:
+        raise SystemExit, "Failed to create the temporary build directory"
         
     cmd = " ".join(
         [configuration.sip_bin,
@@ -396,7 +396,26 @@ def main():
                                 '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
             open(source, 'w').write(text)
 
+    # generate __init__.py'
+    init_file = os.path.join(tmp_build_dir, '__init__.py')
+    open(init_file, 'w').write(os.linesep.join([
+        'from _Qwt3D import *',
+        '',
+        '# Alias the helper classes away.',
+        'del PyFunction',
+        'from _Qwt3D import PyFunction as Function',
+        'del PyParametricSurface',
+        'from _Qwt3D import PyParametricSurface as ParametricSurface',
+        ]))
+
     # copy lazily to the build directory
+    if not os.path.exists(build_dir):
+        try:
+            os.mkdir(build_dir)
+        except:
+            raise SystemExit, "Failed to create the build directory"
+
+    # copy .cpp and .h files lazily to speed up recompilation
     lazy_copies = 0
     for pattern in ('*.cpp', '*.h'):
         for source in glob.glob(os.path.join(tmp_build_dir, pattern)):
@@ -405,10 +424,8 @@ def main():
                 print "Copy %s -> %s." % (source, target)
                 lazy_copies += 1
     print "%s file(s) lazily copied." % lazy_copies
-    for source in glob.glob(os.path.join(tmp_build_dir, '*.py')):
-        shutil.copy2(source, os.path.join(build_dir, os.path.basename(source)))
 
-    # fix the sip-build-file
+    # fix the sip-build-file and copy it to the build directory 
     lines = open(build_file).readlines()
     output = open(build_file, "w")
     for line in lines:
@@ -435,28 +452,19 @@ def main():
             line = ' '.join(chunks)
         print >> output, line
     output.close()
+    shutil.copy2(
+        build_file, os.path.join(build_dir, os.path.basename(build_file)))
 
     # fix #include statement
     if options.qwtplot3d_sources:
-        for header in [os.path.join('Qwt3D', 'qwt3d_io_gl2ps.cpp')]:
+        for header in [os.path.join(builddir, 'qwt3d_io_gl2ps.cpp')]:
             text = open(header).read()
             if -1 != text.find('../3rdparty/gl2ps/'): 
                 open(header, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
     
-    # generate __init__.py'
-    init_file = os.path.join(build_dir, '__init__.py')
-    if not os.path.exists(init_file):
-        open(init_file, 'w').write(os.linesep.join([
-            'from _Qwt3D import *',
-            '',
-            '# Alias the helper classes away.',
-            'del PyFunction;',
-            'from _Qwt3D import PyFunction as Function',
-            'del PyParametricSurface',
-            'from _Qwt3D import PyParametricSurface as ParametricSurface',
-            ]))
-
-    # byte-compile the Python files
+    # copy and byte-compile the Python files
+    for source in glob.glob(os.path.join(tmp_build_dir, '*.py')):
+        shutil.copy2(source, os.path.join(build_dir, os.path.basename(source)))
     compileall.compile_dir(build_dir, 1, mod_dir)
 
     # files to be installed
