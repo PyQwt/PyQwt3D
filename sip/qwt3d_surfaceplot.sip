@@ -40,8 +40,12 @@ class SurfacePlot: Plot3D
 %TypeHeaderCode
 #include <qwt3d_surfaceplot.h>
 using namespace Qwt3D;
-#include <iostream> // FIXME
-using namespace std; // FIXME
+
+#ifdef PYQWT3D_DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 %End // %TypeHeaderCode 
 
 public:
@@ -102,10 +106,7 @@ public:
     unsigned int ny;
     PyObject *out;
 
-#define DEMO_BUG
-#undef DEMO_BUG
-
-#ifndef DEMO_BUG
+#ifndef PYQWT3D_DEBUG
     if (-1 == try_PyObject_to_PyArrayContiguousFloat2D(
             a0, &out, &array, &nx, &ny))
         return 0;
@@ -139,7 +140,7 @@ public:
 
     sipRes = sipCpp -> SurfacePlot::loadFromData(data, nx, ny, a1, a2, a3, a4);
 
-#ifndef DEMO_BUG
+#ifndef PYQWT3D_DEBUG
     delete [] data;
     Py_DECREF(out);
 #else
