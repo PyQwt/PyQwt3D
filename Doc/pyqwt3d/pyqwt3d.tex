@@ -153,7 +153,7 @@ The installation procedure contains three steps:
 \begin{verbatim}
 cd PyQwt3D-0.1
 cd configure
-python configure.py -Q C:\sources\of\qwtplot3
+python configure.py -Q C:\sources\of\qwtplot3d
 nmake
 nmake install
 \end{verbatim}
@@ -201,7 +201,7 @@ The installation procedure contains three steps:
 \begin{verbatim}
 cd PyQwt3D-0.1
 cd configure
-python configure.py -Q /sources/of/qwtplot3
+python configure.py -Q /sources/of/qwtplot3d
 make
 make install
 \end{verbatim}
@@ -244,12 +244,14 @@ python configure.py -I /usr/include/qwtplot3d
 make
 make install
 \end{verbatim}
-    Add
+      where \file{/usr/include/qwtplot3d} is an example for the installation
+      directory of the QwtPlot3D header files.
+      Add
 \begin{verbatim}
 -L /directory/with/libqwtplot3d.*
 \end{verbatim}
-    to the \file{configure.py} options, if the linker fails to find the
-    QwtPlot3D library.
+      to the \file{configure.py} options, if the linker fails to find the
+      QwtPlot3D library.
   \end{itemize}
 \end{enumerate}
 
