@@ -91,6 +91,7 @@ def copy_files(sources, directory):
 
 # copy_files()
 
+
 def generate_init_py(target, configuration):
     """Generate an __init__.py file to alias helper classes away if needed.
     """
@@ -371,8 +372,8 @@ def parse_args():
               ' (normally one of the features in sip/features.sip)'))
     sip_options.add_option(
         '-t', '--timelines', default=[], action='append',
-        type='string', metavar='EXTRA_SENSORY_PERCEPTION',
-        help=('add a timeline for SIP'
+        type='string', metavar='ESP_3_2_1',
+        help=('add a timeline for SIP to adapt to a library version'
               ' (normally one of the timeline options in sip/timelines.sip)'))
     sip_options.add_option(
         '--sip-include-dirs', default=[os.path.join(os.pardir, 'sip')],
