@@ -3,9 +3,21 @@
 # Package stuff
 include COPYING* MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
 
+# configure
 graft configure
+prune configure/Qwt3D
+prune configure/tmp-Qwt3D
+recursive-exclude configure Makefile *.pyc *cvsignore*
+
+# examples
 graft examples
+prune examples/Qwt3D
+recursive-exclude examples *.pyc *cvsignore*
+
+# Numerical Python interface
 graft numpy
+
+# sip files
 graft sip
 
 # Local Variables: ***
