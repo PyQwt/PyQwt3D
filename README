@@ -89,7 +89,8 @@ PyQwt3D may not work with numarray, possibly due to a bug in the
 floating point excepion handling of glibc (occurs at least on
 Mandrake-10.0 and SuSE-9.0).
 See http://sourceforge.net/mailarchive/message.php?msg_id=9914816 for
-more information.  Your mileage may vary.
+more information.  Your mileage may vary: PyQwt3D works with numarray
+on SuSE-9.1.
 
 
 Have fun -- Gerard Vermeulen
