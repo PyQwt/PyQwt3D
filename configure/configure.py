@@ -145,7 +145,7 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
 def main():
     
     from optparse import OptionParser
-    usage = 'python configure.py [options] or./configure.py [options]'
+    usage = 'python configure.py [options] or ./configure.py [options]'
     parser = OptionParser(usage=usage)
     parser.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
