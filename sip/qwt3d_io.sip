@@ -46,7 +46,7 @@ using namespace Qwt3D;
 public:
     // FIXME: typedef bool (*Function)(Plot3D*, QString const& fname);
 
-%If (SIP41) 
+%If (SIP0401) 
     class Functor /Abstract/
     {
     public:
@@ -61,7 +61,7 @@ public:
     // FIXME: static bool defineInputHandler(const QString &, Function);
     // FIXME: static bool defineOutputHandler(const QString &, Function);
 
-%If (SIP41)
+%If (SIP0401)
     static bool defineInputHandler(const QString &, const Functor &);
     static bool defineOutputHandler(const QString &, const Functor &);
 %End
@@ -71,7 +71,7 @@ public:
     static QStringList inputFormatList();
     static QStringList outputFormatList();
 
-%If (SIP41) 
+%If (SIP0401) 
     static IO::Functor * outputHandler(const QString &);
     static IO::Functor * inputHandler(const QString &);
 %End
@@ -79,7 +79,7 @@ public:
 };
 
 
-%If (SIP41) 
+%If (SIP0401) 
 class PixmapWriter: IO::Functor
 {
 

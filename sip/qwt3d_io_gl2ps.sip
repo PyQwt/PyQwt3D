@@ -34,7 +34,7 @@
 // -- LICENSE --
 
 
-%If (SIP41)
+%If (SIP0401)
 class VectorWriter: IO::Functor
 {
 
@@ -77,9 +77,9 @@ public:
   bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // SIP41
+%End // SIP0401
 
-%If (SIP40)
+%If (SIP0400)
 class VectorWriter //: IO::Functor
 {
 
@@ -122,7 +122,7 @@ public:
   bool setFormat(const QString &);
 
 }; // class VectorWriter
-%End // SIP40
+%End // SIP0400
 
 
 %ModuleHeaderCode
