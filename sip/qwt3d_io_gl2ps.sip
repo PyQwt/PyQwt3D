@@ -34,6 +34,52 @@
 // -- LICENSE --
 
 
+%If (SIP0402)
+class VectorWriter: IO::Functor
+{
+
+%TypeHeaderCode
+#include <qwt3d_io_gl2ps.h>
+using namespace Qwt3D;
+%End // %TypeHeaderCode
+
+public:
+    enum TEXTMODE {
+        PIXEL,
+        NATIVE,
+        TEX,
+    };
+    enum LANDSCAPEMODE {
+        ON,
+        OFF,
+        AUTO,
+    };
+  enum SORTMODE {
+      NOSORT,
+      SIMPLESORT,
+      BSPSORT,
+  };
+
+  VectorWriter();
+
+  void setLandscape(LANDSCAPEMODE);
+  LANDSCAPEMODE landscape() const;
+
+  void setTextMode(TEXTMODE, QString = QString::null);
+  TEXTMODE textMode() const;
+
+  void setSortMode(SORTMODE);
+  SORTMODE sortMode() const;
+
+  void setCompressed(bool);
+  bool compressed() const;
+
+  bool setFormat(const QString &);
+
+}; // class VectorWriter
+%End // SIP0402
+
+
 %If (SIP0401)
 class VectorWriter: IO::Functor
 {
@@ -78,6 +124,7 @@ public:
 
 }; // class VectorWriter
 %End // SIP0401
+
 
 %If (SIP0400)
 class VectorWriter //: IO::Functor

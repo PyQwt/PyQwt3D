@@ -46,6 +46,16 @@ using namespace Qwt3D;
 public:
     // FIXME: typedef bool (*Function)(Plot3D*, QString const& fname);
 
+%If (SIP0402) 
+    class Functor /Abstract/
+    {
+    public:
+        virtual ~Functor();
+        virtual IO::Functor * clone() const = 0;
+        // FIXME: virtual bool operator()(Plot3D *, const QString &) = 0;
+    };
+%End // SIP0402
+
 %If (SIP0401) 
     class Functor /Abstract/
     {
@@ -54,29 +64,58 @@ public:
         virtual IO::Functor * clone() const = 0;
         // FIXME: virtual bool operator()(Plot3D *, const QString &) = 0;
     };
-%End
+%End // SIP0401
 
     IO();
 
     // FIXME: static bool defineInputHandler(const QString &, Function);
     // FIXME: static bool defineOutputHandler(const QString &, Function);
 
+%If (SIP0402)
+    static bool defineInputHandler(const QString &, const Functor &);
+    static bool defineOutputHandler(const QString &, const Functor &);
+%End // SIP0402
+
 %If (SIP0401)
     static bool defineInputHandler(const QString &, const Functor &);
     static bool defineOutputHandler(const QString &, const Functor &);
-%End
+%End // SIP0401
 
     static bool save(Plot3D *, const QString &, const QString &);
     static bool load(Plot3D *, const QString &, const QString &);
     static QStringList inputFormatList();
     static QStringList outputFormatList();
 
+%If (SIP0402) 
+    static IO::Functor * outputHandler(const QString &);
+    static IO::Functor * inputHandler(const QString &);
+%End // SIP0402
+
 %If (SIP0401) 
     static IO::Functor * outputHandler(const QString &);
     static IO::Functor * inputHandler(const QString &);
-%End
+%End // SIP0401
 
 };
+
+
+%If (SIP0402) 
+class PixmapWriter: IO::Functor
+{
+
+%TypeHeaderCode
+#include <qwt3d_io.h>
+using namespace Qwt3D;
+%End // %TypeHeaderCode
+
+public:
+    PixmapWriter();
+    void setQuality(int);
+private:
+    IO::Functor* clone() const;
+    //bool operator()(Plot3D *, const QString &);
+};
+%End // SIP0402
 
 
 %If (SIP0401) 
@@ -95,7 +134,7 @@ private:
     IO::Functor* clone() const;
     //bool operator()(Plot3D *, const QString &);
 };
-%End
+%End // SIP0401
 
 
 // Local Variables:
