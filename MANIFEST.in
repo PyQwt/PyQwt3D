@@ -30,6 +30,12 @@ recursive-exclude qwtplot3d-0.2.4-beta-patched *~
 # sip files
 graft sip
 recursive-exclude sip *cvsignore* *~
+graft sip0400
+recursive-exclude sip0400 *cvsignore* *~
+graft sip0401
+recursive-exclude sip0401 *cvsignore* *~
+graft sip0402
+recursive-exclude sip0402 *cvsignore* *~
 
 # The zlib-1.2.1 library.
 graft zlib-1.2.1
