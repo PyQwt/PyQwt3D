@@ -38,6 +38,8 @@ import pprint
 import re
 import shutil
 
+from optparse import OptionParser
+
 import sipconfig
 import pyqtconfig
 
@@ -79,20 +81,21 @@ def lazy_copy_sip_output_file(source, target):
 # lazy_copy_sip_output_file()
 
 
-def check_numarray(py_inc_dir, excluded_features, extra_defines, skip = False):
+def check_numarray(configuration, options):
     """See if the numarray extension has been installed.
     """
-    if skip:
-        excluded_features.append("-x HAS_NUMARRAY")
-        return excluded_features, extra_defines
+    if options.disable_numarray:
+        options.excluded_features.append("-x HAS_NUMARRAY")
+        return options
        
     try:
         import numarray
         # Try to find numarray/arrayobject.h.
-        numarray_inc = os.path.join(py_inc_dir, "numarray", "arrayobject.h")
+        numarray_inc = os.path.join(
+            configuration.py_inc_dir, "numarray", "arrayobject.h")
         if os.access(numarray_inc, os.F_OK):
             print "Found numarray-%s.\n" % numarray.__version__
-            extra_defines.append("HAS_NUMARRAY")
+            options.extra_defines.append("HAS_NUMARRAY")
         else:
             print ("numarray has been installed, "
                    "but its headers are not in the standard location.\n"
@@ -101,30 +104,31 @@ def check_numarray(py_inc_dir, excluded_features, extra_defines, skip = False):
                    )
             raise ImportError
     except ImportError:
-        excluded_features.append("-x HAS_NUMARRAY")
+        options.excluded_features.append("-x HAS_NUMARRAY")
         print ("Failed to import numarray: "
                "PyQwt will be build without support for numarray.\n"
                )
         
-    return excluded_features, extra_defines
+    return options
 
 # check_numarray()
 
 
-def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
+def check_numeric(configuration, options):
     """See if the Numeric extension has been installed.
     """
-    if skip:
-        excluded_features.append("-x HAS_NUMERIC")
-        return excluded_features, extra_defines
-       
+    if options.disable_numeric:
+        options.excluded_features.append("-x HAS_NUMERIC")
+        return options
+           
     try:
         import Numeric
         # Try to find Numeric/arrayobject.h.
-        numeric_inc = os.path.join(py_inc_dir, "Numeric", "arrayobject.h")
+        numeric_inc = os.path.join(
+            configuration.py_inc_dir, "Numeric", "arrayobject.h")
         if os.access(numeric_inc, os.F_OK):
             print "Found Numeric-%s.\n" % Numeric.__version__
-            extra_defines.append("HAS_NUMERIC")
+            options.extra_defines.append("HAS_NUMERIC")
         else:
             print ("Numeric has been installed, "
                    "but its headers are not in the standard location.\n"
@@ -133,73 +137,88 @@ def check_numeric(py_inc_dir, excluded_features, extra_defines, skip = False):
                    )
             raise ImportError
     except ImportError:
-        excluded_features.append("-x HAS_NUMERIC")
+        options.excluded_features.append("-x HAS_NUMERIC")
         print ("Failed to find Numeric: "
                "PyQwt will be build without support for Numeric.\n"
                )
         
-    return excluded_features, extra_defines
+    return options
 
 # check_numeric()
 
 
-def check_sip(configuration, excluded_features):
+def check_sip(configuration, options):
     """Adapt to SIP differences by means of mutually excluding features
     """
     print "Found SIP-%s.\n" % configuration.sip_version_str
 
     sip_version = configuration.sip_version
     if sip_version & 0xffff00 == 0x040000: 
-        excluded_features.extend(["-x SIP0401", "-x OLDSIP"])
+        options.excluded_features.extend(["-x SIP0401", "-x OLDSIP"])
     elif sip_version & 0xffff00 == 0x040100:
-        excluded_features.extend(["-x SIP0400", "-x OLDSIP"])
+        options.excluded_features.extend(["-x SIP0400", "-x OLDSIP"])
     elif sip_version & 0xffff00 == 0x030b00:
         # SIP-3.11.x works like SIP-4.1.x (except for bugs)
-        excluded_features.extend(["-x SIP0401", "-x NEWSIP"])
+        options.excluded_features.extend(["-x SIP0401", "-x NEWSIP"])
     else:
         raise SystemExit, (
             "PyQwt3D requires SIP-4.1.x, -4.0.x, or -3.11.x.\n"
             )
 
-    return excluded_features
+    return options
 
 # check_sip()
 
 
-def check_compiler(configuration, excluded_features):
+def check_compiler(configuration, options):
     """Adapt to different compilers by means of mutually excluding features
     """
     makefile = sipconfig.Makefile(configuration=configuration)
     generator = makefile.optional_string('MAKEFILE_GENERATOR', 'UNIX')
     if generator == 'MSVC':
-        excluded_features.append('-x NO_MSVC')
+        options.excluded_features.append('-x NO_MSVC')
     else:
-        excluded_features.append('-x IS_MSVC')
+        options.excluded_features.append('-x IS_MSVC')
     
-    return excluded_features
+    return options
 
 # check_compiler()
 
 
 def main():
     
-    from optparse import OptionParser
-    usage = 'python configure.py [options] or ./configure.py [options]'
-    parser = OptionParser(usage=usage)
+    # configuration
+    configuration = pyqtconfig.Configuration()
+    build_dir = "Qwt3D"
+    tmp_build_dir = "tmp-" + build_dir
+    build_file = "qwt3d.sbf"
+    mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
+    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
+
+    # parser
+    parser = OptionParser(usage='%prog [options]')
     parser.add_option(
         '-Q', '--qwtplot3d-sources', default='', action='store',
-        type='string', metavar='/path/to/qwtplot3d/sources',
-        help='compile and link the QwtPlot3D sources statically into PyQwt3D')
+        type='string', metavar='/path/to/qwtplot3d',
+        help=('compile and link the QwtPlot3D source files in'
+              ' /path/to/qwtplot3d statically into PyQwt3D'
+              ' (PyQwt3D requires this option on Windows)'))
     parser.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
-        help=('add an extra directorys to search for headers'
-              ' (the compiler must be able to find the QwtPlot3D headers)'))
+        help=('add an extra directory to search for headers'
+              ' (the compiler must be able to find the QwtPlot3D headers'
+              ' if you did not specify the -Q option)'))
     parser.add_option(
         '-L', '--extra-lib-dirs', default=[], action='append',
         type='string', metavar='/usr/lib/qt3/lib',
-        help=('add the directory to search for libraries'
-              ' (the linker must be able to find the QwtPlot3D library)'))
+        help=('add an extra directory to search for libraries'
+              ' (the linker must be able to find the QwtPlot3D library'
+              ' if you did not specify the -Q option)'))
+    parser.add_option(
+        '-x', '--excluded-features', default=[], action='append',
+        type='string', metavar='EXTRA_SENSORY_PERCEPTION',
+        help='let SIP exclude one of the features in sip/features.sip')
     parser.add_option(
         '--debug', default=False, action='store_true',
         help='build with debugging symbols [default disabled]')              
@@ -211,11 +230,11 @@ def main():
         help='disable detection and use of Numeric [default enabled]')
     parser.add_option(
         '--extra-cflags', default=[], action='append', type='string',
-        help='add extra C compiler flags')
+        help='add an extra C compiler flags')
     parser.add_option(
         '--extra-cxxflags', default=[], action='append', type='string',
         metavar='-GR',
-        help=('add extra C++ compiler flags'
+        help=('add an extra C++ compiler flags'
               ' (MSVC may need the -GR and -GX flags to enable'
               ' runtime type information and exception handling)'))
     parser.add_option(
@@ -229,85 +248,21 @@ def main():
         help='add extra libraries')
                       
     options, args = parser.parse_args()
+
+    # normalize the excluded features
+    options.excluded_features = [
+        ('-x %s' % f) for f in options.excluded_features
+        ]
+
     print "Command line options:"
     pprint.pprint(options.__dict__)
     print
 
-    # configuration
-    configuration = pyqtconfig.Configuration()
-    build_dir = "Qwt3D"
-    tmp_build_dir = "tmp-" + build_dir
-    build_file = "qwt3d.sbf"
-    mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
-    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
-    
-    excluded_features = []
-    excluded_features = check_sip(configuration, excluded_features)
-    excluded_features = check_compiler(configuration, excluded_features)
-    excluded_features, options.extra_defines = check_numarray(
-        configuration.py_inc_dir,
-        excluded_features, options.extra_defines,
-        options.disable_numarray)
-    excluded_features, options.extra_defines = check_numeric(
-        configuration.py_inc_dir,
-        excluded_features, options.extra_defines,
-        options.disable_numeric)    
-
-    # generate code into a temporary directory
-    if not os.path.exists(tmp_build_dir):
-        os.mkdir(tmp_build_dir)
-    if not os.path.exists(build_dir):
-        os.mkdir(build_dir)
-        open(os.path.join(build_dir, '__init__.py'), 'w').write(
-            'from _Qwt3D import *\n'
-            '\n'
-            '# Alias the helper classes away.\n'
-            'del PyFunction;\n'
-            'from _Qwt3D import PyFunction as Function\n'
-            'del PyParametricSurface\n'
-            'from _Qwt3D import PyParametricSurface as ParametricSurface\n'
-            )
-        compileall.compile_dir(build_dir, 1, mod_dir)
-
-    print "Extended options:"
-    pprint.pprint(options.__dict__)
-    print
-    
-    cmd = " ".join(
-        [configuration.sip_bin,
-         # SIP assumes POSIX style path separators
-         "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
-         "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
-         "-b", os.path.join(build_dir, build_file),
-         "-c", tmp_build_dir,
-         ]
-        + excluded_features
-        + [configuration.pyqt_qt_sip_flags]
-        # SIP assumes POSIX style path separators
-        + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
-        )
-
-    print "sip invokation:"
-    pprint.pprint(cmd)
-    print
-    
-    os.system(cmd)
-
-    # patch the tmp_build_dir/sip_Qwt3Dcmodule.cpp file for Windows
-    text = open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp')).read()
-    text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
-                        '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
-    open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp'), 'w').write(text)
-
-    # fill the build directory lazily
-    copies = 0
-    for pattern in ('*.cpp', '*.h'):
-        for source in glob.glob(os.path.join(tmp_build_dir, pattern)):
-            target = os.path.join(build_dir, os.path.basename(source))
-            if lazy_copy_sip_output_file(source, target):
-                print "Copy %s -> %s." % (source, target)
-                copies += 1
-    print "%s file(s) copied." % copies
+    # extend the options
+    options = check_sip(configuration, options)
+    options = check_compiler(configuration, options)
+    options = check_numarray(configuration, options)
+    options = check_numeric(configuration, options)
 
     # do we compile and link QwtPlot3D statically into PyQwt3D?
     if options.qwtplot3d_sources:
@@ -333,9 +288,65 @@ def main():
     # add the interface to the numerical Python extensions
     extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
     extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
-    lines = open(os.path.join(build_dir, build_file)).readlines()
+
+    print "Extended options:"
+    pprint.pprint(options.__dict__)
+    print
+    
+    # generate code into a temporary directory
+    if not os.path.exists(tmp_build_dir):
+        os.mkdir(tmp_build_dir)
+    if not os.path.exists(build_dir):
+        os.mkdir(build_dir)
+        open(os.path.join(build_dir, '__init__.py'), 'w').write(
+            'from _Qwt3D import *\n'
+            '\n'
+            '# Alias the helper classes away.\n'
+            'del PyFunction;\n'
+            'from _Qwt3D import PyFunction as Function\n'
+            'del PyParametricSurface\n'
+            'from _Qwt3D import PyParametricSurface as ParametricSurface\n'
+            )
+        compileall.compile_dir(build_dir, 1, mod_dir)
+
+    cmd = " ".join(
+        [configuration.sip_bin,
+         # SIP assumes POSIX style path separators
+         "-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
+         "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
+         "-b", os.path.join(build_dir, build_file),
+         "-c", tmp_build_dir,
+         ]
+        + options.excluded_features
+        + [configuration.pyqt_qt_sip_flags]
+        # SIP assumes POSIX style path separators
+        + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
+        )
+
+    print "sip invokation:"
+    pprint.pprint(cmd)
+    print
+    
+    os.system(cmd)
+
+    # patch the tmp_build_dir/sip_Qwt3Dcmodule.cpp file for Windows
+    text = open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp')).read()
+    text = text.replace('{sipNm__Qwt3D_POINTS, POINTS}',
+                        '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS}')
+    open(os.path.join(tmp_build_dir, 'sip_Qwt3Dcmodule.cpp'), 'w').write(text)
+
+    # copy lazily to the build directory
+    copies = 0
+    for pattern in ('*.cpp', '*.h'):
+        for source in glob.glob(os.path.join(tmp_build_dir, pattern)):
+            target = os.path.join(build_dir, os.path.basename(source))
+            if lazy_copy_sip_output_file(source, target):
+                print "Copy %s -> %s." % (source, target)
+                copies += 1
+    print "%s file(s) copied." % copies
 
     # fix the sip-build-file
+    lines = open(os.path.join(build_dir, build_file)).readlines()
     output = open(os.path.join(build_dir, build_file), "w")
     for line in lines:
         if line.startswith('sources'):
