@@ -92,6 +92,30 @@ def copy_files(sources, directory):
 
 # copy_files()
 
+def generate_init_py(target, configuration):
+    """Generate an __init__.py file to alias helper classes away if needed.
+    """
+    version = configuration.sip_version
+    version_str = configuration.sip_version_str
+
+    init_py = open(target, 'w')
+    init_py.write(os.linesep.join([
+        'from _Qwt3D import *',
+        '',
+        ]))
+    if (not version_str.startswith('snapshot-')
+        or version & 0xffff00 >= 0x040200):
+        init_py.write(os.linesep.join([
+            '# Alias the helper classes away.',
+            'del PyFunction',
+            'from _Qwt3D import PyFunction as Function',
+            'del PyParametricSurface',
+            'from _Qwt3D import PyParametricSurface as ParametricSurface',
+            '',
+            ]))
+
+# generate_init_py()
+    
 
 def check_numarray(configuration, options):
     """See if the numarray extension has been installed.
@@ -111,14 +135,14 @@ def check_numarray(configuration, options):
         else:
             print ("numarray has been installed, "
                    "but its headers are not in the standard location.\n"
-                   "PyQwt will be build without support for numarray.\n"
+                   "PyQwt3D will be build without support for numarray.\n"
                    "(Linux users may have to install a development package)\n"
                    )
             raise ImportError
     except ImportError:
         options.excluded_features.append("-x HAS_NUMARRAY")
         print ("Failed to import numarray: "
-               "PyQwt will be build without support for numarray.\n"
+               "PyQwt3D will be build without support for numarray.\n"
                )
         
     return options
@@ -144,14 +168,14 @@ def check_numeric(configuration, options):
         else:
             print ("Numeric has been installed, "
                    "but its headers are not in the standard location.\n"
-                   "PyQwt will be build without support for Numeric.\n"
+                   "PyQwt3D will be build without support for Numeric.\n"
                    "(Linux users may have to install a development package)\n"
                    )
             raise ImportError
     except ImportError:
         options.excluded_features.append("-x HAS_NUMERIC")
         print ("Failed to find Numeric: "
-               "PyQwt will be build without support for Numeric.\n"
+               "PyQwt3D will be build without support for Numeric.\n"
                )
         
     return options
@@ -179,7 +203,7 @@ def check_sip(configuration, options):
                 "-x SIP0402",
                 "-x SIP0400",
                 ])
-    elif sip_version & 0xffff00 == 0x040000: 
+    elif version & 0xffff00 == 0x040000: 
         options.excluded_features.extend([
             "-x SIP0402",
             "-x SIP0401",
@@ -510,17 +534,7 @@ def main():
             open(source, 'w').write(text)
 
     # generate __init__.py'
-    init_file = os.path.join(tmp_dir, '__init__.py')
-    open(init_file, 'w').write(os.linesep.join([
-        'from _Qwt3D import *',
-        '',
-        '# Alias the helper classes away.',
-        'del PyFunction',
-        'from _Qwt3D import PyFunction as Function',
-        'del PyParametricSurface',
-        'from _Qwt3D import PyParametricSurface as ParametricSurface',
-        '',
-        ]))
+    generate_init_py(os.path.join(tmp_dir, '__init__.py'), configuration)
 
     # copy lazily to the build directory to speed up recompilation
     if not os.path.exists(build_dir):
