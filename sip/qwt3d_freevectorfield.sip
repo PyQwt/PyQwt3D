@@ -39,10 +39,8 @@ class FreeVectorField
 {
 
 %TypeHeaderCode
-#include <vector>
 #include <qwt3d_types.h>
 #include <sip_Qwt3DFreeVector.h>
-using namespace std;
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 

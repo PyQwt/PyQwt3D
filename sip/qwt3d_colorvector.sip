@@ -39,9 +39,7 @@ class ColorVector
 {
 
 %TypeHeaderCode
-#include <vector>
 #include <qwt3d_color.h>
-using namespace std;
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 

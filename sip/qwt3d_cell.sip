@@ -39,9 +39,7 @@ class Cell
 {
 
 %TypeHeaderCode
-#include <vector>
 #include <qwt3d_types.h>
-using namespace std;
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 

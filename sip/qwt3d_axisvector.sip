@@ -41,9 +41,8 @@ class AxisVector
 %TypeHeaderCode
 #include <vector>
 #include <qwt3d_axis.h>
-using namespace std;
 using namespace Qwt3D;
-typedef vector<Axis> AxisVector;
+typedef std::vector<Axis> AxisVector;
 %End // %TypeHeaderCode
 
 public:

@@ -40,9 +40,8 @@ file = open('qwt3d_axisvector.sip', 'w')
 print >> file, STD_VECTOR_USER % {
     'HEAD': ('\n#include <vector>'
              '\n#include <qwt3d_axis.h>'          
-             '\nusing namespace std;'
              '\nusing namespace Qwt3D;'
-             '\ntypedef vector<Axis> AxisVector;'
+             '\ntypedef std::vector<Axis> AxisVector;'
              ),
     'ITEM': 'Axis',
     'VECTOR': 'AxisVector',
@@ -50,9 +49,7 @@ print >> file, STD_VECTOR_USER % {
 
 file = open('qwt3d_cell.sip', 'w')
 print >> file, STD_VECTOR_BASE % {
-    'HEAD': ('\n#include <vector>'
-             '\n#include <qwt3d_types.h>'          
-             '\nusing namespace std;'
+    'HEAD': ('\n#include <qwt3d_types.h>'          
              '\nusing namespace Qwt3D;'
              ),
     'ITEM': 'size_type',
@@ -61,9 +58,7 @@ print >> file, STD_VECTOR_BASE % {
 
 file = open('qwt3d_cellfield.sip', 'w')
 print >> file, STD_VECTOR_USER % {
-    'HEAD': ('\n#include <vector>'
-             '\n#include <qwt3d_types.h>'          
-             '\nusing namespace std;'
+    'HEAD': ('\n#include <qwt3d_types.h>'          
              '\nusing namespace Qwt3D;'
              ),
     'ITEM': 'Cell',
@@ -72,9 +67,7 @@ print >> file, STD_VECTOR_USER % {
 
 file = open('qwt3d_colorvector.sip', 'w')
 print >> file, STD_VECTOR_USER % {
-    'HEAD': ('\n#include <vector>'
-             '\n#include <qwt3d_color.h>'          
-             '\nusing namespace std;'
+    'HEAD': ('\n#include <qwt3d_color.h>'          
              '\nusing namespace Qwt3D;'
              ),
     'ITEM': 'RGBA',
@@ -84,8 +77,7 @@ print >> file, STD_VECTOR_USER % {
 file = open('qwt3d_doublevector.sip', 'w')
 print >> file, STD_VECTOR_BASE % {
     'HEAD': ('\n#include <vector>'          
-             '\nusing namespace std;'
-             '\ntypedef vector<double> DoubleVector;'
+             '\ntypedef std::vector<double> DoubleVector;'
              ),
     'ITEM': 'double',
     'VECTOR': 'DoubleVector',
@@ -93,10 +85,8 @@ print >> file, STD_VECTOR_BASE % {
 
 file = open('qwt3d_freevectorfield.sip', 'w')
 print >> file, STD_VECTOR_USER % {
-    'HEAD': ('\n#include <vector>'
-             '\n#include <qwt3d_types.h>'
+    'HEAD': ('\n#include <qwt3d_types.h>'
              '\n#include <sip_Qwt3DFreeVector.h>'          
-             '\nusing namespace std;'
              '\nusing namespace Qwt3D;'
              ),
     'ITEM': 'FreeVector',
@@ -105,10 +95,8 @@ print >> file, STD_VECTOR_USER % {
 
 file = open('qwt3d_triplefield.sip', 'w')
 print >> file, STD_VECTOR_USER % {
-    'HEAD': ('\n#include <vector>'
-             '\n#include <qwt3d_types.h>'
+    'HEAD': ('\n#include <qwt3d_types.h>'
              '\n#include <sip_Qwt3DTriple.h>'          
-             '\nusing namespace std;'
              '\nusing namespace Qwt3D;'
              ),
     'ITEM': 'Triple',

@@ -40,8 +40,7 @@ class DoubleVector
 
 %TypeHeaderCode
 #include <vector>
-using namespace std;
-typedef vector<double> DoubleVector;
+typedef std::vector<double> DoubleVector;
 %End // %TypeHeaderCode
 
 public:

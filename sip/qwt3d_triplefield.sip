@@ -39,10 +39,8 @@ class TripleField
 {
 
 %TypeHeaderCode
-#include <vector>
 #include <qwt3d_types.h>
 #include <sip_Qwt3DTriple.h>
-using namespace std;
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 
