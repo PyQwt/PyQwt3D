@@ -3,91 +3,20 @@ INTRODUCTION
 PyQwt3D is a set of Python bindings for the QwtPlot3D library.
 
 
+LICENSE
+
+GPL with exceptions for use with non-GPL'ed releases of Qt, PyQt and sip (see
+the file COPYING.PyQwt3D
+
+
 PREREQUISITES
 
-- Python-2.3 or later (tested with Python-2.3.x)
-- sip-4.0 or later (tested with sip-4.1.1)
-- PyQt-3.10 or later (tested with PyQt-3.13)
-- qwtplot3d-0.2.4 (http://qwtplot3d.sourceforge.net)
-- Qt-3.0 or later (tested with Qt-3.2.x and Qt-3.3.x)
-- numarray (optional, compiles with numarray-1.x but see BUGS)
-- Numeric (optional, tested with Numeric-23.x)
+See Doc/html/pyqwt3d/prerequisites.html.
 
 
 INSTALLATION
 
-If you do not have GNU make, do:
-(1) cd configure
-(2) python configure.py (run 'python configure.py -h' to see all options)
-(3) make ('nmake' for MSVC)
-(4) make install ('nmake install' for MSVC)
-
-If you have GNU make, edit INCDIR and LIBDIR in the Makefile and do:
-(1) make
-(2) make install
-
-Runtime type information (RTTI) must be enabled.
-
-
-INNOVATIONS (for SIP hackers and normal users)
-
-The virtual operater() member functions of Function and ParametricSurface have
-been implemented by shadow classes, see: Qwt3D/__init__.py,
-sip/qwt3d_function.sip and sip/qwt3d_parametricsurface.sip (for hackers). 
- 
-PyQwt3D has a partial interface to the following C++ std::vector templates (for
-users):
-(1) AxisVector      (std::vector<Axis>)
-(2) Cell            (std::vector<unsigned>)
-(3) CellField       (std::vector<Cell>)
-(4) ColorVector     (std::vector<RGBA>)
-(5) DoubleVector    (std::vector<double>)
-(6) FreeVectorField (std::vector<FreeVectorField>)
-(7) TripleField     (std::vector<Triple>)
-
-The interface implements four constructors for each template instantianation --
-taking Cell as example:
-(1) Cell()
-(2) Cell(size)
-(3) Cell(size, item)
-(4) Cell(otherCell)
-
-and 13 member functions -- taking Cell as example:
-( 1) result = cell.capacity()
-( 2) cell.clear()
-( 3) result = cell.empty()
-( 4) result = cell.back()
-( 5) result = cell.front()
-( 6) result = cell.max_size()
-( 7) cell.pop_back()
-( 8) cell.push_back(item)
-( 9) cell.reserve(size)
-(10) cell.reserve(size, item = 0)
-(11) cell.resize(size, item = 0)
-(12) result = cell.size()
-(13) cell.swap(otherCell)
-
-Iterators are not yet implemented.  However, the implementation of the Python
-slots __getitem__, __len__ and __setitem__ let you use those classes almost as
-a sequence.  For instance:
-
-tf = TripleField()
-tf.push_back(Triple(0.0, 1.0, 2.0))
-tf.push_back(Triple(1.0, 2.0, 3.0))
-for t in tf:                                 # thanks to __getitem__
-    print t.x, t.y, t.z
-for i in range(len(tf)):                     # thanks to __len__
-    print tf[i].x, tf[i].y, tf[i].z          # thanks to __getitem__
-for i in range(len(tf)):                     # thanks to __len__
-    tf[i] = Triple(i, 2*i, 3*i)              # thanks to __setitem__
-
-
-BUGS
-
-PyQwt3D may not work with numarray, possibly due to a bug in the floating point
-excepion handling of glibc (occurs at least on Mandrake-10.0 and SuSE-9.0).
-See http://sourceforge.net/mailarchive/message.php?msg_id=9914816 for more
-information.  Your mileage may vary: PyQwt3D works with numarray on SuSE-9.1.
+See Doc/html/pyqwt3d/install.html.
 
 
 Have fun -- Gerard Vermeulen
