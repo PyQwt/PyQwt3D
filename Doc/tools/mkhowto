@@ -55,7 +55,7 @@ L2H_INIT_FILE = os.path.join(TOPDIR, "perl", "l2hinit.perl")
 
 BIBTEX_BINARY = "bibtex"
 DVIPS_BINARY = "dvips"
-LATEX_BINARY = "latex"
+LATEX_BINARY = "latexnoetex"
 LATEX2HTML_BINARY = "latex2html"
 LYNX_BINARY = "lynx"
 MAKEINDEX_BINARY = "makeindex"
