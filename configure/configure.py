@@ -187,21 +187,19 @@ def check_sip(configuration, options):
     """
     version = configuration.sip_version
     version_str = configuration.sip_version_str
-    required = 'PyQwt3D requires SIP-4.2.x, -SIP-4.1.x, or SIP-4.0.x.'
+    required = 'PyQwt3D requires SIP-4.3.x, -4.2.x, -4.1.x, or -4.0.x.'
     
     print "Found SIP-%s.\n" % version_str
 
-    if 0x040200 < version & 0xffffff < 0x040300:
+    # SIP-4.3.x and SIP-4.2.1 behave similar for PyQwt3D
+    if 0x040200 < version & 0xffffff < 0x040400:
         options.timelines.append('-t SIP_4_2_1')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
             )
     elif version & 0xffffff == 0x040200:
-        if version_str >= 'snapshot-20050225':
-            options.timelines.append('-t SIP_4_2_1')
-        else:
-            options.timelines.append('-t SIP_4_2_0')
+        options.timelines.append('-t SIP_4_2_0')
         # SIP assumes POSIX style path separators
         options.sip_include_dirs.append(
             "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
