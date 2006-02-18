@@ -19,20 +19,20 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-#ifdef HAS_NUMERIC
+#ifdef HAS_NUMPY
 
 #include <Python.h>
-#include <Numeric/arrayobject.h>
+#include <numpy/arrayobject.h>
 #include <qwt3d_python.h>
-#include <qwt3d_numeric.h>
+#include <qwt3d_numpy.h>
 
 
-void qwt3d_import_numeric() {
+void qwt3d_import_numpy() {
     import_array();
 }
 
 
-int try_PyObject_to_NumericArrayContiguousFloat2D(
+int try_PyObject_to_NumPyArrayContiguousFloat2D(
     PyObject *in,
     PyObject **out, double **data, unsigned int *nx, unsigned int *ny)
 {
@@ -58,7 +58,7 @@ int try_PyObject_to_NumericArrayContiguousFloat2D(
 }
 
 
-int try_PyObject_to_NumericArrayContiguousFloat3D(
+int try_PyObject_to_NumPyArrayContiguousFloat3D(
     PyObject *in,
     PyObject **out, double **data, unsigned int *nx, unsigned int *ny, unsigned int *nz)
 {
@@ -84,7 +84,7 @@ int try_PyObject_to_NumericArrayContiguousFloat3D(
     return 1;
 }
 
-#endif // HAS_NUMERIC
+#endif // HAS_NUMPY
 
 // Local Variables:
 // mode: C++

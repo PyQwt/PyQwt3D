@@ -1,5 +1,4 @@
-// qwt3d_python.h:
-// - return a handle to the data of contiguous numarray and Numeric arrays.
+// qwt3d_numeric.h: encapsulates all PyQwt3D's calls to the NumPy C-API.
 //
 // Copyright (C) 2004-2006 Gerard Vermeulen
 //
@@ -20,37 +19,24 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-#ifndef QWT3D_PYTHON_H
-#define QWT3D_PYTHON_H
+#ifndef QWT3D_NUMPY_H
+#define QWT3D_NUMPY_H
 
 #include <Python.h>
 
-#ifdef HAS_NUMARRAY
-// to hide numarray's import_array()
-void qwt3d_import_numarray();
-#endif // HAS_NUMARRAY
-
-#ifdef HAS_NUMERIC
-// to hide Numeric's import_array()
-void qwt3d_import_numeric();
-#endif // HAS_NUMERIC
-
 #ifdef HAS_NUMPY
-// to hide NumPy's import_array()
-void qwt3d_import_numpy();
-#endif // HAS_NUMPY
 
-// returns 1, 0, -1 in case of success, wrong object type, failure
-int try_PyObject_to_PyArrayContiguousFloat2D(
+int try_PyObject_to_NumPyArrayContiguousFloat2D(
     PyObject *in,
     PyObject **out, double **data, unsigned int *nx, unsigned int *ny);
 
-// returns 1, 0, -1 in case of success, wrong object type, failure
-int try_PyObject_to_PyArrayContiguousFloat3D(
+int try_PyObject_to_NumPyArrayContiguousFloat3D(
     PyObject *in,
     PyObject **out, double **data, unsigned int *nx, unsigned int *ny, unsigned int *nz);
 
-#endif // QWT3D_PYTHON_H
+#endif // HAS_NUMPY
+
+#endif // QWT3D_NUMPY_H
 
 // Local Variables:
 // mode: C++
