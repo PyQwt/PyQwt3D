@@ -16,10 +16,6 @@ def stamp(html):
 
     mailRe = re.compile(r'<span class="release-info">(.*)</span>')
 
-##     m = mailRe.search(html)
-##     if m:
-##          print m.groups()
-
     return re.sub(mailRe, replace, html)
 
 # stamp()
@@ -33,3 +29,7 @@ if __name__ == '__main__':
             file = open(name, 'w')
             file.write(text)
             file.close()
+
+# Local Variables: ***
+# mode: python ***
+# End: ***

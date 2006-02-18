@@ -16,6 +16,9 @@ def hide(html):
             list.append('&#%s;' % hex(ord(c))[1:])
     return ''.join(list)
 
+# hide()
+
+
 def filter(html):
     """Filter all dumb robot readable mail anchors from a HTML text"""
 
@@ -31,13 +34,10 @@ def filter(html):
     mailRe = re.compile(
         r'<a (class="ulink" )?href="(mailto:.+)"(?:\n *)?>(.+)</a>', re.M)
 
-##     m = mailRe.search(html)
-##     if m:
-##         print m.groups()
-
     return re.sub(mailRe, replace, html)
 
 # filter()
+
 
 if __name__ == '__main__':
     for name in sys.argv[1:]:
@@ -48,3 +48,7 @@ if __name__ == '__main__':
             file = open(name, 'w')
             file.write(text)
             file.close()
+
+# Local Variables: ***
+# mode: python ***
+# End: ***
