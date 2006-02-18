@@ -1,5 +1,5 @@
 // The SIP interface definition for:
-// - class Mapping
+// - class ParametricSurface
 //
 // Copyright (C) 2004-2006 Gerard Vermeulen
 //
@@ -20,36 +20,28 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Mapping
+class ParametricSurface: GridMapping
 {
 
 %TypeHeaderCode
-#include <qwt3d_mapping.h>
-#include <qwt3d_function.h>
-#include <qwt3d_gridmapping.h>
-class PyFunction;
+#include <qwt3d_parametricsurface.h>
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-%ConvertToSubClassCode
-    // traverse the inheritance tree left->right and bottom->up.
-    if (dynamic_cast<const Function *>(sipCpp))
-        sipClass = sipClass_Function;
-    else if (dynamic_cast<const ParametricSurface *>(sipCpp))
-        sipClass = sipClass_ParametricSurface;
-    else if (dynamic_cast<const GridMapping *>(sipCpp))
-        sipClass = sipClass_GridMapping;
-    else if (dynamic_cast<const Mapping *>(sipCpp))
-        sipClass = sipClass_Mapping;
-    else
-        sipClass = 0;
-%End // ConvertToSubClassCode
+    ParametricSurface();
+    ParametricSurface(SurfacePlot &);
+    ParametricSurface(SurfacePlot *);
 
-    virtual ~Mapping();
-    virtual QString name() const;
+    virtual Triple operator()(double, double) = 0;
 
-}; // class Mapping
+    virtual bool create(SurfacePlot &);
+    virtual bool create();
+    void assign(SurfacePlot &);
+    void assign(SurfacePlot *);
+    void setPeriodic(bool, bool);
+
+}; // class ParametricSurface
 
 
 // Local Variables:

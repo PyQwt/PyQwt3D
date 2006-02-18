@@ -1,5 +1,6 @@
 // The SIP interface definition for:
-// - class Mapping
+// - class Color
+// - class StandardColor
 //
 // Copyright (C) 2004-2006 Gerard Vermeulen
 //
@@ -20,36 +21,49 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Mapping
+class Color
 {
 
 %TypeHeaderCode
-#include <qwt3d_mapping.h>
-#include <qwt3d_function.h>
-#include <qwt3d_gridmapping.h>
-class PyFunction;
+#include <qwt3d_color.h>
+#include <sip_Qwt3DColorVector.h>
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-%ConvertToSubClassCode
-    // traverse the inheritance tree left->right and bottom->up.
-    if (dynamic_cast<const Function *>(sipCpp))
-        sipClass = sipClass_Function;
-    else if (dynamic_cast<const ParametricSurface *>(sipCpp))
-        sipClass = sipClass_ParametricSurface;
-    else if (dynamic_cast<const GridMapping *>(sipCpp))
-        sipClass = sipClass_GridMapping;
-    else if (dynamic_cast<const Mapping *>(sipCpp))
-        sipClass = sipClass_Mapping;
-    else
-        sipClass = 0;
-%End // ConvertToSubClassCode
+    virtual RGBA operator()(double, double, double) const = 0;
+    virtual RGBA operator()(const Triple &) const;
+    virtual ColorVector & createVector(ColorVector &);
+    void destroy() const;
 
-    virtual ~Mapping();
-    virtual QString name() const;
+protected:
+    virtual ~Color();
 
-}; // class Mapping
+}; // class Color
+
+
+class StandardColor: Color
+{
+
+%TypeHeaderCode
+#include <qwt3d_color.h>
+#include <sip_Qwt3DColorVector.h>
+using namespace Qwt3D;
+%End // %TypeHeaderCode
+
+public:
+    StandardColor(Plot3D *, unsigned = 100);
+    virtual RGBA operator()(double, double, double) const;
+    void setColorVector(const ColorVector &);
+    void reset(unsigned = 100);
+    void setAlpha(double);
+    ColorVector & createVector(ColorVector &);
+
+//protected:
+//    ColorVector colors_ /PyName=colors/;
+//    Plot3D * data_ /PyName=data/;
+
+}; // class StandardColor
 
 
 // Local Variables:
