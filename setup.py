@@ -6,7 +6,7 @@ name = 'PyQwt3D'
 version = '0.1.1'
 
 long_description = """
-PyQwt is a set of Python bindings for the QwtPlot3D C++ class library.
+PyQwt3D is a set of Python bindings for the QwtPlot3D C++ class library.
 The QwtPlot3D library (http://qwtplot3d.sourceforge.net) extends the Qt
 framework with widgets to visualize 3-dimensional data.
 """

@@ -17,15 +17,14 @@ LIBDIR := /usr/lib
 
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
 QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.4-beta-patched
+QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.6
 # QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
 
 # To compile and link the zlib sources statically into PyQwt3D.
-ZLIBDIR := $(shell pwd)/zlib-1.2.1
+ZLIBDIR := $(shell pwd)/zlib-1.2.3
 # ZLIBDIR := /home/packer/RPM/BUILD/zlib-1.2.1
 
 # Do not edit below this line, unless you know what you are doing.
-CXX  := $(shell which ccache) $(CXX)
-CC   := $(shell which ccache) $(CC)
 JOBS := $(shell getconf _NPROCESSORS_ONLN)
 
 .PHONY: dist
@@ -34,7 +33,7 @@ JOBS := $(shell getconf _NPROCESSORS_ONLN)
 all: symlinks
 	(cd configure \
 	&& python configure.py -j $(JOBS) -I $(INCDIR) -L $(LIBDIR) \
-	&& $(MAKE) -j $(JOBS) CC="$(CC)" CXX="$(CXX)")
+	&& $(MAKE) -j $(JOBS))
 
 install:
 	(cd configure && make install)
@@ -43,13 +42,13 @@ install:
 all-static: symlinks
 	(cd configure \
 	&& python configure.py -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
-	&& $(MAKE) CC="$(CC)" CXX="$(CXX)")
+	&& $(MAKE))
 
 debug: symlinks
 	(cd configure \
 	&& python configure.py \
 		-Q $(QWT3DDIR) -D PYQWT3D_DEBUG --debug --tracing \
-	&& $(MAKE) CC="$(CC)" CXX="$(CXX)")
+	&& $(MAKE))
 
 symlinks:
 	(ln -sf configure/Qwt3D)

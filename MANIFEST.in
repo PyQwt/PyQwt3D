@@ -1,7 +1,7 @@
 # MANIFEST template file to make a distribution tarball
 
 # Package stuff
-include COPYING* MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
+include COPYING MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
 
 # Documentation
 graft Doc
@@ -23,29 +23,25 @@ recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 graft numpy
 recursive-exclude numpy *cvsignore* *~
 
-# The internal version of QwtPlot3D patched for Qt-2.3.
-graft qwtplot3d-0.2.4-beta-patched
-recursive-exclude qwtplot3d-0.2.4-beta-patched *~
+# QwtPlot3D
+graft qwtplot3d-0.2.6
+recursive-exclude qwtplot3d-0.2.6 *~
 
 # sip files
 graft sip
 recursive-exclude sip *cvsignore* *~
-graft sip0400
-recursive-exclude sip0400 *cvsignore* *~
-graft sip0401
-recursive-exclude sip0401 *cvsignore* *~
-graft sip0402
-recursive-exclude sip0402 *cvsignore* *~
 
-# The zlib-1.2.1 library.
-graft zlib-1.2.1
-prune zlib-1.2.1/amiga
-prune zlib-1.2.1/as400
-prune zlib-1.2.1/contrib
-prune zlib-1.2.1/msdos
-prune zlib-1.2.1/old
-prune zlib-1.2.1/qnx
-prune zlib-1.2.1/win32
+# The zlib-1.2.3 library.
+graft zlib-1.2.3
+prune zlib-1.2.3/amiga
+prune zlib-1.2.3/as400
+prune zlib-1.2.3/contrib
+prune zlib-1.2.3/examples
+prune zlib-1.2.3/msdos
+prune zlib-1.2.3/old
+prune zlib-1.2.3/projects
+prune zlib-1.2.3/qnx
+prune zlib-1.2.3/win32
 
 
 # Local Variables: ***

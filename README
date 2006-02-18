@@ -5,8 +5,7 @@ PyQwt3D is a set of Python bindings for the QwtPlot3D library.
 
 LICENSE
 
-GPL with exceptions for use with non-GPL'ed releases of Qt, PyQt and sip (see
-the file COPYING.PyQwt3D
+GPL. Contact me, if this poses a problem for you. 
 
 
 PREREQUISITES

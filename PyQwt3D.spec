@@ -8,7 +8,7 @@
 %{expand: %%define sipver %(rpm -q sip --qf "%{VERSION}")}
 
 %define name	PyQwt3D
-%define version	0.1
+%define version	0.1.1
 %define release 1
 
 
@@ -45,7 +45,7 @@ framework with widgets to visualize 3-dimensional data.
 %build
 cd configure
 python configure.py -j $(getconf _NPROCESSORS_ONLN) -I /usr/include/qwtplot3d
-make CXX="$(which ccache) g++" -j $(getconf _NPROCESSORS_ONLN)
+make -j $(getconf _NPROCESSORS_ONLN)
 
 %install
 rm -rf %{buildroot}
@@ -64,7 +64,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc COPYING COPYING.PyQwt3D README Doc/html examples
+%doc COPYING README Doc/html examples
 %dir %{_datadir}/sip/Qwt3D
 %{_datadir}/sip/Qwt3D/*
 %dir %{_libdir}/python%{pyver}/site-packages/Qwt3D/
