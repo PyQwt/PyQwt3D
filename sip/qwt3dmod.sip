@@ -38,7 +38,7 @@
 #ifdef HAS_NUMERIC
     qwt3d_import_numeric();
 #endif
-#ifdef HAS_NUMERIC
+#ifdef HAS_NUMPY
     qwt3d_import_numpy();
 #endif
 %End

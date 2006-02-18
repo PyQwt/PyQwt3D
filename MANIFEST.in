@@ -21,7 +21,7 @@ recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 
 # Numerical Python interface
 graft numpy
-recursive-exclude numpy *cvsignore* *~
+recursive-exclude numpy *.py *cvsignore* *~
 
 # QwtPlot3D
 graft qwtplot3d-0.2.6
@@ -29,7 +29,7 @@ recursive-exclude qwtplot3d-0.2.6 *~
 
 # sip files
 graft sip
-recursive-exclude sip *cvsignore* *~
+recursive-exclude sip *.py *cvsignore* *~
 
 # The zlib-1.2.3 library.
 graft zlib-1.2.3
