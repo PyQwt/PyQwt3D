@@ -1,21 +1,15 @@
 #!/usr/bin/env python
 
-if False:
-    from Numeric import *
-else:
-    from numarray import *
+from numarray import *
 
 import sys
 from Qwt3D import *
 from qt import *
 
 # enable all tracing options of the SIP generated bindings (requires -r option)
-try:
+if False:
     import sip
     sip.settracemask(0x3f)
-except ImportError:
-    import libsip
-    libsip.settracemask(0x3f)
 
 
 def matrix2d(nx, ny, minx, maxx, miny, maxy, function):

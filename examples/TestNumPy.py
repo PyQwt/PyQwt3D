@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from Numeric import *
+from numpy import *
 
 import sys
 from Qwt3D import *
