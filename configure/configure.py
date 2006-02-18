@@ -1,34 +1,6 @@
 #!/usr/bin/python
 #
 # Generate the build tree and Makefiles for PyQwt3D.
-#
-# Copyright (C) 2004-2005 Gerard Vermeulen
-#
-# This file is part of PyQwt3D.
-#
-# PyQwt3D is free software; you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 2 of the License, or (at your option) any later
-# version.
-#
-# PyQwt3D is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-# details.
-#
-# You should have received a copy of the GNU General Public License along
-# with PyQwt3D; if not, write to the Free Software Foundation, Inc.,
-# 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
-#
-# In addition, as a special exception, Gerard Vermeulen gives permission to
-# link PyQwt3D dynamically with commercial, non-commercial or educational
-# versions of Qt, PyQt and sip, and distribute PyQwt3D in this form, provided
-# that equally powerful versions of Qt, PyQt and sip have been released under
-# the terms of the GNU General Public License.
-#
-# If PyQwt3D is dynamically linked with commercial, non-commercial or
-# educational versions of Qt, PyQt and sip, PyQwt3D becomes a free plug-in for
-# a non-free program.
 
 
 import compileall
@@ -93,129 +65,135 @@ def copy_files(sources, directory):
 
 
 def generate_init_py(target, configuration):
-    """Generate an __init__.py file to alias helper classes away if needed.
+    """Generate an __init__.py file.
     """
-    version = configuration.sip_version
-    version_str = configuration.sip_version_str
-
     init_py = open(target, 'w')
     init_py.write(os.linesep.join([
         'from _Qwt3D import *',
         '',
         ]))
-    if (version & 0xffff00 < 0x040200):
-        init_py.write(os.linesep.join([
-            '# Alias the helper classes away.',
-            'del PyFunction',
-            'from _Qwt3D import PyFunction as Function',
-            'del PyParametricSurface',
-            'from _Qwt3D import PyParametricSurface as ParametricSurface',
-            '',
-            ]))
 
 # generate_init_py()
     
 
-def check_numarray(configuration, options):
-    """See if the numarray extension has been installed.
-    """
+def check_numarray(configuration, options, package):
+    '''See if the numarray extension has been installed.
+    '''
     if options.disable_numarray:
         options.excluded_features.append("-x HAS_NUMARRAY")
         return options
-       
+
     try:
         import numarray
+
         # Try to find numarray/arrayobject.h.
         numarray_inc = os.path.join(
-            configuration.py_inc_dir, "numarray", "arrayobject.h")
+            configuration.py_inc_dir, 'numarray', 'arrayobject.h')
         if os.access(numarray_inc, os.F_OK):
-            print "Found numarray-%s.\n" % numarray.__version__
-            options.extra_defines.append("HAS_NUMARRAY")
+            print 'Found numarray-%s.\n' % numarray.__version__
+            options.extra_defines.append('HAS_NUMARRAY')
         else:
-            print ("numarray has been installed, "
-                   "but its headers are not in the standard location.\n"
-                   "PyQwt3D will be build without support for numarray.\n"
-                   "(Linux users may have to install a development package)\n"
-                   )
+            print ('numarray has been installed, '
+                   'but its headers are not in the standard location.\n'
+                   '%s will be build without support for numarray.\n'
+                   '(Linux users may have to install a development package)\n'
+                   ) % (package,)
             raise ImportError
     except ImportError:
-        options.excluded_features.append("-x HAS_NUMARRAY")
-        print ("Failed to import numarray: "
-               "PyQwt3D will be build without support for numarray.\n"
-               )
-        
+        options.excluded_features.append('-x HAS_NUMARRAY')
+        print ('Failed to import numarray: '
+               '%s will be build without support for numarray.\n'
+               ) % (package,)
+
     return options
 
 # check_numarray()
 
 
-def check_numeric(configuration, options):
-    """See if the Numeric extension has been installed.
-    """
+def check_numeric(configuration, options, package):
+    '''See if the Numeric extension has been installed.
+    '''
     if options.disable_numeric:
-        options.excluded_features.append("-x HAS_NUMERIC")
+        options.excluded_features.append('-x HAS_NUMERIC')
         return options
-           
+
     try:
         import Numeric
+
         # Try to find Numeric/arrayobject.h.
         numeric_inc = os.path.join(
-            configuration.py_inc_dir, "Numeric", "arrayobject.h")
+            configuration.py_inc_dir, 'Numeric', 'arrayobject.h')
         if os.access(numeric_inc, os.F_OK):
-            print "Found Numeric-%s.\n" % Numeric.__version__
-            options.extra_defines.append("HAS_NUMERIC")
+            print 'Found Numeric-%s.\n' % Numeric.__version__
+            options.extra_defines.append('HAS_NUMERIC')
         else:
-            print ("Numeric has been installed, "
-                   "but its headers are not in the standard location.\n"
-                   "PyQwt3D will be build without support for Numeric.\n"
-                   "(Linux users may have to install a development package)\n"
-                   )
+            print ('Numeric2 has been installed, '
+                   'but its headers are not in the standard location.\n'
+                   '%s will be build without support for Numeric2.\n'
+                   '(Linux users may have to install a development package)\n'
+                   ) % (package,)
             raise ImportError
     except ImportError:
-        options.excluded_features.append("-x HAS_NUMERIC")
-        print ("Failed to find Numeric: "
-               "PyQwt3D will be build without support for Numeric.\n"
-               )
-        
+        options.excluded_features.append('-x HAS_NUMERIC')
+        print ('Failed to find Numeric2: '
+               '%s will be build without support for Numeric.\n'
+               ) % (package,)
+
     return options
 
 # check_numeric()
 
 
-def check_sip(configuration, options):
+def check_numpy(configuration, options, package):
+    '''See if the NumPy extension has been installed.
+    '''
+
+    if options.disable_numpy:
+        options.excluded_features.append('-x HAS_NUMPY')
+        return options
+
+    try:
+        import numpy
+
+        # Try to find numpy/arrayobject.h.
+        from  numpy.distutils.misc_util import get_numpy_include_dirs
+        include_dirs = get_numpy_include_dirs()
+        for inc_dir in include_dirs:
+            header = os.path.join(inc_dir, 'numpy', 'arrayobject.h')
+            if os.access(header, os.F_OK):
+                break
+        else:
+            print ('NumPy has been installed, '
+                   'but its headers are not in the standard location.\n'
+                   '%s will be build without support for NumPy.\n'
+                   '(Linux users may have to install a development package)\n'
+                   ) % (package,)
+            raise ImportError
+        print 'Found NumPy-%s.\n' % numpy.__version__
+        options.extra_defines.append('HAS_NUMPY')
+        options.extra_include_dirs.extend(include_dirs)
+    except ImportError:
+        options.excluded_features.append('-x HAS_NUMPY')
+        print ('Failed to find NumPy: '
+               '%s will be build without support for NumPy.\n'
+               ) % (package,)
+
+    return options
+
+# check_numpy()
+
+
+def check_sip(configuration, options, package):
     """Account for SIP differences with a timeline and an include directory.
     """
     version = configuration.sip_version
     version_str = configuration.sip_version_str
-    required = 'PyQwt3D requires SIP-4.3.x, -4.2.x, -4.1.x, or -4.0.x.'
+    required = '%s requires SIP-4.3.x, or 4.2.1.' % (package,)
     
     print "Found SIP-%s.\n" % version_str
 
-    # SIP-4.3.x and SIP-4.2.1 behave similar for PyQwt3D
     if 0x040200 < version & 0xffffff < 0x040400:
-        options.timelines.append('-t SIP_4_2_1')
-        # SIP assumes POSIX style path separators
-        options.sip_include_dirs.append(
-            "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
-            )
-    elif version & 0xffffff == 0x040200:
-        options.timelines.append('-t SIP_4_2_0')
-        # SIP assumes POSIX style path separators
-        options.sip_include_dirs.append(
-            "-I %s" % os.path.join(os.pardir, 'sip0402').replace('\\', '/')
-            )
-    elif version & 0xffff00 == 0x040100:
-        options.timelines.append('-t SIP_4_1_0')
-        # SIP assumes POSIX style path separators
-        options.sip_include_dirs.append(
-            "-I %s" % os.path.join(os.pardir, 'sip0401').replace('\\', '/')
-            )
-    elif version & 0xffff00 == 0x040000: 
-        options.timelines.append('-t SIP_4_0_0')
-        # SIP assumes POSIX style path separators
-        options.sip_include_dirs.append(
-            "-I %s" % os.path.join(os.pardir, 'sip0400').replace('\\', '/')
-            )
+        pass
     else:
         raise SystemExit, required
 
@@ -224,7 +202,7 @@ def check_sip(configuration, options):
 # check_sip()
 
 
-def check_compiler(configuration, options):
+def check_compiler(configuration, options, package):
     """Adapt to different compilers by means of mutually excluding features
     """
     makefile = sipconfig.Makefile(configuration=configuration)
@@ -241,7 +219,7 @@ def check_compiler(configuration, options):
 # check_compiler()
 
 
-def check_os(configuration, options):
+def check_os(configuration, options, package):
     """Adapt to different operating systems
     """
     print "Found '%s' operating system:" % os.name
@@ -399,6 +377,12 @@ def parse_args():
     detection_options.add_option(
         '--disable-numeric', default=False, action='store_true',
         help='disable detection and use of Numeric [default enabled]')
+    detection_options.add_option(
+        '--disable-numpy',
+        default=False,
+        action='store_true',
+        help='disable detection and use of NumPy [default enabled]'
+        )
     parser.add_option_group(detection_options)
 
     options, args =  parser.parse_args()
@@ -445,6 +429,7 @@ def main():
     print
 
     # initialize
+    package = 'PyQwt3d'
     configuration = pyqtconfig.Configuration()
     build_dir = "Qwt3D"
     tmp_dir = "tmp-" + build_dir
@@ -456,11 +441,12 @@ def main():
     extra_moc_headers = []
 
     # extend the options
-    options = check_sip(configuration, options)
-    options = check_os(configuration, options)
-    options = check_compiler(configuration, options)
-    options = check_numarray(configuration, options)
-    options = check_numeric(configuration, options)
+    options = check_sip(configuration, options, package)
+    options = check_os(configuration, options, package)
+    options = check_compiler(configuration, options, package)
+    options = check_numarray(configuration, options, package)
+    options = check_numeric(configuration, options, package)
+    options = check_numpy(configuration, options, package)
 
     # do we compile and link the sources of QwtPlot3D into PyQwt3D?
     if options.qwtplot3d_sources:
