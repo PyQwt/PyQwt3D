@@ -55,7 +55,7 @@ protected:
     int majors() const;
     int minors() const;
 
-    virtual Scale* clone() const = 0;
+    virtual Scale* clone() const = 0 /Factory/;
     virtual void calculate() = 0;
     virtual int autoscale(double &, double &, double, double, int);
 
@@ -76,7 +76,7 @@ using namespace Qwt3D;
 
 protected:
     int autoscale(double &, double &, double, double, int);
-    Scale* clone() const;
+    Scale* clone() const /Factory/;
     void calculate();
     //LinearAutoScaler autoscaler_p;
 }; // class LinearScale
@@ -94,7 +94,7 @@ protected:
     QString ticLabel(unsigned int) const;
     void setMinors(int);
     LogScale();
-    Scale* clone() const;
+    Scale* clone() const /Factory/;
     void calculate();
 }; // class LogScale
 

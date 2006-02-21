@@ -42,7 +42,7 @@ protected:
         sipClass = 0;
 %End
 
-    virtual AutoScaler* clone() const = 0;
+    virtual AutoScaler* clone() const = 0 /Factory/;
     virtual int execute(double &, double &, double, double, int) = 0;
     virtual ~AutoScaler();
 }; // class AutoScaler
@@ -59,7 +59,7 @@ using namespace Qwt3D;
 protected:
     LinearAutoScaler();
     LinearAutoScaler(DoubleVector &);
-    AutoScaler* clone() const;
+    AutoScaler* clone() const /Factory/;
     int execute(double &, double &, double, double, int);
 }; // class LinearAutoScaler
 

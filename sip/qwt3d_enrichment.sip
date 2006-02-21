@@ -57,7 +57,7 @@ public:
 
     Enrichment();
     virtual ~Enrichment();
-    virtual Enrichment * clone() const = 0;
+    virtual Enrichment * clone() const = 0 /Factory/;
     virtual void drawBegin();
     virtual void drawEnd();
     virtual void assign(const Plot3D &);
@@ -79,7 +79,7 @@ using namespace Qwt3D;
 
 public:
     VertexEnrichment();
-    virtual Enrichment * clone() const = 0;
+    virtual Enrichment * clone() const = 0 /Factory/;
     virtual void draw(const Triple &) = 0;
     virtual TYPE type() const;
 
