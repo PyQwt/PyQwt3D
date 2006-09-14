@@ -26,7 +26,6 @@ class AutoScaler
 
 %TypeHeaderCode
 #include <qwt3d_autoscaler.h>
-#include <sip_Qwt3DDoubleVector.h>
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 
@@ -53,12 +52,13 @@ class LinearAutoScaler: AutoScaler
 
 %TypeHeaderCode
 #include <qwt3d_autoscaler.h>
+#include <sip_Qwt3DDoubleVector.h>
 using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 protected:
     LinearAutoScaler();
-    // FIXME: LinearAutoScaler(DoubleVector &);
+    LinearAutoScaler(DoubleVector &);
     AutoScaler* clone() const /Factory/;
     int execute(double &, double &, double, double, int);
 }; // class LinearAutoScaler
