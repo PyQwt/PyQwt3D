@@ -52,9 +52,12 @@ public:
     } while (i >= 0);
 %End
 
-// FIXME Qt3 and Qt4
-//  Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
+%If (- Qt_4_1_1)
+    Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
+%End // (- Qt_4_1_1) 
+%If (Qt_4_1_1 -)
     Plot3D(QWidget * /TransferThis/ = 0, const QGLWidget * = 0);
+%End // (Qt_4_1_1 -) 
     virtual ~Plot3D();
 
     void updateData();
@@ -117,22 +120,20 @@ public:
 
     void setTitle(const QString &);
 
-    // FIXME
-//     void assignMouse(MouseState, MouseState, MouseState,
-//                      MouseState, MouseState, MouseState,
-//                      MouseState, MouseState, MouseState);
+    void assignMouse(MouseState, MouseState, MouseState,
+                     MouseState, MouseState, MouseState,
+                     MouseState, MouseState, MouseState);
 
     bool mouseEnabled() const;
-    // FIXME
-//     void assignKeyboard(int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int,
-//                         int, int);
+    void assignKeyboard(KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState,
+                        KeyboardState, KeyboardState);
 
     bool keyboardEnabled() const;
     void setKeySpeed(double, double, double);

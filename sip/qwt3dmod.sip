@@ -73,6 +73,7 @@
 %Include qwt3d_openglhelper.sip
 %Include qwt3d_parametricsurface.sip
 %Include qwt3d_plot.sip
+%Include qwt3d_portability.sip
 %Include qwt3d_scale.sip
 %Include qwt3d_surfaceplot.sip
 %Include qwt3d_types.sip
