@@ -11,9 +11,56 @@ import pprint
 import re
 import shutil
 import sys
+import traceback
 
-import sipconfig
-import pyqtconfig
+
+class Die(Exception):
+    def __init__(self, info):
+        Exception.__init__(self, info)
+
+    # __init__()
+
+# class Die
+
+
+try:
+    import sipconfig
+except ImportError:
+    raise Die, 'At least SIP-4.4 and its development tools are required.'
+
+
+def get_pyqt_configuration(options):
+    """Return the PyQt configuration for Qt3 or Qt4
+    """
+    if options.qt == 3:
+        options.qwt = 'qwt5qt3'
+        options.iqt = 'iqt5qt3'
+        try:
+            import pyqtconfig as pyqtconfig
+        except ImportError:
+            raise Die, (
+                'At least PyQt-3.16 and its development tools are required.'
+                )
+    elif options.qt == 4:
+        options.qwt = 'qwt5qt4'
+        options.iqt = 'iqt5qt4'
+        try:
+            import PyQt4.pyqtconfig as pyqtconfig
+        except ImportError:
+            raise Die, (
+                'At least PyQt-3.16 and its development tools are required.'
+                )
+
+    try:
+        configuration = pyqtconfig.Configuration()
+    except AttributeError:
+        raise Die, (
+            'Check if SIP and PyQt or PyQt4 have been installed properly.'
+            )
+
+    return configuration
+
+# get_pyqt_configuration()
 
 
 def lazy_copy_file(source, target):
@@ -192,7 +239,7 @@ def check_sip(configuration, options, package):
     
     print "Found SIP-%s.\n" % version_str
 
-    if 0x040200 < version & 0xffffff < 0x040400:
+    if 0x040200 < version & 0xffffff < 0x040500:
         pass
     else:
         raise SystemExit, required
@@ -288,6 +335,13 @@ def parse_args():
     parser = optparse.OptionParser(usage=usage)
 
     common_options = optparse.OptionGroup(parser, 'Common options')
+    common_options.add_option(
+        '-3', '--qt3', action='store_const', const=3, dest='qt',
+        help=('build for Qt3 and PyQt [default Qt4]'))
+    common_options.add_option(
+        '-4', '--qt4', action='store_const', const=4, dest='qt',
+        default=4,
+        help=('build for Qt4 and PyQt4 [default Qt4]'))
     common_options.add_option(
         '-Q', '--qwtplot3d-sources', default='', action='store',
         type='string', metavar='/sources/of/qwtplot3d',
@@ -428,9 +482,10 @@ def main():
     pprint.pprint(options.__dict__)
     print
 
+    configuration = get_pyqt_configuration(options)
+
     # initialize
     package = 'PyQwt3d'
-    configuration = pyqtconfig.Configuration()
     build_dir = "Qwt3D"
     tmp_dir = "tmp-" + build_dir
     build_file = os.path.join(tmp_dir, "qwt3d.sbf")
@@ -516,6 +571,11 @@ def main():
             if -1 != text.find('../3rdparty/gl2ps/'): 
                 open(source, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
 
+    try: # Qt4
+        pyqt_sip_flags = configuration.pyqt_sip_flags
+    except AttributeError: # Qt3
+        pyqt_sip_flags = configuration.pyqt_qt_sip_flags
+        
     # invoke SIP
     cmd = " ".join(
         [configuration.sip_bin,
@@ -526,7 +586,7 @@ def main():
          "-c", tmp_dir,
          options.jobs,
          options.tracing,
-         configuration.pyqt_qt_sip_flags,
+         pyqt_sip_flags,
          ]
         + options.sip_include_dirs
         + options.excluded_features
@@ -594,17 +654,34 @@ def main():
                 os.path.join(directory, "*.sip"))], sip_dir])
 
     # module makefile
-    makefile = sipconfig.ModuleMakefile(
-        configuration = configuration,
-        build_file = os.path.basename(build_file),
-        dir = build_dir,
-        install_dir = mod_dir,
-        installs = installs,
-        qt = 1,
-        opengl = 1,
-        warnings = 1,
-        debug = options.debug,
-        )
+    if options.qt == 3:
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = mod_dir,
+            installs = installs,
+            qt = 1,
+            opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+    elif options.qt == 4:
+        # FIXME
+        options.extra_include_dirs.append(
+            os.path.join(configuration.qt_inc_dir, 'Qt'))
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = mod_dir,
+            installs = installs,
+            qt = ['QtCore', 'QtGui', 'QtOpenGL'],
+            #        opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+
     makefile.extra_cflags.extend(options.extra_cflags)
     makefile.extra_cxxflags.extend(options.extra_cxxflags)
     makefile.extra_defines.extend(options.extra_defines)

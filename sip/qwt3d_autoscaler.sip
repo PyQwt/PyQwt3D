@@ -58,7 +58,7 @@ using namespace Qwt3D;
 
 protected:
     LinearAutoScaler();
-    LinearAutoScaler(DoubleVector &);
+    // FIXME: LinearAutoScaler(DoubleVector &);
     AutoScaler* clone() const /Factory/;
     int execute(double &, double &, double, double, int);
 }; // class LinearAutoScaler

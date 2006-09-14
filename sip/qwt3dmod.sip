@@ -24,8 +24,9 @@
 %Include features.sip
 %Include types.sip
 
-%Import qt/qtmod.sip
-%Import qtgl/qtglmod.sip
+%Import QtCore/QtCoremod.sip
+%Import QtGui/QtGuimod.sip
+%Import QtOpenGL/QtOpenGLmod.sip
 
 %ModuleHeaderCode
 #include <qwt3d_python.h>
@@ -68,6 +69,7 @@
 %Include qwt3d_io_reader.sip
 %Include qwt3d_label.sip
 %Include qwt3d_mapping.sip
+%Include qwt3d_opengl.sip
 %Include qwt3d_openglhelper.sip
 %Include qwt3d_parametricsurface.sip
 %Include qwt3d_plot.sip

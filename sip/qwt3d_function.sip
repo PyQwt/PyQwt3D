@@ -20,7 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Function: GridMapping
+class Function: GridMapping /Abstract/
 {
 
 %TypeHeaderCode
@@ -32,6 +32,7 @@ public:
     Function();
     Function(SurfacePlot &);
     Function(SurfacePlot *);
+    virtual ~Function();
 
     virtual double operator()(double, double) = 0;
 

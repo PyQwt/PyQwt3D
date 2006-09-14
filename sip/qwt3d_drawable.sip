@@ -20,7 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Drawable
+class Drawable /Abstract/
 {
 
 %TypeHeaderCode
@@ -46,7 +46,7 @@ public:
         sipClass = 0;
 %End
 
-    virtual ~Drawable();
+    virtual ~Drawable() /* = 0 */;
 
     virtual void draw();
 

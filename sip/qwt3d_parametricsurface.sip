@@ -20,7 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class ParametricSurface: GridMapping
+class ParametricSurface: GridMapping /Abstract/
 {
 
 %TypeHeaderCode

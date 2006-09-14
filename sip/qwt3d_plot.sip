@@ -30,21 +30,31 @@ using namespace Qwt3D;
 
 public:
 
-//%If (NO_MSVC)
 %ConvertToSubClassCode
-    // The table of Python class objects indexed by their names.
-    // The table must be sorted by name.
-    static sipStringTypeClassMap map[] = {
-        { sipName_Plot3D, &sipClass_Plot3D },
-        { sipName_SurfacePlot, &sipClass_SurfacePlot },
+    static struct class_graph {
+        char *name;
+        sipWrapperType **type;
+        int yes, no;
+    } graph[] = {
+        {sipName_Plot3D, &sipClass_Plot3D, 1, -1},
+        {sipName_SurfacePlot, &sipClass_SurfacePlot, -1, -1},
     };
+    int i = 0;
+    sipClass = NULL;
+    do {
+        struct class_graph *cg = &graph[i];
+        if (cg->name != NULL && sipCpp->inherits(cg->name)) {
+            sipClass = *cg->type;
+            i = cg->yes;
+        } else {
+            i = cg->no;
+        }
+    } while (i >= 0);
+%End
 
-    sipClass = sipMapStringToClass(
-        sipCpp->className(), map, sizeof(map)/sizeof(map[0]));
-%End // ConvertToSubClassCode
-//%End
-
-    Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
+// FIXME Qt3 and Qt4
+//  Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
+    Plot3D(QWidget * /TransferThis/ = 0, const QGLWidget * = 0);
     virtual ~Plot3D();
 
     void updateData();
@@ -107,20 +117,22 @@ public:
 
     void setTitle(const QString &);
 
-    void assignMouse(int, int, int,
-                     int, int, int,
-                     int, int, int);
+    // FIXME
+//     void assignMouse(MouseState, MouseState, MouseState,
+//                      MouseState, MouseState, MouseState,
+//                      MouseState, MouseState, MouseState);
 
     bool mouseEnabled() const;
-    void assignKeyboard(int, int,
-                        int, int,
-                        int, int,
-                        int, int,
-                        int, int,
-                        int, int,
-                        int, int,
-                        int, int,
-                        int, int);
+    // FIXME
+//     void assignKeyboard(int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int,
+//                         int, int);
 
     bool keyboardEnabled() const;
     void setKeySpeed(double, double, double);
