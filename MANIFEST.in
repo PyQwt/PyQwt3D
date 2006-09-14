@@ -1,7 +1,7 @@
 # MANIFEST template file to make a distribution tarball
 
 # Package stuff
-include COPYING MANIFEST.in Makefile PyQwt3D.spec THANKS TODO
+include COPYING MANIFEST.in GNUmakefile PyQwt3D.spec THANKS TODO
 
 # Documentation
 graft Doc
