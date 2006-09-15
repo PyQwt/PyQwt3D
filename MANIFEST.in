@@ -23,6 +23,11 @@ recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 graft numpy
 recursive-exclude numpy *.py *cvsignore* *~
 
+# Qt4 examples
+graft qt4examples
+prune qt4examples/Qwt3D
+recursive-exclude qt4examples *.html *.pdf *.png *.pyc *cvsignore* *~
+
 # QwtPlot3D
 graft qwtplot3d-0.2.6
 recursive-exclude qwtplot3d-0.2.6 *~
