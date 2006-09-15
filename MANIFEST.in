@@ -10,13 +10,14 @@ recursive-exclude Doc *cvsignore* *~
 
 # configure
 graft configure
-prune configure/Qwt3D
-prune configure/tmp-Qwt3D
+prune configure/Qwt3D_Qt3
+prune configure/Qwt3D_Qt4
+prune configure/tmp-Qwt3D_Qt3
+prune configure/tmp-Qwt3D_Qt4
 recursive-exclude configure Makefile *.pyc *cvsignore* *~
 
 # examples
 graft examples
-prune examples/Qwt3D
 recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 
 # Numerical Python interface
@@ -25,7 +26,6 @@ recursive-exclude numpy *.py *cvsignore* *~
 
 # Qt4 examples
 graft qt4examples
-prune qt4examples/Qwt3D
 recursive-exclude qt4examples *.html *.pdf *.png *.pyc *cvsignore* *~
 
 # QwtPlot3D
