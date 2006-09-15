@@ -20,7 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Function: GridMapping /Abstract/
+class Function: GridMapping
 {
 
 %TypeHeaderCode
@@ -43,6 +43,12 @@ public:
     virtual bool create();
     void assign(SurfacePlot &);
     void assign(SurfacePlot *);
+
+private:
+    // ?? SIP-bug: a regression with respect to SIP-4.3.x ??
+    // This class is not recognized as abstract
+    // The code for Qt-4 does not compile unless a private copy constructor
+    Function(const Function&);
 
 }; // class Function
 

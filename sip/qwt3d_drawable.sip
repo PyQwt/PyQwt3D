@@ -20,7 +20,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-class Drawable /Abstract/
+class Drawable
 {
 
 %TypeHeaderCode
@@ -46,6 +46,7 @@ public:
         sipClass = 0;
 %End
 
+    // ?? SIP-bug: a regression with respect to SIP-4.3.x ??
     virtual ~Drawable() /* = 0 */;
 
     virtual void draw();
@@ -66,6 +67,12 @@ protected:
     void Enable(GLenum, GLboolean);
     Triple ViewPort2World(Triple, bool * = 0);
     Triple World2ViewPort(Triple, bool * = 0);
+
+private:
+    // ?? SIP-bug: a regression with respect to SIP-4.3.x ??
+    // This class is not recognized as abstract
+    // The code for Qt-4 does not compile unless a private copy constructor
+    Drawable(const Drawable&);
 
 }; // class Drawable
 
