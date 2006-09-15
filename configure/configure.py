@@ -257,10 +257,7 @@ def check_compiler(configuration, options, package):
     generator = makefile.optional_string('MAKEFILE_GENERATOR', 'UNIX')
     # FIXME: 'MSVC' should be worse than 'MSVC.NET'
     if generator in ['MSVC', 'MSVC.NET']:
-        options.excluded_features.append('-x NO_MSVC')
         options.extra_cxxflags.extend(['-GR', '-GX'])
-    else:
-        options.excluded_features.append('-x IS_MSVC')
     
     return options
 
