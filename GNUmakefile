@@ -16,7 +16,6 @@ INCDIR := /usr/include/qwtplot3d
 LIBDIR := /usr/lib
 
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
-QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.4-beta-patched
 QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.6
 # QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
 
@@ -26,34 +25,41 @@ ZLIBDIR := $(shell pwd)/zlib-1.2.3
 
 # Do not edit below this line, unless you know what you are doing.
 JOBS := $(shell getconf _NPROCESSORS_ONLN)
+UNAME := $(shell uname)
+
+ifeq ($(UNAME),Linux)
+JOBS := $(shell getconf _NPROCESSORS_ONLN)
+endif
+
+ifeq ($(UNAME),Darwin)
+JOBS := $(shell sysctl -n hw.ncpu)
+endif
 
 .PHONY: dist
 
-# Build and link PyQwt3D against a shared Qwt3D library.
-all: symlinks
-	(cd configure \
-	&& python configure.py -j $(JOBS) -I $(INCDIR) -L $(LIBDIR) \
-	&& $(MAKE) -j $(JOBS))
-
-install:
-	(cd configure && make install)
-
 # Build and link PyQwt3D including the local source tree of Qwt3D.
-all-static: symlinks
-	(cd configure \
-	&& python configure.py -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
-	&& $(MAKE))
+all: 3 4
 
-debug: symlinks
-	(cd configure \
-	&& python configure.py \
-		-Q $(QWT3DDIR) -D PYQWT3D_DEBUG --debug --tracing \
-	&& $(MAKE))
+3:
+	cd configure \
+	&& python configure.py -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
+	&& $(MAKE)
 
-symlinks:
-	(ln -sf configure/Qwt3D)
-	(cd examples && ln -sf ../configure/Qwt3D)
+4:
+	cd configure \
+	&& python configure.py -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
+	&& $(MAKE)
 
+# Installation
+install-3: 3
+	make -C configure install
+
+install-4: 4
+	make -C configure install
+
+install: install-3 install-4
+
+# Documentation
 doc:
 	(cd Doc && make doc && make htdoc)
 

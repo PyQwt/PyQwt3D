@@ -19,14 +19,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-%Module _Qwt3D 0
-
 %Include features.sip
 %Include types.sip
 
-%Import QtCore/QtCoremod.sip
-%Import QtGui/QtGuimod.sip
-%Import QtOpenGL/QtOpenGLmod.sip
 
 %ModuleHeaderCode
 #include <qwt3d_python.h>

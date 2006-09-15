@@ -33,8 +33,8 @@ def get_pyqt_configuration(options):
     """Return the PyQt configuration for Qt3 or Qt4
     """
     if options.qt == 3:
-        options.qwt = 'qwt5qt3'
-        options.iqt = 'iqt5qt3'
+        options.qwt3d = 'Qwt3D_Qt3'
+        options.excluded_features.append("-x HAS_QT4")
         try:
             import pyqtconfig as pyqtconfig
         except ImportError:
@@ -42,14 +42,15 @@ def get_pyqt_configuration(options):
                 'At least PyQt-3.16 and its development tools are required.'
                 )
     elif options.qt == 4:
-        options.qwt = 'qwt5qt4'
-        options.iqt = 'iqt5qt4'
+        options.qwt3d = 'Qwt3D_Qt4'
+        options.excluded_features.append("-x HAS_QT3")
         try:
             import PyQt4.pyqtconfig as pyqtconfig
         except ImportError:
             raise Die, (
                 'At least PyQt-3.16 and its development tools are required.'
                 )
+    options.subdirs.append(options.qwt3d)
 
     try:
         configuration = pyqtconfig.Configuration()
@@ -320,6 +321,231 @@ def fix_build_file(name, extra_sources, extra_headers, extra_moc_headers):
 # fix_build_file()
 
 
+def setup_qwt3d_build(configuration, options, package):
+    '''Setup the Qwt3D extension build
+    '''
+
+    print 'Setup the Qwt3D package build.'
+
+    # initialize
+    build_dir = options.qwt3d
+    tmp_dir = "tmp-%s" % options.qwt3d
+    build_file = os.path.join(tmp_dir, "qwt3d.sbf")
+    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
+    extra_sources = []
+    extra_headers = []
+    extra_moc_headers = []
+
+
+    # do we compile and link the sources of QwtPlot3D into PyQwt3D?
+    if options.qwtplot3d_sources:
+        # yes, zap all 'qwtplot3d'
+        while options.extra_libs.count('qwtplot3d'):
+            options.extra_libs.remove('qwtplot3d')
+    elif 'qwtplot3d' not in options.extra_libs:
+        # no, add 'qwtplot3d' if needed
+        options.extra_libs.append('qwtplot3d')
+
+    # do we also compile and link the sources of zlib into PyQwt3D?
+    if options.zlib_sources:
+        options.extra_defines.append('GL2PS_HAVE_ZLIB')
+
+    print "Extended options:"
+    pprint.pprint(options.__dict__)
+    print
+    
+    # do we compile and link the sources of QwtPlot3D statically into PyQwt3D?
+    if options.qwtplot3d_sources:
+        extra_sources += glob.glob(os.path.join(
+            options.qwtplot3d_sources, 'src', '*.cpp'))
+        extra_sources += glob.glob(os.path.join(
+            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.c'))
+        extra_headers += glob.glob(os.path.join(
+            options.qwtplot3d_sources, 'include', '*.h'))
+        extra_headers += glob.glob(os.path.join(
+            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.h'))
+        extra_moc_headers = []
+        for header in extra_headers:
+            text = open(header).read()
+            if re.compile(r'^\s*Q_OBJECT', re.M).search(text):
+                extra_moc_headers.append(header)
+
+    # do we compile and link the sources of zlib statically into PyQwt3D?
+    if options.zlib_sources:
+        examples = ('example.c', 'minigzip.c')
+        for source in glob.glob(os.path.join(options.zlib_sources, '*.c')):
+            if os.path.basename(source) not in examples:
+                extra_sources.append(source)
+        extra_headers += glob.glob(os.path.join(
+            options.zlib_sources, '*.h'))
+
+    # add the interface to the numerical Python extensions
+    extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
+    extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
+
+    # put all code into a clean temporary directory
+    try:
+        shutil.rmtree(tmp_dir)
+    except:
+        pass
+    try:
+        os.mkdir(tmp_dir)
+    except:
+        raise SystemExit, "Failed to create the temporary build directory"
+
+    # copy the extra files
+    copy_files(extra_sources, tmp_dir)
+    copy_files(extra_headers, tmp_dir)
+    copy_files(extra_moc_headers, tmp_dir)
+
+    # fix '#include "gl2ps".h' because gl2ps.h got relocated 
+    if options.qwtplot3d_sources:
+        for source in [os.path.join(tmp_dir, 'qwt3d_io_gl2ps.cpp')]:
+            text = open(source).read()
+            if -1 != text.find('../3rdparty/gl2ps/'): 
+                open(source, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
+
+    if options.qt == 3:
+        pyqt_sip_flags = configuration.pyqt_qt_sip_flags
+        sipfile = os.path.join(
+            os.pardir, "sip", "Qwt3D_Qt3_Module.sip")
+    elif options.qt == 4:
+        pyqt_sip_flags = configuration.pyqt_sip_flags
+        sipfile = os.path.join(
+            os.pardir, "sip", "Qwt3D_Qt4_Module.sip")
+        
+    # invoke SIP
+    cmd = " ".join(
+        [configuration.sip_bin,
+         # SIP assumes POSIX style path separators
+         #"-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
+         "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
+         "-b", build_file,
+         "-c", tmp_dir,
+         options.jobs,
+         options.trace,
+         pyqt_sip_flags,
+         ]
+        + options.sip_include_dirs
+        + options.excluded_features
+        + options.timelines
+        # SIP assumes POSIX style path separators
+        + [sipfile.replace("\\", "/")]
+        )
+
+    print "sip invokation:"
+    pprint.pprint(cmd)
+    print
+
+    if os.path.exists(build_file):
+        os.remove(build_file)
+    os.system(cmd)
+    if not os.path.exists(build_file):
+        raise SystemExit, 'SIP failed to generate the C++ code.'
+
+    # fix the SIP build file
+    fix_build_file(build_file,
+                   [os.path.basename(f) for f in extra_sources],
+                   [os.path.basename(f) for f in extra_headers],
+                   [os.path.basename(f) for f in extra_moc_headers])
+    
+    # Windows fix: resolve the scope of POINTS in enumValues[]
+    for source in glob.glob(os.path.join(tmp_dir, '*.cpp')):
+        text = open(source).read()
+        # sipNm__Qwt3D_POINTS changed between: SIP-4.2 and SIP-4.2.1
+        if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS')):
+                text = text.replace('{sipNm__Qwt3D_POINTS, POINTS',
+                                    '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS')
+                open(source, 'w').write(text)
+
+    # generate __init__.py'
+    generate_init_py(os.path.join(tmp_dir, '__init__.py'), configuration)
+
+    # copy lazily to the build directory to speed up recompilation
+    if not os.path.exists(build_dir):
+        try:
+            os.mkdir(build_dir)
+        except:
+            raise SystemExit, "Failed to create the build directory"
+
+    lazy_copies = 0
+    for pattern in ('*.c', '*.cpp', '*.h', '*.py', '*.sbf'):
+        for source in glob.glob(os.path.join(tmp_dir, pattern)):
+            target = os.path.join(build_dir, os.path.basename(source))
+            if lazy_copy_file(source, target):
+                print "Copy %s -> %s." % (source, target)
+                lazy_copies += 1
+    print "%s file(s) lazily copied." % lazy_copies
+
+    # byte-compile the Python files
+    compileall.compile_dir(build_dir, 1, options.module_install_path)
+
+    # files to be installed
+    installs = []
+    installs.append([[os.path.basename(f) for f in glob.glob(
+        os.path.join(build_dir, '*.py*'))], options.module_install_path])
+    for option in options.sip_include_dirs:
+        # split and undo the POSIX style path separator
+        directory = option.split()[-1].replace('/', os.sep)
+        if directory.startswith(os.pardir):
+            installs.append([[os.path.join(os.pardir, f) for f in glob.glob(
+                os.path.join(directory, "*.sip"))], sip_dir])
+
+    # module makefile
+    if options.qt == 3:
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = options.module_install_path,
+            installs = installs,
+            qt = 1,
+            opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+    elif options.qt == 4:
+        # FIXME
+        options.extra_include_dirs.append(
+            os.path.join(configuration.qt_inc_dir, 'Qt'))
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = options.module_install_path,
+            installs = installs,
+            qt = ['QtCore', 'QtGui', 'QtOpenGL'],
+            #        opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+
+    makefile.extra_cflags.extend(options.extra_cflags)
+    makefile.extra_cxxflags.extend(options.extra_cxxflags)
+    makefile.extra_defines.extend(options.extra_defines)
+    makefile.extra_include_dirs.extend(options.extra_include_dirs)
+    makefile.extra_lflags.extend(options.extra_lflags)
+    makefile.extra_libs.extend(options.extra_libs)
+    makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
+    if configuration.sip_version < 0x040000:
+        makefile.extra_libs.insert(0, makefile.module_as_lib('qt'))
+        makefile.extra_libs.insert(0, makefile.module_as_lib('qtgl'))
+    makefile.generate()
+
+# setup_qwt3d_build()
+
+    
+def setup_parent_build(configuration, options):
+    """Generate the parent Makefile
+    """
+    print "Setup the PyQwt3D build."
+     
+    sipconfig.ParentMakefile(configuration = configuration,
+                             subdirs = options.subdirs).generate()
+
+# setup_parent_build()
+
+
 def parse_args():
     """Return the parsed options and args from the command line
     """
@@ -419,8 +645,8 @@ def parse_args():
         action='append', type='string', metavar='SIP_INCLUDE_DIR',
         help='add an extra directory for SIP to search')
     sip_options.add_option(
-        '--tracing', default=False, action='store_true',
-        help=('enable tracing of the execution of the bindings'
+        '--trace', default=False, action='store_true',
+        help=('enable trace of the execution of the bindings'
               ' [default disabled]'))
     parser.add_option_group(sip_options)
     
@@ -438,6 +664,13 @@ def parse_args():
         help='disable detection and use of NumPy [default enabled]'
         )
     parser.add_option_group(detection_options)
+
+    install_options = optparse.OptionGroup(parser, 'Install options')
+    install_options.add_option(
+        '--module-install-path', default='', action='store',
+        help= 'specify the install directory for the Python modules'
+        )
+    parser.add_option_group(install_options)
 
     options, args =  parser.parse_args()
     
@@ -460,13 +693,22 @@ def parse_args():
         ('-t %s' % t) for t in options.timelines
         ]
 
-    if options.tracing:
-        options.tracing = '-r'
+    if options.trace:
+        options.trace = '-r'
     else:
-        options.tracing = ''
+        options.trace = ''
         
     if options.qwtplot3d_sources == '':
         options.zlib_sources = ''
+
+    if options.trace:
+        options.trace = '-r'
+        options.extra_defines.append('TRACE_PYQWT3D')
+    else:
+        options.trace = ''
+
+    options.modules = []
+    options.subdirs = []
 
     return options, args
 
@@ -484,221 +726,23 @@ def main():
 
     configuration = get_pyqt_configuration(options)
 
-    # initialize
-    package = 'PyQwt3d'
-    build_dir = "Qwt3D"
-    tmp_dir = "tmp-" + build_dir
-    build_file = os.path.join(tmp_dir, "qwt3d.sbf")
-    mod_dir = os.path.join(configuration.default_mod_dir, 'Qwt3D')
-    sip_dir = os.path.join(configuration.pyqt_sip_dir, 'Qwt3D')
-    extra_sources = []
-    extra_headers = []
-    extra_moc_headers = []
-
     # extend the options
-    options = check_sip(configuration, options, package)
-    options = check_os(configuration, options, package)
-    options = check_compiler(configuration, options, package)
-    options = check_numarray(configuration, options, package)
-    options = check_numeric(configuration, options, package)
-    options = check_numpy(configuration, options, package)
+    options = check_sip(configuration, options, 'PyQwt3D')
+    options = check_os(configuration, options, 'PyQwt3D')
+    options = check_compiler(configuration, options, 'PyQwt3D')
+    options = check_numarray(configuration, options, 'PyQwt3D')
+    options = check_numeric(configuration, options, 'PyQwt3D')
+    options = check_numpy(configuration, options, 'PyQwt3D')
+    if not options.module_install_path:
+        options.module_install_path = os.path.join(
+            configuration.pyqt_mod_dir, 'Qwt3D')
 
-    # do we compile and link the sources of QwtPlot3D into PyQwt3D?
-    if options.qwtplot3d_sources:
-        # yes, zap all 'qwtplot3d'
-        while options.extra_libs.count('qwtplot3d'):
-            options.extra_libs.remove('qwtplot3d')
-    elif 'qwtplot3d' not in options.extra_libs:
-        # no, add 'qwtplot3d' if needed
-        options.extra_libs.append('qwtplot3d')
-
-    # do we also compile and link the sources of zlib into PyQwt3D?
-    if options.zlib_sources:
-        options.extra_defines.append('GL2PS_HAVE_ZLIB')
-
-    print "Extended options:"
-    pprint.pprint(options.__dict__)
-    print
-    
-    # do we compile and link the sources of QwtPlot3D statically into PyQwt3D?
-    if options.qwtplot3d_sources:
-        extra_sources += glob.glob(os.path.join(
-            options.qwtplot3d_sources, 'src', '*.cpp'))
-        extra_sources += glob.glob(os.path.join(
-            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.c'))
-        extra_headers += glob.glob(os.path.join(
-            options.qwtplot3d_sources, 'include', '*.h'))
-        extra_headers += glob.glob(os.path.join(
-            options.qwtplot3d_sources, '3rdparty', 'gl2ps', '*.h'))
-        extra_moc_headers = []
-        for header in extra_headers:
-            text = open(header).read()
-            if re.compile(r'^\s*Q_OBJECT', re.M).search(text):
-                extra_moc_headers.append(header)
-
-    # do we compile and link the sources of zlib statically into PyQwt3D?
-    if options.zlib_sources:
-        examples = ('example.c', 'minigzip.c')
-        for source in glob.glob(os.path.join(options.zlib_sources, '*.c')):
-            if os.path.basename(source) not in examples:
-                extra_sources.append(source)
-        extra_headers += glob.glob(os.path.join(
-            options.zlib_sources, '*.h'))
-
-    # add the interface to the numerical Python extensions
-    extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
-    extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
-
-    # put all code into a clean temporary directory
-    try:
-        shutil.rmtree(tmp_dir)
-    except:
-        pass
-    try:
-        os.mkdir(tmp_dir)
-    except:
-        raise SystemExit, "Failed to create the temporary build directory"
-
-    # copy the extra files
-    copy_files(extra_sources, tmp_dir)
-    copy_files(extra_headers, tmp_dir)
-    copy_files(extra_moc_headers, tmp_dir)
-
-    # fix '#include "gl2ps".h' because gl2ps.h got relocated 
-    if options.qwtplot3d_sources:
-        for source in [os.path.join(tmp_dir, 'qwt3d_io_gl2ps.cpp')]:
-            text = open(source).read()
-            if -1 != text.find('../3rdparty/gl2ps/'): 
-                open(source, 'w').write(text.replace('../3rdparty/gl2ps/', ''))
-
-    try: # Qt4
-        pyqt_sip_flags = configuration.pyqt_sip_flags
-    except AttributeError: # Qt3
-        pyqt_sip_flags = configuration.pyqt_qt_sip_flags
-        
-    # invoke SIP
-    cmd = " ".join(
-        [configuration.sip_bin,
-         # SIP assumes POSIX style path separators
-         #"-I", os.path.join(os.pardir, "sip").replace("\\", "/"),
-         "-I", configuration.pyqt_sip_dir.replace("\\", "/"),
-         "-b", build_file,
-         "-c", tmp_dir,
-         options.jobs,
-         options.tracing,
-         pyqt_sip_flags,
-         ]
-        + options.sip_include_dirs
-        + options.excluded_features
-        + options.timelines
-        # SIP assumes POSIX style path separators
-        + [os.path.join(os.pardir, "sip", "qwt3dmod.sip").replace("\\", "/")]
-        )
-
-    print "sip invokation:"
-    pprint.pprint(cmd)
-    print
-
-    if os.path.exists(build_file):
-        os.remove(build_file)
-    os.system(cmd)
-    if not os.path.exists(build_file):
-        raise SystemExit, 'SIP failed to generate the C++ code.'
-
-    # fix the SIP build file
-    fix_build_file(build_file,
-                   [os.path.basename(f) for f in extra_sources],
-                   [os.path.basename(f) for f in extra_headers],
-                   [os.path.basename(f) for f in extra_moc_headers])
-    
-    # Windows fix: resolve the scope of POINTS in enumValues[]
-    for source in glob.glob(os.path.join(tmp_dir, '*.cpp')):
-        text = open(source).read()
-        # sipNm__Qwt3D_POINTS changed between: SIP-4.2 and SIP-4.2.1
-        if (-1 != text.find('{sipNm__Qwt3D_POINTS, POINTS')):
-                text = text.replace('{sipNm__Qwt3D_POINTS, POINTS',
-                                    '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS')
-                open(source, 'w').write(text)
-
-    # generate __init__.py'
-    generate_init_py(os.path.join(tmp_dir, '__init__.py'), configuration)
-
-    # copy lazily to the build directory to speed up recompilation
-    if not os.path.exists(build_dir):
-        try:
-            os.mkdir(build_dir)
-        except:
-            raise SystemExit, "Failed to create the build directory"
-
-    lazy_copies = 0
-    for pattern in ('*.c', '*.cpp', '*.h', '*.py', '*.sbf'):
-        for source in glob.glob(os.path.join(tmp_dir, pattern)):
-            target = os.path.join(build_dir, os.path.basename(source))
-            if lazy_copy_file(source, target):
-                print "Copy %s -> %s." % (source, target)
-                lazy_copies += 1
-    print "%s file(s) lazily copied." % lazy_copies
-
-    # byte-compile the Python files
-    compileall.compile_dir(build_dir, 1, mod_dir)
-
-    # files to be installed
-    installs = []
-    installs.append([[os.path.basename(f) for f in glob.glob(
-        os.path.join(build_dir, '*.py*'))], mod_dir])
-    for option in options.sip_include_dirs:
-        # split and undo the POSIX style path separator
-        directory = option.split()[-1].replace('/', os.sep)
-        if directory.startswith(os.pardir):
-            installs.append([[os.path.join(os.pardir, f) for f in glob.glob(
-                os.path.join(directory, "*.sip"))], sip_dir])
-
-    # module makefile
-    if options.qt == 3:
-        makefile = sipconfig.ModuleMakefile(
-            configuration = configuration,
-            build_file = os.path.basename(build_file),
-            dir = build_dir,
-            install_dir = mod_dir,
-            installs = installs,
-            qt = 1,
-            opengl = 1,
-            warnings = 1,
-            debug = options.debug,
-            )
-    elif options.qt == 4:
-        # FIXME
-        options.extra_include_dirs.append(
-            os.path.join(configuration.qt_inc_dir, 'Qt'))
-        makefile = sipconfig.ModuleMakefile(
-            configuration = configuration,
-            build_file = os.path.basename(build_file),
-            dir = build_dir,
-            install_dir = mod_dir,
-            installs = installs,
-            qt = ['QtCore', 'QtGui', 'QtOpenGL'],
-            #        opengl = 1,
-            warnings = 1,
-            debug = options.debug,
-            )
-
-    makefile.extra_cflags.extend(options.extra_cflags)
-    makefile.extra_cxxflags.extend(options.extra_cxxflags)
-    makefile.extra_defines.extend(options.extra_defines)
-    makefile.extra_include_dirs.extend(options.extra_include_dirs)
-    makefile.extra_lflags.extend(options.extra_lflags)
-    makefile.extra_libs.extend(options.extra_libs)
-    makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
-    if configuration.sip_version < 0x040000:
-        makefile.extra_libs.insert(0, makefile.module_as_lib('qt'))
-        makefile.extra_libs.insert(0, makefile.module_as_lib('qtgl'))
-    makefile.generate()
+    setup_qwt3d_build(configuration, options, 'PyQwt3D')
 
     # main makefile
     sipconfig.ParentMakefile(
         configuration = configuration,
-        subdirs = [build_dir],
-    ).generate()
+        subdirs = options.subdirs).generate()
 
 # main()
 

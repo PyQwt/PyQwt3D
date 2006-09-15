@@ -21,13 +21,13 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-%If (- Qt_4_1_1)
+%If (HAS_QT3)
 typedef int MouseState;
 typedef int KeyboardState;
-%End // (- Qt_4_1_1)
+%End // (HAS_QT3)
 
 
-%If (Qt_4_1_1 -)
+%If (HAS_QT4)
 class MouseState
 {
 %TypeHeaderCode
@@ -50,7 +50,7 @@ public:
     bool operator==(const KeyboardState& ms);
     bool operator!=(const KeyboardState& ms);
 }; // class KeyboardState 
-%End // (Qt_4_1_1 -)
+%End // (HAS_QT4)
 
 // Local Variables:
 // mode: C++

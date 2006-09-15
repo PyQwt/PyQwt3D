@@ -52,12 +52,12 @@ public:
     } while (i >= 0);
 %End
 
-%If (- Qt_4_1_1)
+%If (HAS_QT3)
     Plot3D(QWidget * /TransferThis/ = 0, const char * = 0);
-%End // (- Qt_4_1_1) 
-%If (Qt_4_1_1 -)
+%End // (HAS_QT3) 
+%If (HAS_QT4)
     Plot3D(QWidget * /TransferThis/ = 0, const QGLWidget * = 0);
-%End // (Qt_4_1_1 -) 
+%End // (HAS_QT4) 
     virtual ~Plot3D();
 
     void updateData();

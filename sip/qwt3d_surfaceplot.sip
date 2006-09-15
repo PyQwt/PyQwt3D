@@ -35,9 +35,12 @@ using namespace std;
 %End // %TypeHeaderCode 
 
 public:
-// FIXME: Qt3 and Qt4
-//  SurfacePlot(QWidget * /TransferThis/ = 0, const char * = 0);
+%If (HAS_QT3)
+    SurfacePlot(QWidget * /TransferThis/ = 0, const char * = 0);
+%End // (HAS_QT3)
+%If (HAS_QT4)
     SurfacePlot(QWidget * /TransferThis/ = 0, const QGLWidget * = 0);
+%End // (HAS_QT4)
     ~SurfacePlot();
     void updateNormals();
     int resolution() const;

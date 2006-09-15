@@ -1,4 +1,6 @@
 *.pyc
 Makefile
-Qwt3D
-tmp-Qwt3D
+Qwt3D_Qt3
+Qwt3D_Qt4
+tmp-Qwt3D_Qt3
+tmp-Qwt3D_Qt4

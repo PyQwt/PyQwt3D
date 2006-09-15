@@ -1,4 +1,4 @@
-// The SIP feature definitions for PyQwt3D.
+// The SIP interface definition for the _Qwt3D module of PyQwt3D.
 //
 // Copyright (C) 2004-2006 Gerard Vermeulen
 //
@@ -19,13 +19,12 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-%Feature HAS_QT3
-%Feature HAS_QT4
+%Module Qwt3D._Qwt3D 0
 
-// Numerical Python extensions
-%Feature HAS_NUMARRAY
-%Feature HAS_NUMERIC
-%Feature HAS_NUMPY
+%Import qt/qtmod.sip
+%Import qtgl/qtglmod.sip
+
+%Include qwt3dmod.sip
 
 
 // Local Variables:
