@@ -34,6 +34,7 @@ def get_pyqt_configuration(options):
     """
     if options.qt == 3:
         options.qwt3d = 'Qwt3D_Qt3'
+        options.opengl = 'OpenGL_Qt3'
         options.excluded_features.append("-x HAS_QT4")
         try:
             import pyqtconfig as pyqtconfig
@@ -43,6 +44,7 @@ def get_pyqt_configuration(options):
                 )
     elif options.qt == 4:
         options.qwt3d = 'Qwt3D_Qt4'
+        options.opengl = 'OpenGL_Qt4'
         options.excluded_features.append("-x HAS_QT3")
         try:
             import PyQt4.pyqtconfig as pyqtconfig
@@ -50,7 +52,7 @@ def get_pyqt_configuration(options):
             raise Die, (
                 'At least PyQt-3.16 and its development tools are required.'
                 )
-    options.subdirs.append(options.qwt3d)
+    options.subdirs.extend([options.qwt3d, options.opengl])
 
     try:
         configuration = pyqtconfig.Configuration()
@@ -318,6 +320,113 @@ def fix_build_file(name, extra_sources, extra_headers, extra_moc_headers):
 # fix_build_file()
 
 
+def setup_opengl_build(configuration, options, package):
+    """Setup the OpenGL extension build
+    """
+
+    print 'Setup the OpenGL package build.'
+    
+    build_dir = options.opengl
+    tmp_dir = 'tmp-' + build_dir
+    build_file = os.path.join(tmp_dir, '%s.sbf' % options.opengl)
+
+    # zap the temporary directory
+    try:
+        shutil.rmtree(tmp_dir)
+    except:
+        pass
+    # make a clean temporary directory
+    try:
+        os.mkdir(tmp_dir)
+    except:
+        raise Die, 'Failed to create the temporary build directory.'
+
+    if options.qt == 3:
+        pyqt_sip_flags = configuration.pyqt_qt_sip_flags
+        sipfile = os.path.join(
+            os.pardir, "sip", "OpenGL_Qt3_Module.sip")
+    elif options.qt == 4:
+        pyqt_sip_flags = configuration.pyqt_sip_flags
+        sipfile = os.path.join(
+            os.pardir, "sip", "OpenGL_Qt4_Module.sip")
+
+    # invoke SIP
+    cmd = ' '.join(
+        [configuration.sip_bin,
+         '-b', build_file,
+         '-c', tmp_dir,
+         options.jobs,
+         options.trace,
+         ]
+        # SIP assumes POSIX style path separators
+        + [sipfile.replace('\\', '/')]
+        )
+
+    print 'sip invokation:'
+    pprint.pprint(cmd)
+    if os.path.exists(build_file):
+        os.remove(build_file)
+    os.system(cmd)
+    if not os.path.exists(build_file):
+        raise Die, 'SIP failed to generate the C++ code.'
+
+    # copy lazily to the build directory to speed up recompilation
+    if not os.path.exists(build_dir):
+        try:
+            os.mkdir(build_dir)
+        except:
+            raise Die, 'Failed to create the build directory.'
+
+    lazy_copies = 0
+    for pattern in ('*.c', '*.cpp', '*.h', '*.py', '*.sbf'):
+        for source in glob.glob(os.path.join(tmp_dir, pattern)):
+            target = os.path.join(build_dir, os.path.basename(source))
+            if lazy_copy_file(source, target):
+                print 'Copy %s -> %s.' % (source, target)
+                lazy_copies += 1
+    print '%s file(s) lazily copied.' % lazy_copies
+
+    # module makefile
+    if options.qt == 3:
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = options.module_install_path,
+            #installs = installs,
+            qt = 1,
+            opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+    elif options.qt == 4:
+        # FIXME
+        options.extra_include_dirs.append(
+            os.path.join(configuration.qt_inc_dir, 'Qt'))
+        makefile = sipconfig.ModuleMakefile(
+            configuration = configuration,
+            build_file = os.path.basename(build_file),
+            dir = build_dir,
+            install_dir = options.module_install_path,
+            #installs = installs,
+            qt = ['QtOpenGL'],
+            #        opengl = 1,
+            warnings = 1,
+            debug = options.debug,
+            )
+
+    makefile.extra_cflags.extend(options.extra_cflags)
+    makefile.extra_cxxflags.extend(options.extra_cxxflags)
+    makefile.extra_defines.extend(options.extra_defines)
+    makefile.extra_include_dirs.extend(options.extra_include_dirs)
+    makefile.extra_lflags.extend(options.extra_lflags)
+    makefile.extra_libs.extend(options.extra_libs)
+    makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
+    makefile.generate()
+
+# setup_opengl_build()
+
+
 def setup_qwt3d_build(configuration, options, package):
     '''Setup the Qwt3D extension build
     '''
@@ -527,9 +636,6 @@ def setup_qwt3d_build(configuration, options, package):
     makefile.extra_lflags.extend(options.extra_lflags)
     makefile.extra_libs.extend(options.extra_libs)
     makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
-    if configuration.sip_version < 0x040000:
-        makefile.extra_libs.insert(0, makefile.module_as_lib('qt'))
-        makefile.extra_libs.insert(0, makefile.module_as_lib('qtgl'))
     makefile.generate()
 
 # setup_qwt3d_build()
@@ -737,6 +843,7 @@ def main():
         options.module_install_path = os.path.join(
             configuration.pyqt_mod_dir, 'Qwt3D')
 
+    setup_opengl_build(configuration, options, 'PyQwt3D')
     setup_qwt3d_build(configuration, options, 'PyQwt3D')
 
     # main makefile

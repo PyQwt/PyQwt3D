@@ -1,5 +1,9 @@
 *.pyc
 Makefile
+OpenGL_Qt3
+OpenGL_Qt4
+tmp-OpenGL_Qt3
+tmp-OpenGL_Qt4
 Qwt3D_Qt3
 Qwt3D_Qt4
 tmp-Qwt3D_Qt3

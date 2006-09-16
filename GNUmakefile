@@ -68,6 +68,8 @@ clean:
 
 distclean: clean
 	rm -rf configure/Makefile
+	rm -rf configure/OpenGL_Qt3 configure/tmp-OpenGL_Qt3
+	rm -rf configure/OpenGL_Qt4 configure/tmp-OpenGL_Qt4
 	rm -rf configure/Qwt3D_Qt3 configure/tmp-Qwt3D_Qt3
 	rm -rf configure/Qwt3D_Qt4 configure/tmp-Qwt3D_Qt4
 

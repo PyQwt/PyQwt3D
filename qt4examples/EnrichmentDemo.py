@@ -5,6 +5,7 @@
 import sys
 from PyQt4.Qt import QApplication
 from PyQt4.Qwt3D import *
+from PyQt4.Qwt3D.OpenGL import *
 
 class Bar(VertexEnrichment):
 

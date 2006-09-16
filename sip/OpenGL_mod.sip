@@ -1,9 +1,8 @@
-// The SIP interface definition for:
-// - function dotProduct
-// 
+// The SIP interface definition for the OpenGL module of PyQwt3D.
+//
 // Copyright (C) 2004-2006 Gerard Vermeulen
 //
-// This file is part of PyQwt3D. 
+// This file is part of PyQwt3D.
 //
 // PyQwt3D is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +26,23 @@
 //
 // If PyQwt3D is dynamically linked with non-free versions of Qt and PyQt,
 // PyQwt3D becomes a free plug-in for a non-free program.
+
+
+typedef unsigned int    GLenum;
+typedef unsigned char   GLboolean;
+typedef unsigned int    GLbitfield;
+typedef void            GLvoid;
+typedef /*signed*/ char GLbyte;         /* 1-byte signed */
+typedef short           GLshort;        /* 2-byte signed */
+typedef int             GLint;          /* 4-byte signed */
+typedef unsigned char   GLubyte;        /* 1-byte unsigned */
+typedef unsigned short  GLushort;       /* 2-byte unsigned */
+typedef unsigned int    GLuint;         /* 4-byte unsigned */
+typedef int             GLsizei;        /* 4-byte signed */
+typedef float           GLfloat;        /* single precision float */
+typedef float           GLclampf;       /* single precision float in [0,1] */
+typedef double          GLdouble;       /* double precision float */
+typedef double          GLclampd;       /* double precision float in [0,1] */
 
 
 %ModuleHeaderCode

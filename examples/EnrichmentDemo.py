@@ -5,6 +5,7 @@
 import sys
 from qt import QApplication
 from Qwt3D import *
+from Qwt3D.OpenGL import *
 
 class Bar(VertexEnrichment):
 
