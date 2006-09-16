@@ -11,6 +11,10 @@ recursive-exclude Doc *cvsignore* *~
 
 # configure
 graft configure
+prune configure/OpenGL_Qt3
+prune configure/OpenGL_Qt4
+prune configure/tmp-OpenGL_Qt3
+prune configure/tmp-OpenGL_Qt4
 prune configure/Qwt3D_Qt3
 prune configure/Qwt3D_Qt4
 prune configure/tmp-Qwt3D_Qt3
