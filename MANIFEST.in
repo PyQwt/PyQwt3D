@@ -20,6 +20,10 @@ recursive-exclude configure Makefile *.pyc *cvsignore* *~
 graft examples
 recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 
+# fake headers
+graft include
+recursive-exclude include *.pyqwt3d *cvsignore* *~
+
 # Numerical Python interface
 graft numpy
 recursive-exclude numpy *.py *cvsignore* *~

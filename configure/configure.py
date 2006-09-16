@@ -380,6 +380,9 @@ def setup_qwt3d_build(configuration, options, package):
     extra_sources += glob.glob(os.path.join(os.pardir, 'numpy', '*.cpp'))
     extra_headers += glob.glob(os.path.join(os.pardir, 'numpy', '*.h'))
 
+    # add the extra headers which make protected data members accessible
+    extra_headers += glob.glob(os.path.join(os.pardir, 'include', '*.h'))
+
     # put all code into a clean temporary directory
     try:
         shutil.rmtree(tmp_dir)

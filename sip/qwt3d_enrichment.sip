@@ -63,8 +63,8 @@ public:
     virtual void assign(const Plot3D &);
     virtual TYPE type() const = 0;
 
-protected:
-    //const Plot3D *plot;
+public: // protected in QwtPlot3D, works because of a fake header
+    const Plot3D *plot;
 
 }; // class Enrichment
 
