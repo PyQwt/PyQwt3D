@@ -19,6 +19,15 @@
 // You should have received a copy of the GNU General Public License along
 // with PyQwt3D; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+//
+// In addition, as a special exception, Gerard Vermeulen gives permission
+// to link PyQwt3D dynamically with non-free versions of Qt and PyQt,
+// and to distribute PyQwt3D in this form, provided that equally powerful
+// versions of Qt and PyQt have been released under the terms of the GNU
+// General Public License.
+//
+// If PyQwt3D is dynamically linked with non-free versions of Qt and PyQt,
+// PyQwt3D becomes a free plug-in for a non-free program.
 
 
 %If (HAS_QT3)
