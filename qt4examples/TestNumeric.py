@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from numpy import *
+from Numeric import *
 
 import sys
-from Qwt3D import *
-from qt import *
+from PyQt4.Qwt3D import *
+from PyQt4.Qt import *
 
 # enable all tracing options of the SIP generated bindings (requires -r option)
 if False:
@@ -19,10 +19,10 @@ def matrix2d(nx, ny, minx, maxx, miny, maxy, function):
     """
     # columns
     xs = multiply.outer(
-        minx + ((maxx-minx)/(nx-1))*arange(nx), ones(ny, float))
+        minx + ((maxx-minx)/(nx-1))*arange(nx), ones(ny, Float))
     # rows
     ys = multiply.outer(
-        ones((nx,), float), miny+((maxy-miny)/(ny-1))*arange(ny))
+        ones((nx,), Float), miny+((maxy-miny)/(ny-1))*arange(ny))
     return function(xs, ys)
 
 # matrix2d()
@@ -33,13 +33,13 @@ def matrix3d(nx, ny, minx, maxx, miny, maxy, function):
     bool SurfacePlot::loadFromData(
         Triple **, unsigned int, unsigned int, bool = false, bool = false);
     """
-    xyzs = zeros((nx, ny, 3), float)
+    xyzs = zeros((nx, ny, 3), Float)
     # columns
     xyzs[:,:,0] = multiply.outer(
-        minx + ((maxx-minx)/(nx-1))*arange(nx), ones(ny, float))
+        minx + ((maxx-minx)/(nx-1))*arange(nx), ones(ny, Float))
     # rows
     xyzs[:,:,1] = multiply.outer(
-        ones((nx,), float), miny+((maxy-miny)/(ny-1))*arange(ny))
+        ones((nx,), Float), miny+((maxy-miny)/(ny-1))*arange(ny))
     # result
     xyzs[:,:,2] = function(xyzs[:,:,0], xyzs[:,:,1])
     return xyzs
@@ -107,8 +107,7 @@ def make():
 def main(args):
     app = QApplication(args)
     demo = make()
-    app.setMainWidget(demo)
-    app.exec_loop()
+    app.exec_()
 
 # main()
 

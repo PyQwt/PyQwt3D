@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # iqt is part of PyQwt
-import Qwt5.iqt
+import PyQt4.Qwt5.iqt
 
 def main():
     for demo in ['EnrichmentDemo',

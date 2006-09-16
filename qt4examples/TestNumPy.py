@@ -3,8 +3,8 @@
 from numpy import *
 
 import sys
-from Qwt3D import *
-from qt import *
+from PyQt4.Qwt3D import *
+from PyQt4.Qt import *
 
 # enable all tracing options of the SIP generated bindings (requires -r option)
 if False:
@@ -107,8 +107,7 @@ def make():
 def main(args):
     app = QApplication(args)
     demo = make()
-    app.setMainWidget(demo)
-    app.exec_loop()
+    app.exec_()
 
 # main()
 
