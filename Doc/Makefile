@@ -26,6 +26,6 @@ htdoc: doc $(SOURCES)
 	date -u "+%Y-%m-%d %T" > htdoc
 
 pyqwt3d/configure.help: ../configure/configure.py
-	../configure/configure.py --help > pyqwt3d/configure.help
+	python ../configure/configure.py --help > pyqwt3d/configure.help
 
 # EOF
