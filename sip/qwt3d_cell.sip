@@ -85,7 +85,7 @@ public:
     void __setitem__(SIP_PYSLICE, const Cell &);
 %MethodCode
     int len = sipCpp -> size();
-    int start, stop, step, slicelength;
+    Py_ssize_t start, stop, step, slicelength;
 
     if (0 > sipConvertFromSliceObject(a0, len,
                                       &start, &stop, &step, &slicelength))

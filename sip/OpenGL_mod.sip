@@ -645,7 +645,7 @@ const int GL_RGBA12;
 const int GL_RGBA16;
 const int GL_CLIENT_PIXEL_STORE_BIT;
 const int GL_CLIENT_VERTEX_ARRAY_BIT;
-const int GL_ALL_CLIENT_ATTRIB_BITS;
+// FIXME: x86_64 Gentoo: const int GL_ALL_CLIENT_ATTRIB_BITS;
 const int GL_CLIENT_ALL_ATTRIB_BITS;
 
 

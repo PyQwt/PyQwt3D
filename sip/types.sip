@@ -4,8 +4,8 @@
 // typedef int size_type;
 // typedef long size_type;
 // typedef long long size_type;
-typedef unsigned int size_type;
-// typedef unsigned long size_type;
+// typedef unsigned int size_type;
+typedef unsigned long size_type;
 // typedef unsigned long long size_type;
 
 // Local Variables:
