@@ -17,8 +17,8 @@
   {http://www.river-bank.demon.co.uk/download/snapshots}}
 \newcommand{\NumPy}{\ulink{NumPy}
   {http://www.numpy.org}}
-\newcommand{\NumPyTarGz}{\ulink{numpy-1.0.0.tar.gz}
-  {http://prdownloads.sourceforge.net/numpy/numpy-1.0.0.tar.gz?download}}
+\newcommand{\NumPyTarGz}{\ulink{numpy-1.0rc1}
+  {http://prdownloads.sourceforge.net/numpy/numpy-1.0rc1.tar.gz?download}}
 \newcommand{\numarray}{\ulink{numarray}
   {http://www.stsci.edu/resources/software_hardware/numarray}}
 \newcommand{\numarrayTarGz}{\ulink{numarray-1.5.2.tar.gz}
@@ -29,10 +29,20 @@
   {http://prdownloads.sourceforge.net/numpy/Numeric-24.2.tar.gz?download}}
 \newcommand{\NewSip}{\ulink{sip-4.4.5.tar.gz}
   {http://pyqwt.sourceforge.net/support/sip-4.4.5.tar.gz}}
+\newcommand{\SipSnapShot}{\ulink{SIP snapshot}
+  {http://www.riverbankcomputing.com/Downloads/Snapshots/sip4/}}
 \newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.16.tar.gz}
   {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.16.tar.gz}}
 \newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.16.tar.gz}
   {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.16.tar.gz}}
+\newcommand{\PyQtSnapShot}{\ulink{PyQt3 snapshot}
+  {http://www.riverbankcomputing.com/Downloads/Snapshots/PyQt3}}
+\newcommand{\PyQtFSnapShot}{\ulink{PyQt4 snapshot}
+  {http://www.riverbankcomputing.com/Downloads/Snapshots/PyQt4}}
+\newcommand{\PyQtFGpl}{\ulink{PyQt4-x11-gpl-4.0.1.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-4.0.1.tar.gz}}
+\newcommand{\PyQtFMac}{\ulink{PyQt4-mac-gpl-4.0.1.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-4.0.1.tar.gz}}
 \newcommand{\PyQtCom}{\ulink{PyQt-commercial}
   {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
 \newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.2.tar.gz}
@@ -143,17 +153,18 @@ Installation prerequisites for \PyQwtDddTarGz{} are:
 \begin{enumerate}
 \item
   \ulink{Python}{http://www.python.org}.\\
-  Supported versions: Python-2.4.x and Python-2.3.x.
+  Supported versions: Python-2.5.x, Python-2.4.x and Python-2.3.x.
 \item
   \ulink{Qt}{http://www.trolltech.com}.\\
   Supported versions: Qt-4.2.x, Qt-4.1.x, Qt-3.3.x, or Qt-3.2.x.
 \item
   \NewSip{}.\\
   Supported versions: SIP-4.4.x.\\
+  Python-2.5 requires a \SipSnapShot{}.\\
 \item
-  \PyQtGpl{}, \PyQtMac{} or \PyQtCom{}.\\
-  Supported versions: PyQt-4.0.x, or PyQt-3.16.x,
-  but the most recent version gets most testing.
+  \PyQtGpl{}, \PyQtFGpl, \PyQtMac{}, \PyQtFMac{} or \PyQtCom{}.\\
+  Supported versions: PyQt-4.0.x, or PyQt-3.16.x.\\
+  Python-2.5 requires a \PyQtSnapShot{} or \PyQtFSnapShot{}.\\
 \item
   \QwtPlotDdd{}.\\
   Supported versions: \QwtPlotDddTgz{} or \QwtPlotDddZip{}.
@@ -187,7 +198,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.1
+cd PyQwt3D-0.1.2
 cd configure
 python configure.py -Q ../qwtplot3d-0.2.6
 make
@@ -199,7 +210,7 @@ make install
   The installation will fail if Qt has been configured without runtime type
   information (RTTI).  In this case, run the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1
+cd PyQwt3D-0.1.2
 cd configure
 python configure.py -Q /sources/of/qwtplot3d --extra-cxxflags=-frtti
 make
@@ -288,7 +299,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.1
+cd PyQwt3D-0.1.2
 cd configure
 python configure.py -Q ..\qwtplot3d-0.2.6
 nmake
