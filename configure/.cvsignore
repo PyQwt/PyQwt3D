@@ -1,5 +1,6 @@
 *.pyc
 Makefile
+size_t_check.cpp
 OpenGL_Qt3
 OpenGL_Qt4
 tmp-OpenGL_Qt3
