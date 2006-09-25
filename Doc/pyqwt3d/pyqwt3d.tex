@@ -255,7 +255,7 @@ make install
 \end{enumerate}
 
 \begin{notice}[note]
-  \file{PyQwt-0.1.1/Makefile} is makefile for GNU make which contains more
+  \file{PyQwt-0.1.2/GNUmakefile} is makefile for GNU make which contains more
   examples of how to invoke \file{configure.py}.
   Adapt and use it, if you have GNU make.
 \end{notice}
@@ -267,12 +267,18 @@ make install
   \begin{enumerate}
   \item Invoke make, tie stderr to stdout, and redirect stdout to LOG.txt:
 \begin{verbatim}
-make all-static 2&>1 >LOG.txt
+# For Qt-3
+make 3 2&>1 >LOG.txt
+# For Qt-4
+make 4 2&>1 >LOG.txt
 \end{verbatim}
     However, you do not see what is going on.
   \item Use script to capture all screen output of make to LOG.txt:
 \begin{verbatim}
-script -c 'make all-static' LOG.txt
+# For Qt-3
+script -c 'make 3' LOG.txt
+# For Qt-4
+script -c 'make 4' LOG.txt
 \end{verbatim}
     The script command appeared in 3.0BSD and is part of util-linux.
   \end{enumerate}
@@ -386,89 +392,92 @@ I may try to implement protected attributes on demand.
 \Future{}
 
 \begin{classdesc*}{Arrow}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{AutoScaler}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Axis}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{AxisVector}
-wraps \ctype{std::vector<Axis>}. See \ref{wrappers} for details.
+  wraps \ctype{std::vector<Axis>}. See \ref{wrappers} for details.
 \end{classdesc*}
 
 \begin{classdesc*}{Cell}
-wraps \ctype{std::vector<unsigned>}. See \ref{wrappers} for details.
+  wraps \ctype{std::vector<unsigned>}. See \ref{wrappers} for details.
 \end{classdesc*}
 
 \begin{classdesc*}{CellData}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{CellField}
-wraps \ctype{std::vector<Cell>}. See \ref{wrappers} for details.
+  wraps \ctype{std::vector<Cell>}. See \ref{wrappers} for details.
 \end{classdesc*}
 
 \begin{classdesc*}{Color}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{ColorLegend}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Cone}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{CoordinateSystem}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{CrossHair}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Data}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{Dot}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{DoubleVector}
-wraps \ctype{std::vector<double>}. See \ref{wrappers} for details.
+  wraps \ctype{std::vector<double>}. See \ref{wrappers} for details.
 \end{classdesc*}
 
 \begin{classdesc*}{Drawable}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{Enrichment}
-is fully implemented.
+  is fully implemented.\\
+  \begin{cvardesc}{const Plot3D*}{plot}
+    This C++ protected data member is accessible in Python.
+  \end{cvardesc}
 \end{classdesc*}
 
 \begin{classdesc*}{Freevector}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{FreeVectorField}
-wraps \ctype{std::vector<FreeVector>}. See \ref{wrappers} for details.
+  wraps \ctype{std::vector<FreeVector>}. See \ref{wrappers} for details.
 \end{classdesc*}
 
 \begin{classdesc*}{Function}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{GLStateBewarer}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{GridData}
@@ -487,8 +496,8 @@ DataMatrix normals;
 \end{classdesc*}
 
 \begin{classdesc*}{GridMapping}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{IO}
@@ -509,60 +518,59 @@ static bool defineOutputHandler(QString const& format, Function func);
 \end{classdesc*}
 
 \begin{classdesc*}{Label}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{LinearAutoscaler}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{LinearScale}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{LogScale}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Mapping}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{NativeReader}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{ParallelEpiped}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{ParametricSurface}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{PixmapWriter}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Plot3D}
-is fully implemented.\\
-FIXME: what to do with the protected data members?\\
-FIXME: the ConvertToSubClassCode is disabled on Windows, since it crashes.
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?\\
 \end{classdesc*}
 
 \begin{classdesc*}{RGBA}
-is fully implemented.
+  is fully implemented.
 \end{classdesc*}
 
 \begin{classdesc*}{Scale}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{StandardColor}
-is fully implemented.\\
-FIXME: what to do with the protected data members?
+  is fully implemented.\\
+  FIXME: what to do with the protected data members?
 \end{classdesc*}
 
 \begin{classdesc*}{SurfacePlot}
