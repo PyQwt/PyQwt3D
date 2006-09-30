@@ -46,7 +46,9 @@ typedef double          GLclampd;       /* double precision float in [0,1] */
 
 
 %ModuleHeaderCode
+#if defined(_WIN32)
 #include <GL/gl.h>
+#endif
 %End // %ModuleHeaderCode
 
 /* Boolean values */
@@ -645,7 +647,7 @@ const int GL_RGBA12;
 const int GL_RGBA16;
 const int GL_CLIENT_PIXEL_STORE_BIT;
 const int GL_CLIENT_VERTEX_ARRAY_BIT;
-// FIXME: x86_64 Gentoo: const int GL_ALL_CLIENT_ATTRIB_BITS;
+// Not on WIN32 and my x86_64 Gentoo: const int GL_ALL_CLIENT_ATTRIB_BITS;
 const int GL_CLIENT_ALL_ATTRIB_BITS;
 
 
