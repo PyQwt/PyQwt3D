@@ -47,8 +47,9 @@ typedef double          GLclampd;       /* double precision float in [0,1] */
 
 %ModuleHeaderCode
 #if defined(_WIN32)
-#include <GL/gl.h>
+#include <windows.h>
 #endif
+#include <GL/gl.h>
 %End // %ModuleHeaderCode
 
 /* Boolean values */
