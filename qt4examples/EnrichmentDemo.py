@@ -138,7 +138,7 @@ class Bar(VertexEnrichment):
 # class Bar
 
 
-class Simple(Function):
+class Hat(Function):
  
     def __init__(self, *args):
         Function.__init__(self, *args)
@@ -146,11 +146,16 @@ class Simple(Function):
     # __init__()
     
     def __call__(self, x, y):
-        return x*x
+        return 1.0/(x*x + y*y + 0.5)
 
     # __call__()
 
-# class Simple
+    def name(self):
+        return QString('$\\frac{1}{x^2+y^2+\\frac{1}{2}}$')
+
+    # name()
+
+# class Hat
 
  
 class Label3D:
@@ -186,27 +191,29 @@ class Plot(SurfacePlot):
      
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
-        self.setTitle('A Simple SurfacePlot Demonstration');
-        self.setBackgroundColor(RGBA(1.0, 1.0, 1.0))
-    
-        simpleFunc = Simple(self)
-        simpleFunc.setMesh(11, 11)
-        simpleFunc.setDomain(0, 1, -1, 1)
-        simpleFunc.setMinZ(-1)
-        simpleFunc.create()
+
+        self.setTitle('Bar Style (Vertex Enrichment)')
+        self.setTitleFont('Arial', 12)
+        self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
+        
+        self.setZoom(0.8);
+        self.setRotation(30.0, 0.0, 15.0)
+
+        self.setCoordinateStyle(BOX)
+        bar = self.setPlotStyle(Bar(0.007, 0.5))
+   
+        hat = Hat(self)
+        hat.setMesh(23, 21)
+        hat.setDomain(-1.8, 1.7, -1.6, 1.7)
+        hat.create()
         
         self.setFloorStyle(FLOORDATA)
         
-        self.setRotation(0, 0, 0)
-        self.setScale(1, 1, 1)
-        self.setShift(0, 0, 0)
-        self.setZoom(0.9)
-        bar = Bar(0.007, .5)
-        self.createEnrichment(bar)
-        self.setPlotStyle(bar)
+        #self.createEnrichment(bar)
+
         axes = self.coordinates().axes # alias
         for axis in axes:
-            axis.setMajors(7)
+            axis.setMajors(5)
             axis.setMinors(4)
              
         axes[X1].setLabelString('x1-axis')
@@ -218,8 +225,6 @@ class Plot(SurfacePlot):
         axes[Y3].setLabelString('y3-axis')
         axes[Y4].setLabelString('y1-axis')
         axes[Z1].setLabelString(u'\u038f')
- 
-        self.setCoordinateStyle(BOX);
  
         self.updateData();
         self.updateGL();
