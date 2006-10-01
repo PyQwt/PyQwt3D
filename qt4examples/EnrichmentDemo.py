@@ -3,9 +3,12 @@
 # A Python translation of the "enrichments" example of QwtPlot3D
 
 import sys
-from PyQt4.Qt import QApplication
+import PyQt4.Qt as Qt
 from PyQt4.Qwt3D import *
 from PyQt4.Qwt3D.OpenGL import *
+
+
+# translated from enrichments.cpp
 
 class Bar(VertexEnrichment):
 
@@ -48,13 +51,10 @@ class Bar(VertexEnrichment):
             Label3D().draw(pos, self.diag, 2*self.diag)
          
         minz = self.plot.hull().minVertex.z
-        
-        rgbat = RGBA(pos.x, pos.y, pos.z)
-        rgbab = RGBA(pos.x, pos.y, minz)
-         
-        # Not sure about this part
-##        color = self.plot.dataColor()
-##        color(1.0, 2.0, 1.0)
+
+        # FIXME: rgbat = self.plot.dataColor()(pos)
+        rgbat = self.plot.dataColor()(pos.x, pos.y, pos.z)
+        rgbab = self.plot.dataColor()(pos.x, pos.y, minz)
  
         glBegin(GL_QUADS)
         glColor4d(rgbab.r, rgbab.g, rgbab.b, rgbab.a)
@@ -138,26 +138,6 @@ class Bar(VertexEnrichment):
 # class Bar
 
 
-class Hat(Function):
- 
-    def __init__(self, *args):
-        Function.__init__(self, *args)
-
-    # __init__()
-    
-    def __call__(self, x, y):
-        return 1.0/(x*x + y*y + 0.5)
-
-    # __call__()
-
-    def name(self):
-        return QString('$\\frac{1}{x^2+y^2+\\frac{1}{2}}$')
-
-    # name()
-
-# class Hat
-
- 
 class Label3D:
  
     def __init__(self):
@@ -186,55 +166,119 @@ class Label3D:
         glVertex3d(pos.x, pos.y, pos.z + gap)
         glEnd()
 
+    # draw()
 
-class Plot(SurfacePlot):
+# class Label3D
+
+
+class Hat(Function):
+ 
+    def __init__(self, *args):
+        Function.__init__(self, *args)
+
+    # __init__()
+    
+    def __call__(self, x, y):
+        return 1.0/(x*x + y*y + 0.5)
+
+    # __call__()
+
+    def name(self):
+        return QString('$\\frac{1}{x^2+y^2+\\frac{1}{2}}$')
+
+    # name()
+
+# class Hat
+
+
+# translated from enrichmentmainwindow.cpp
+ 
+class EnrichmentDemo(Qt.QWidget):
      
     def __init__(self, *args):
-        SurfacePlot.__init__(self, *args)
+        Qt.QWidget.__init__(self, *args)
 
-        self.setTitle('Bar Style (Vertex Enrichment)')
-        self.setTitleFont('Arial', 12)
-        self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
-        
-        self.setZoom(0.8);
-        self.setRotation(30.0, 0.0, 15.0)
+        plot = self.plot = SurfacePlot(self)
+        plot.setTitle('Bar Style (Vertex Enrichment)')
+        plot.setTitleFont('Arial', 12)
+        plot.setZoom(0.8);
+        plot.setRotation(30.0, 0.0, 15.0)
 
-        self.setCoordinateStyle(BOX)
-        bar = self.setPlotStyle(Bar(0.007, 0.5))
+        plot.setCoordinateStyle(BOX)
+        self.width = 0.007
+        self.level = .5
+        self.bar = plot.setPlotStyle(Bar(self.width, self.level))
    
-        hat = Hat(self)
+        hat = Hat(plot)
         hat.setMesh(23, 21)
         hat.setDomain(-1.8, 1.7, -1.6, 1.7)
         hat.create()
         
-        self.setFloorStyle(FLOORDATA)
+        plot.setFloorStyle(FLOORDATA)
         
-        #self.createEnrichment(bar)
-
-        axes = self.coordinates().axes # alias
+        axes = plot.coordinates().axes # alias
         for axis in axes:
             axis.setMajors(5)
             axis.setMinors(4)
              
-        axes[X1].setLabelString('x1-axis')
-        axes[X2].setLabelString('x2-axis')
-        axes[X3].setLabelString('x3-axis')
-        axes[X4].setLabelString('x4-axis')
-        axes[Y1].setLabelString('y1-axis')
-        axes[Y2].setLabelString('y2-axis')
-        axes[Y3].setLabelString('y3-axis')
-        axes[Y4].setLabelString('y1-axis')
-        axes[Z1].setLabelString(u'\u038f')
- 
-        self.updateData();
-        self.updateGL();
-         
+        plot.coordinates().setGridLinesColor(RGBA(0.0, 0.0, 0.5))
+        plot.coordinates().setLineWidth(1)
+        plot.coordinates().setNumberFont("Courier", 8)
+        plot.coordinates().adjustNumbers(5)
+
+        self.setColor()
+        
+        plot.updateData();
+        plot.updateGL();
+
+        # Level
+        levelLabel = Qt.QLabel('Level')
+        levelSlider = Qt.QSlider(self)
+        levelSlider.setValue(50);
+        levelSlider.setTickPosition(Qt.QSlider.TicksRight)
+        levelLayout = Qt.QVBoxLayout()
+        levelLayout.addWidget(levelLabel)
+        levelLayout.addWidget(levelSlider)
+
+        self.connect(
+            levelSlider, Qt.SIGNAL('valueChanged(int)'), self.setLevel)
+
+        # Layout
+        mainLayout = Qt.QHBoxLayout()
+        self.setLayout(mainLayout)
+        mainLayout.addWidget(plot)
+        mainLayout.addLayout(levelLayout)
+       
     # __init__()
+
+    def setColor(self):
+        i, step = 252, 4
+        colorVector = ColorVector()
+        while (i>=0):
+            colorVector.push_back(RGBA(i/255.0, max((i-60)/255.0, 0.0), 0.0))
+            step -= 1
+            if step == 0:
+                i -= 4
+                step = 4
+        color = StandardColor(self.plot)
+        color.setColorVector(colorVector)
+        self.plot.setDataColor(color)
+
+    # setColor()
+
+    def setLevel(self, level):
+        self.level = 1.0 - 0.01*level;
+        self.bar.configure(self.width, self.level)
+        self.plot.updateData()
+        self.plot.updateGL()
+
+    # setLevel()
  
-# class Plot
+# class EnrichmentDemo
+
  
 def make(): 
-    demo = Plot()
+    demo = EnrichmentDemo()
     demo.show()
     # Matrox cards on Linux work better with a resize() after show()
     demo.resize(600, 400)
@@ -244,7 +288,7 @@ def make():
  
  
 def main(args):
-    app = QApplication(args)
+    app = Qt.QApplication(args)
     demo = make()
     app.exec_()
  
