@@ -275,7 +275,12 @@ class EnrichmentDemo(qt.QWidget):
         self.plot.updateGL()
 
     # setLevel()
- 
+
+    def save(self, filename, filetype):
+        self.plot.save(filename, filetype)
+
+    # save()
+    
 # class EnrichmentDemo
 
  

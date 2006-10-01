@@ -274,6 +274,11 @@ class EnrichmentDemo(Qt.QWidget):
 
     # setLevel()
  
+    def save(self, filename, filetype):
+        self.plot.save(filename, filetype)
+
+    # save()
+
 # class EnrichmentDemo
 
  
