@@ -314,7 +314,8 @@ nmake install
   where the folder
   \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
   must contain the folders \file{3rdparty}, \file{include} and \file{src}.
-  You can also edit the file \file{go.bat} to suit your setup.
+  You can also edit the files \file{go3.bat} or \file{go4.bat} to suit your
+  setup.
 \item
   Fine tune (optional) by running the commands:
 \begin{verbatim}
@@ -331,9 +332,10 @@ nmake install
 \end{enumerate}
 
 \begin{notice}[note]
-  The file \file{configure\textbackslash{}go.bat} is an example of
-  how to automatize the invokations of \strong{configure.py}, \strong{nmake},
-  and \strong{nmake install}.  Adapt and use it.
+  The files \file{configure\textbackslash{}go3.bat} and
+  \file{configure\textbackslash{}go4.bat} are examples of how to automatize
+  the invokations of \strong{configure.py}, \strong{nmake}, and
+  \strong{nmake install}.  Adapt and use it.
 \end{notice}
 
 \begin{notice}[note]
@@ -341,7 +343,11 @@ nmake install
 
   Try
 \begin{verbatim}
-go.bat >LOG.txt
+go3.bat >LOG.txt
+\end{verbatim}
+  or
+\begin{verbatim}
+go4.bat >LOG.txt
 \end{verbatim}
   to make a log.
 \end{notice}
@@ -382,9 +388,12 @@ member functions and all public class variables have been implemented.
 Undocumented classes have not yet been implemented or are still experimental.
 
 The classes in the QwtPlot3D library have quite a few protected attributes.
-They are not yet available in Python (as far as I know, sip wraps protected
-member function, but not protected attributes).
-I may try to implement protected attributes on demand.
+They are not easily exported to Python (SIP wraps protected member function,
+but not protected attributes).
+I will export protected attributes to Python on demand. For instance,
+\var{Enrichment.plot} is accessible from Python, but protected in C++.
+
+
 
 
 \section{Class reference \label{classes}}
@@ -762,9 +771,33 @@ For instance:
 
 \verbatiminput{StdVectorExample.txt}
 
-%\section{Function reference \label{functions}}
+\section{Function reference \label{functions}}
 
-%\Future{}
+\Future{}
+
+\begin{cfuncdesc}{const GLubyte*}{gl_error}{}
+  is implemented as
+  \begin{verbatim}
+message = gl_error()
+  \end{verbatim}
+\end{cfuncdesc}
+
+\begin{cfuncdesc}{bool}{ViewPort2World}
+  {double \&wx, double \&wy, double \&wz, double vx, double vy, double vz}
+  is implemented as
+  \begin{verbatim}
+success, wx, wy, wz = ViewPort2World(vx, vy, vz)
+  \end{verbatim}
+\end{cfuncdesc}
+
+\begin{cfuncdesc}{bool}{World2ViewPort}
+  {double \&vx, double \&vy, double \&vz, double wx, double wy, double wz}
+  is implemented as
+  \begin{verbatim}
+success, vx, vy, vz = World2Viewport(wx, wy, wz)
+  \end{verbatim}
+\end{cfuncdesc}
+
 
 \input{pyqwt3d.ind}
 
