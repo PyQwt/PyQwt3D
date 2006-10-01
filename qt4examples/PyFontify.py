@@ -25,26 +25,20 @@ sublist is not used, hence always None.
 #   Tim Peters,
 #   Just van Rossum
 
-__version__ = "0.4"
+# Changes by Gerard Vermeulen:
+# - version 0.5
+# - use keyword.kwlist
+# - replace string module by str methods
 
+__version__ = "0.5"
+
+import keyword
 import string
 import re
 
 # First a little helper, since I don't like to repeat things. (Tismer speaking)
-import string
 def replace(where, what, with):
-    return string.join(string.split(where, what), with)
-
-# This list of keywords is taken from ref/node13.html of the
-# Python 1.3 HTML documentation. ("access" is intentionally omitted.)
-keywordsList = [
-    "as", "assert", "exec",
-    "del", "from", "lambda", "return",
-    "and", "elif", "global", "not", "try",
-    "break", "else", "if", "or", "while",
-    "class", "except", "import", "pass",
-    "continue", "finally", "in", "print",
-    "def", "for", "is", "raise", "yield"]
+    return with.join(where.split(what))
 
 # Build up a regular expression which will match anything
 # interesting, including multi-line triple-quoted strings.
@@ -72,7 +66,7 @@ pat = r"""
     )*
     qqq
 """
-pat = string.join(string.split(pat), '')    # get rid of whitespace
+pat = ''.join(pat.split())    # get rid of whitespace
 tripleQuotePat = replace(pat, "q", "'") + "|" + replace(pat, 'q', '"')
 
 # Build up a regular expression which matches all and only
@@ -82,7 +76,7 @@ tripleQuotePat = replace(pat, "q", "'") + "|" + replace(pat, 'q', '"')
 # a keyword pattern.
 nonKeyPat = r"(^|[^a-zA-Z0-9_.\"'])"
 
-keyPat = nonKeyPat + "(" + string.join(keywordsList, "|") + ")" + nonKeyPat
+keyPat = nonKeyPat + "(" + string.join(keyword.kwlist, "|") + ")" + nonKeyPat
 
 matchPat = commentPat + "|" + keyPat + "|" + tripleQuotePat + "|" + quotePat
 matchRE = re.compile(matchPat)
