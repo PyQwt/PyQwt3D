@@ -61,7 +61,7 @@ using namespace Qwt3D;
 %End // %TypeHeaderCode
 
 public:
-    StandardColor(Plot3D *, unsigned = 100);
+    StandardColor(Plot3D * /TransferThis/, unsigned = 100);
     virtual RGBA operator()(double, double, double) const;
     void setColorVector(const ColorVector &);
     void reset(unsigned = 100);
