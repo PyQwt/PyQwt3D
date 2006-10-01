@@ -8,7 +8,7 @@
 %{expand: %%define sipver %(rpm -q sip --qf "%{VERSION}")}
 
 %define name	PyQwt3D
-%define version	0.1.1
+%define version	0.1.2
 %define release 1
 
 

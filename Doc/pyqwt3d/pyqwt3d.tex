@@ -97,6 +97,7 @@
 
 %\renewcommand{\Future}{}
 
+
 \title{PyQwt3D Manual}
 
 % boilerplate.tex?
@@ -144,6 +145,19 @@ the Qt framework with widgets to visualize 3-dimensional data.
 \chapter{Installation\label{installation}}
 
 \Future{}
+
+\begin{notice}[note]
+  PyQwt3D for Qt-3.3.x can coexist with PyQwt3D for Qt-4.1.x. The statement
+  \begin{verbatim}
+import Qwt3D
+  \end{verbatim}
+  imports PyQwt3D for Qt-3.3.x and the statement
+  \begin{verbatim}
+import PyQt4.Qwt3D
+  \end{verbatim}
+  imports PyQwt3D for Qt-4.1.x. 
+\end{notice}
+
 
 \section{Installation prerequisites\label{prerequisites}}
 
