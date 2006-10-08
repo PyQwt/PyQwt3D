@@ -17,11 +17,9 @@ LIBDIR := /usr/lib
 
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
 QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.6
-# QWT3DDIR := /home/packer/RPM/BUILD/qwtplot3d
 
 # To compile and link the zlib sources statically into PyQwt3D.
 ZLIBDIR := $(shell pwd)/zlib-1.2.3
-# ZLIBDIR := /home/packer/RPM/BUILD/zlib-1.2.1
 
 # Do not edit below this line, unless you know what you are doing.
 JOBS := $(shell getconf _NPROCESSORS_ONLN)
