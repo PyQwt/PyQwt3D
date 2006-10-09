@@ -40,13 +40,13 @@ all: 3 4
 
 3:
 	cd configure \
-	&& python configure.py -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
-	&& $(MAKE)
+	&& python configure.py -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
 
 4:
 	cd configure \
-	&& python configure.py -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) \
-	&& $(MAKE)
+	&& python configure.py -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
 
 # Installation
 install-3: 3

@@ -49,7 +49,11 @@ typedef double          GLclampd;       /* double precision float in [0,1] */
 #if defined(_WIN32)
 #include <windows.h>
 #endif
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 %End // %ModuleHeaderCode
 
 /* Boolean values */
