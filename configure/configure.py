@@ -498,7 +498,7 @@ def setup_opengl_build(configuration, options, package):
             install_dir = options.module_install_path,
             #installs = installs,
             qt = ['QtOpenGL'],
-            #        opengl = 1,
+            opengl = 1,
             warnings = 1,
             debug = options.debug,
             )
@@ -712,7 +712,7 @@ def setup_qwt3d_build(configuration, options, package):
             install_dir = options.module_install_path,
             installs = installs,
             qt = ['QtCore', 'QtGui', 'QtOpenGL'],
-            #        opengl = 1,
+            opengl = 1,
             warnings = 1,
             debug = options.debug,
             )
