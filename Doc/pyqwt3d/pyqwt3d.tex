@@ -17,8 +17,8 @@
   {http://www.river-bank.demon.co.uk/download/snapshots}}
 \newcommand{\NumPy}{\ulink{NumPy}
   {http://www.numpy.org}}
-\newcommand{\NumPyTarGz}{\ulink{numpy-1.0rc1}
-  {http://prdownloads.sourceforge.net/numpy/numpy-1.0rc1.tar.gz?download}}
+\newcommand{\NumPyTarGz}{\ulink{numpy-1.0}
+  {http://prdownloads.sourceforge.net/numpy/numpy-1.0.tar.gz?download}}
 \newcommand{\numarray}{\ulink{numarray}
   {http://www.stsci.edu/resources/software_hardware/numarray}}
 \newcommand{\numarrayTarGz}{\ulink{numarray-1.5.2.tar.gz}
@@ -141,21 +141,23 @@ interactive Python session.
 PyQwt3D is a set of Python bindings for the \QwtPlotDdd{} library which extends
 the Qt framework with widgets to visualize 3-dimensional data.
 
+It wraps also a small subset of the OpenGL API.
+
 
 \chapter{Installation\label{installation}}
 
 \Future{}
 
 \begin{notice}[note]
-  PyQwt3D for Qt-3.3.x can coexist with PyQwt3D for Qt-4.1.x. The statement
+  PyQwt3D for Qt-3 can coexist with PyQwt3D for Qt-4 The statement
   \begin{verbatim}
 import Qwt3D
   \end{verbatim}
-  imports PyQwt3D for Qt-3.3.x and the statement
+  imports PyQwt3D for Qt-3 and the statement
   \begin{verbatim}
 import PyQt4.Qwt3D
   \end{verbatim}
-  imports PyQwt3D for Qt-4.1.x. 
+  imports PyQwt3D for Qt-4 
 \end{notice}
 
 
@@ -174,11 +176,12 @@ Installation prerequisites for \PyQwtDddTarGz{} are:
 \item
   \NewSip{}.\\
   Supported versions: SIP-4.4.x.\\
-  Python-2.5 requires a \SipSnapShot{}.\\
+  Python-2.5 requires \SipSnapShot{} (or the not yet released SIP-4.5).\\
 \item
   \PyQtGpl{}, \PyQtFGpl, \PyQtMac{}, \PyQtFMac{} or \PyQtCom{}.\\
   Supported versions: PyQt-4.0.x, or PyQt-3.16.x.\\
-  Python-2.5 requires a \PyQtSnapShot{} or \PyQtFSnapShot{}.\\
+  Python-2.5 requires \PyQtSnapShot{} or \PyQtFSnapShot{} (or the not yet
+  released PyQt-4.1 or PyQt-3.17).\\
 \item
   \QwtPlotDdd{}.\\
   Supported versions: \QwtPlotDddTgz{} or \QwtPlotDddZip{}.

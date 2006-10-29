@@ -13,14 +13,15 @@ What is PyQwt3D?
   (any combination of NumPy, numarray, and numarray) and optionally
   SciPy in a GUI Python application or in an interactive Python session.
 
-- it runs on POSIX, MacOS/X and Windows platforms (practically any
+- it runs on POSIX, Mac OS X and Windows platforms (practically any
   platform supported by Qt and Python).
 
 
 New features:
-- support for Python-2.5 (requires a SIP snapshots or the future SIP-4.5).
-- support for Qt-4.1.x.
-- support for NumPy-1.0rc1, see http://numpy.scipy.org
+- support for Python-2.5 (requires PyQt and SIP snapshots or the future
+  PyQt-3.17, PyQt-4.1 and SIP-4.5).
+- support for Qt-4.2.x and -4.1.x
+- support for NumPy-1.0, see http://numpy.scipy.org
 - PyQwt3D.OpenGL gives access to a small subset of the OpenGL API.
 
 
@@ -30,9 +31,9 @@ The home page of PyQwt3D is http://pyqwt.sourceforge.net.
 PyQwt3D-0.1.2 requires:
 
 1. Python-2.5.x,-2.4.x, or -2.3.
-2. PyQt-4.0.x, or -3.16.x.
-3. SIP-4.4.x.
-4. Qt-4.1.x, Qt-3.3.x, or -3.2.x.
+2. PyQt-4.0.x, or -3.16.x (or the future PyQt-4.1 or PyQt-3.17)
+3. SIP-4.4.x (or the future SIP-4.5)
+4. Qt-4.2.x, Qt-4.1.x, Qt-3.3.x, or -3.2.x.
 5. QwtPlot3D-0.2.6.
 
 
