@@ -19,11 +19,11 @@ What is PyQwt3D?
 
 New features:
 - support for Python-2.5 (requires PyQt and SIP snapshots or the future
-  PyQt-3.17, PyQt-4.1 and SIP-4.5).
+  PyQt-3.17, PyQt-4.1 and SIP-4.5)
 - support for Qt-4.2.x and -4.1.x
 - support for NumPy-1.0, see http://numpy.scipy.org
-- PyQwt3D.OpenGL gives access to a small subset of the OpenGL API.
-
+- PyQwt3D.OpenGL gives access to a small subset of the OpenGL API
+- EnrichmentDemo.py example demonstrates PyQwt3D.OpenGL
 
 The home page of PyQwt3D is http://pyqwt.sourceforge.net.
 

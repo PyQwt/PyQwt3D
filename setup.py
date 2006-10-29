@@ -5,7 +5,7 @@ from distutils.core import setup
 
 name = 'PyQwt3D'
 version = '0.1.2'
-version = '%04d%02d%02d' % (time.localtime()[:3])
+#version = '%04d%02d%02d' % (time.localtime()[:3])
 
 long_description = """
 PyQwt3D is a set of Python bindings for the QwtPlot3D C++ class library.
