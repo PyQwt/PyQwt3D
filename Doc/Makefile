@@ -9,7 +9,7 @@ SOURCES := \
 doc: $(SOURCES)
 	if [ ! -e html/pyqwt3d ]; then mkdir html/pyqwt3d; fi
 	(cd html/pyqwt3d; rm -f *.css *.dat *.html *.idx *.old *.pl *.gif)
-	cp -pu html/icons/*.png html/pyqwt3d
+	cp -p html/icons/*.png html/pyqwt3d
 	python $(MKHOWTO) --html --dir html/pyqwt3d \
 	    --image-type png --favicon pyfav.png \
 	    --up-link http://pyqwt.sourceforge.net --up-title "PyQwt Home" \
@@ -21,7 +21,7 @@ doc: $(SOURCES)
 htdoc: doc $(SOURCES)
 	if [ ! -e html/htdoc ]; then mkdir html/htdoc; fi
 	(cd html/htdoc; rm -f *.css *.dat *.html *.idx *.old *.pl *.gif)
-	cp -pur html/pyqwt3d/* html/htdoc
+	cp -pr html/pyqwt3d/* html/htdoc
 	python sourceforge.py html/htdoc/*.html
 	date -u "+%Y-%m-%d %T" > htdoc
 
