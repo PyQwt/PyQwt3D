@@ -27,26 +27,26 @@
   {http://www.numpy.org}}
 \newcommand{\NumericTarGz}{\ulink{Numeric-24.2.tar.gz}
   {http://prdownloads.sourceforge.net/numpy/Numeric-24.2.tar.gz?download}}
-\newcommand{\NewSip}{\ulink{sip-4.4.5.tar.gz}
-  {http://pyqwt.sourceforge.net/support/sip-4.4.5.tar.gz}}
+\newcommand{\NewSip}{\ulink{sip-4.5.tar.gz}
+  {http://pyqwt.sourceforge.net/support/sip-4.5.tar.gz}}
 \newcommand{\SipSnapShot}{\ulink{SIP snapshot}
   {http://www.riverbankcomputing.com/Downloads/Snapshots/sip4/}}
-\newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.16.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.16.tar.gz}}
-\newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.16.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.16.tar.gz}}
+\newcommand{\PyQtGpl}{\ulink{PyQt-x11-gpl-3.17.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-3.17.tar.gz}}
+\newcommand{\PyQtMac}{\ulink{PyQt-mac-gpl-3.17.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-3.17.tar.gz}}
 \newcommand{\PyQtSnapShot}{\ulink{PyQt3 snapshot}
   {http://www.riverbankcomputing.com/Downloads/Snapshots/PyQt3}}
 \newcommand{\PyQtFSnapShot}{\ulink{PyQt4 snapshot}
   {http://www.riverbankcomputing.com/Downloads/Snapshots/PyQt4}}
-\newcommand{\PyQtFGpl}{\ulink{PyQt4-x11-gpl-4.0.1.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-4.0.1.tar.gz}}
-\newcommand{\PyQtFMac}{\ulink{PyQt4-mac-gpl-4.0.1.tar.gz}
-  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-4.0.1.tar.gz}}
+\newcommand{\PyQtFGpl}{\ulink{PyQt4-x11-gpl-4.1.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-x11-gpl-4.1.tar.gz}}
+\newcommand{\PyQtFMac}{\ulink{PyQt4-mac-gpl-4.1.tar.gz}
+  {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-4.1.tar.gz}}
 \newcommand{\PyQtCom}{\ulink{PyQt-commercial}
   {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
-\newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.2.tar.gz}
-  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.2.tar.gz?download}}
+\newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.3.tar.gz}
+  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.3.tar.gz?download}}
 \newcommand{\QwtPlotDddTgz}{\ulink{qwtplot3d-0.2.6.tgz}
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.6.tgz?download}}
 \newcommand{\QwtPlotDddZip}{\ulink{qwtplot3d-0.2.6.zip}
@@ -92,7 +92,7 @@
 
 \newcommand{\Future}{
   \begin{notice}[warning]
-    The documentation is for the future PyQwt3D-0.1.2 which is only available
+    The documentation is for the future PyQwt3D-0.1.3 which is only available
     from CVS.
   \end{notice}
 }
@@ -106,8 +106,8 @@
 \author{Gerard Vermeulen}
 
 \date{\today}
-\release{0.1.2}
-\setshortversion{0.1.2}
+\release{0.1.3}
+\setshortversion{0.1.3}
 
 \makeindex
 
@@ -179,13 +179,10 @@ Installation prerequisites for \PyQwtDddTarGz{} are:
   Supported versions: Qt-4.2.x, Qt-4.1.x, Qt-3.3.x, or Qt-3.2.x.
 \item
   \NewSip{}.\\
-  Supported versions: SIP-4.4.x.\\
-  Python-2.5 requires \SipSnapShot{} (or the not yet released SIP-4.5).\\
+  Supported versions: SIP-4.5, and-4.4.x.\\
 \item
   \PyQtGpl{}, \PyQtFGpl, \PyQtMac{}, \PyQtFMac{} or \PyQtCom{}.\\
-  Supported versions: PyQt-4.0.x, or PyQt-3.16.x.\\
-  Python-2.5 requires \PyQtSnapShot{} or \PyQtFSnapShot{} (or the not yet
-  released PyQt-4.1 or PyQt-3.17).\\
+  Supported versions: PyQt-4.1.x, and -4.0.x, or PyQt-3.17.x and -3.16.x.\\
 \item
   \QwtPlotDdd{}.\\
   Supported versions: \QwtPlotDddTgz{} or \QwtPlotDddZip{}.
@@ -219,7 +216,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.2
+cd PyQwt3D-0.1.3
 cd configure
 python configure.py -Q ../qwtplot3d-0.2.6
 make
@@ -231,7 +228,7 @@ make install
   The installation will fail if Qt has been configured without runtime type
   information (RTTI).  In this case, run the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.2
+cd PyQwt3D-0.1.3
 cd configure
 python configure.py -Q /sources/of/qwtplot3d --extra-cxxflags=-frtti
 make
@@ -276,7 +273,7 @@ make install
 \end{enumerate}
 
 \begin{notice}[note]
-  \file{PyQwt-0.1.2/GNUmakefile} is makefile for GNU make which contains more
+  \file{PyQwt-0.1.3/GNUmakefile} is makefile for GNU make which contains more
   examples of how to invoke \file{configure.py}.
   Adapt and use it, if you have GNU make.
 \end{notice}
@@ -326,7 +323,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.2
+cd PyQwt3D-0.1.3
 cd configure
 python configure.py -Q ..\qwtplot3d-0.2.6
 nmake

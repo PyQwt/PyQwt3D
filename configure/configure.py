@@ -282,11 +282,11 @@ def check_sip(configuration, options, package):
     """
     version = configuration.sip_version
     version_str = configuration.sip_version_str
-    required = '%s requires SIP-4.3.x, or 4.2.1.' % (package,)
+    required = '%s requires SIP-4.5.x or SIP-4.4.x' % (package,)
     
     print "Found SIP-%s.\n" % version_str
 
-    if 0x040200 < version & 0xffffff < 0x040500:
+    if 0x040400 <= version & 0xffffff < 0x040600:
         pass
     else:
         raise SystemExit, required
