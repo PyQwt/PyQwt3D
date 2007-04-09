@@ -19,7 +19,7 @@ prune configure/Qwt3D_Qt3
 prune configure/Qwt3D_Qt4
 prune configure/tmp-Qwt3D_Qt3
 prune configure/tmp-Qwt3D_Qt4
-recursive-exclude configure Makefile *.pyc *cvsignore* *~
+recursive-exclude configure Makefile PyQwt3D.nsi *.pyc *cvsignore* *~
 
 # examples
 graft examples

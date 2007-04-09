@@ -515,6 +515,26 @@ def setup_opengl_build(configuration, options, package):
 # setup_opengl_build()
 
 
+def nsis():
+    """Generate the script for the Nullsoft Scriptable Install System.
+    """
+    try:
+        from sys import version_info
+        from numpy.version import version as numpy_version
+        from PyQt4.Qt import PYQT_VERSION_STR, QT_VERSION_STR
+    except:
+        return
+
+    open('PyQwt3D.nsi', 'w').write(open('PyQwt3D.nsi.in').read() % {
+        'PYQT_VERSION': PYQT_VERSION_STR,
+        'PYTHON_VERSION': '%s.%s' % version_info[:2],
+        'QT_VERSION': QT_VERSION_STR,
+        'NUMPY_VERSION': numpy_version,
+        })
+
+# nsis()
+
+
 def setup_qwt3d_build(configuration, options, package):
     '''Setup the Qwt3D extension build
     '''
@@ -725,6 +745,9 @@ def setup_qwt3d_build(configuration, options, package):
     makefile.extra_libs.extend(options.extra_libs)
     makefile.extra_lib_dirs.extend(options.extra_lib_dirs)
     makefile.generate()
+
+    if options.qt == 4:
+        nsis()
 
 # setup_qwt3d_build()
 
