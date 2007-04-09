@@ -4,7 +4,7 @@ import time
 from distutils.core import setup
 
 name = 'PyQwt3D'
-version = '0.1.3'
+version = '0.1.4'
 #version = '%04d%02d%02d' % (time.localtime()[:3])
 
 long_description = """
