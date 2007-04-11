@@ -24,34 +24,42 @@ class Die(Exception):
 
 
 try:
+    required = 'At least SIP-4.5 and its development tools are required.'
     import sipconfig
 except ImportError:
-    raise Die, 'At least SIP-4.4 and its development tools are required.'
+    raise Die, required
+if 0x040500 > sipconfig._pkg_config['sip_version']:
+    raise Die, required
+del required
 
 
 def get_pyqt_configuration(options):
     """Return the PyQt configuration for Qt3 or Qt4
     """
+
     if options.qt == 3:
+        required = 'At least PyQt-3.17 and its development tools are required.'
         options.qwt3d = 'Qwt3D_Qt3'
         options.opengl = 'OpenGL_Qt3'
         options.excluded_features.append("-x HAS_QT4")
         try:
             import pyqtconfig as pyqtconfig
         except ImportError:
-            raise Die, (
-                'At least PyQt-3.16 and its development tools are required.'
-                )
+            raise Die, required
+        if 0x031100 > pyqtconfig._pkg_config['pyqt_version']:
+            raise Die, required
     elif options.qt == 4:
+        required = 'At least PyQt-4.1 and its development tools are required.'
         options.qwt3d = 'Qwt3D_Qt4'
         options.opengl = 'OpenGL_Qt4'
         options.excluded_features.append("-x HAS_QT3")
         try:
             import PyQt4.pyqtconfig as pyqtconfig
         except ImportError:
-            raise Die, (
-                'At least PyQt-3.16 and its development tools are required.'
-                )
+            raise Die, required
+        if 0x040100 > pyqtconfig._pkg_config['pyqt_version']:
+            raise Die, required
+
     options.subdirs.extend([options.qwt3d, options.opengl])
 
     try:
@@ -205,8 +213,8 @@ def check_numarray(configuration, options, package):
 
 
 def check_numeric(configuration, options, package):
-    '''See if the Numeric extension has been installed.
-    '''
+    """See if the Numeric extension has been installed.
+    """
     if options.disable_numeric:
         options.excluded_features.append('-x HAS_NUMERIC')
         return options
@@ -221,15 +229,15 @@ def check_numeric(configuration, options, package):
             print 'Found Numeric-%s.\n' % Numeric.__version__
             options.extra_defines.append('HAS_NUMERIC')
         else:
-            print ('Numeric2 has been installed, '
+            print ('Numeric has been installed, '
                    'but its headers are not in the standard location.\n'
-                   '%s will be build without support for Numeric2.\n'
+                   '%s will be build without support for Numeric.\n'
                    '(Linux users may have to install a development package)\n'
                    ) % (package,)
             raise ImportError
     except ImportError:
         options.excluded_features.append('-x HAS_NUMERIC')
-        print ('Failed to find Numeric2: '
+        print ('Failed to find Numeric: '
                '%s will be build without support for Numeric.\n'
                ) % (package,)
 
@@ -239,8 +247,8 @@ def check_numeric(configuration, options, package):
 
 
 def check_numpy(configuration, options, package):
-    '''See if the NumPy extension has been installed.
-    '''
+    """See if the NumPy extension has been installed.
+    """
 
     if options.disable_numpy:
         options.excluded_features.append('-x HAS_NUMPY')
@@ -278,17 +286,15 @@ def check_numpy(configuration, options, package):
 
 
 def check_sip(configuration, options, package):
-    """Account for SIP differences with a timeline and an include directory.
+    """Check if PyQwt3D can be built with SIP.
     """
     version = configuration.sip_version
     version_str = configuration.sip_version_str
-    required = '%s requires SIP-4.5.x or SIP-4.4.x' % (package,)
+    required = '%s requires at least SIP-4.5' % (package,)
     
     print "Found SIP-%s.\n" % version_str
 
-    if 0x040400 <= version & 0xffffff < 0x040600:
-        pass
-    else:
+    if 0x040500 > version:
         raise SystemExit, required
 
     return options
@@ -519,7 +525,6 @@ def nsis():
     """Generate the script for the Nullsoft Scriptable Install System.
     """
     try:
-        from sys import version_info
         from numpy.version import version as numpy_version
         from PyQt4.Qt import PYQT_VERSION_STR, QT_VERSION_STR
     except:
@@ -527,7 +532,7 @@ def nsis():
 
     open('PyQwt3D.nsi', 'w').write(open('PyQwt3D.nsi.in').read() % {
         'PYQT_VERSION': PYQT_VERSION_STR,
-        'PYTHON_VERSION': '%s.%s' % version_info[:2],
+        'PYTHON_VERSION': '%s.%s' % sys.version_info[:2],
         'QT_VERSION': QT_VERSION_STR,
         'NUMPY_VERSION': numpy_version,
         })
@@ -536,8 +541,8 @@ def nsis():
 
 
 def setup_qwt3d_build(configuration, options, package):
-    '''Setup the Qwt3D extension build
-    '''
+    """Setup the Qwt3D extension build
+    """
 
     print 'Setup the Qwt3D package build.'
 
