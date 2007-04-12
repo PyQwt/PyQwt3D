@@ -50,9 +50,9 @@ built with the MinGW compiler against:\r\n\
 - PyQt-${PYQWT3D_PYQT_VERSION}\r\n\
 - NumPy-${PYQWT3D_NUMPY_VERSION}.\r\n\
 \r\n\
-The license of the distribution of any of your software using PyQwt3D has to be \
-compatible with the GPL licence. To comply with the GPL, you have to assure \
-your licensees 4 freedoms:\r\n\
+The license of the distribution of any of your software using PyQwt3D has to \
+be compatible with the GPL licence.  Assure your licensees 4 freedoms to \
+comply with the GPL:\r\n\
 0 - to run your software, for any purpose\r\n\
 1 - to study your software, and adapt it to his needs\r\n\
 2 - to redistribute copies so he can help his neighbor\r\n\
