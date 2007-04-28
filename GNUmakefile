@@ -65,13 +65,14 @@ clean:
 	rm -f *~ */*~ */*/*~
 
 distclean: clean
+	find . -name '.#*' -o -name '*.pyc' | xargs rm -f
 	rm -rf configure/Makefile
 	rm -rf configure/OpenGL_Qt3 configure/tmp-OpenGL_Qt3
 	rm -rf configure/OpenGL_Qt4 configure/tmp-OpenGL_Qt4
 	rm -rf configure/Qwt3D_Qt3 configure/tmp-Qwt3D_Qt3
 	rm -rf configure/Qwt3D_Qt4 configure/tmp-Qwt3D_Qt4
 
-dist: doc
+dist: all distclean doc
 	python setup.py sdist
 
 # EOF
