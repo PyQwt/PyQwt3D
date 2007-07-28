@@ -2,7 +2,7 @@
 
 # Package stuff
 include COPYING COPYING.PyQwt3D THANKS TODO *.TXT
-include MANIFEST.in GNUmakefile PyQwt3D.spec
+include MANIFEST.in GNUmakefile
 
 # Documentation
 graft Doc
