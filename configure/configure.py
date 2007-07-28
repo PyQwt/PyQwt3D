@@ -665,6 +665,19 @@ def setup_qwt3d_build(configuration, options, package):
     if not os.path.exists(build_file):
         raise SystemExit, 'SIP failed to generate the C++ code.'
 
+    # FIXME: sip-4.7 does not generate those include files anymore
+    for name in [os.path.join(tmp_dir, name) for name in [
+        'sip_Qwt3DAxisVector.h',
+        'sip_Qwt3DColorVector.h',
+        'sip_Qwt3DCellField.h',
+        'sip_Qwt3DDoubleVector.h',
+        'sip_Qwt3DFreeVector.h',
+        'sip_Qwt3DTriple.h',
+        'sip_Qwt3DTripleField.h',
+        ]]:
+        if not os.path.exists(name):
+            open(name, 'w')
+
     # fix the SIP build file
     fix_build_file(build_file,
                    [os.path.basename(f) for f in extra_sources],
