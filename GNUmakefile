@@ -16,7 +16,7 @@ INCDIR := /usr/include/qwtplot3d
 LIBDIR := /usr/lib
 
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
-QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.6
+QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.7
 
 # To compile and link the zlib sources statically into PyQwt3D.
 ZLIBDIR := $(shell pwd)/zlib-1.2.3
@@ -33,10 +33,14 @@ ifeq ($(UNAME),Darwin)
 JOBS := $(shell sysctl -n hw.ncpu)
 endif
 
-.PHONY: dist
+.PHONY: dist qwtplot-0.2.7
 
 # Build and link PyQwt3D including the local source tree of Qwt3D.
 all: 3 4
+
+debug: 3d 4d
+
+trace: 3t 4t
 
 3:
 	cd configure \
@@ -48,6 +52,26 @@ all: 3 4
 	&& python configure.py -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
+3d:
+	cd configure \
+	&& python configure.py --debug -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
+
+4d:
+	cd configure \
+	&& python configure.py --debug -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
+
+3t:
+	cd configure \
+	&& python configure.py --debug --trace -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
+
+	cd configure \
+	&& python configure.py --debug --trace -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& $(MAKE) -j $(JOBS)
+4t:
+
 # Installation
 install-3: 3
 	make -C configure install
@@ -56,6 +80,32 @@ install-4: 4
 	make -C configure install
 
 install: install-3 install-4
+
+install-3d: 3d
+	make -C configure install
+
+install-4d: 4d
+	make -C configure install
+
+install-debug: install-3d install-4d
+
+install-3t: 3t
+	make -C configure install
+
+install-4t: 4t
+	make -C configure install
+
+install-trace: install-3t install-4t
+
+qwtplot3d-0.2.7.tgz:
+	wget http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.7.tgz
+
+qwtplot3d-0.2.7: qwtplot3d-0.2.7.tgz
+	rm -rf qwtplot3d qwtplot3d-0.2.7
+	tar xfz qwtplot3d-0.2.7.tgz
+	mv qwtplot3d qwtplot3d-0.2.7
+	./unbieber.py qwtplot3d-0.2.7 .c .cpp .h
+	patch -p0 --fuzz=10 -b -z .pyqwt3d <pyqwt3d-0.2.7.patch
 
 # Documentation
 doc:

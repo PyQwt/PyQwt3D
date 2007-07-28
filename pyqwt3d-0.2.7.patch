@@ -1,0 +1,67 @@
+--- qwtplot3d-0.2.7/src/qwt3d_io.cpp.pyqwt3d Sat Jul 28 13:39:26 2007
++++ qwtplot3d-0.2.7/src/qwt3d_io.cpp Sat Jul 28 14:31:34 2007
+@@ -302,6 +302,10 @@
+ #endif
+   vecfunc.setFormat("PDF");
+   defineOutputHandler("PDF", vecfunc);
++  vecfunc.setFormat("SVG");
++  defineOutputHandler("SVG", vecfunc);
++  vecfunc.setFormat("PGF");
++  defineOutputHandler("PGF", vecfunc);
+ 
+   defineInputHandler("mes", NativeReader());
+   defineInputHandler("MES", NativeReader());
+@@ -310,21 +314,23 @@
+ /*!
+   \deprecated  Use Plot3D::save or IO::save instead.
+   
+-  Writes vector data supported by gl2ps. The corresponding format types are "EPS","PS"or "PDF".
++  Writes vector data supported by gl2ps. The corresponding format types are "EPS","PS", "PDF", "SVG", or "PGF".
+   If zlib has been configured this will be extended by "EPS_GZ" and "PS_GZ". 
+   \b Beware: BSPSORT turns out to behave very slowly and memory consuming, especially in cases where
+   many polygons appear. It is still more exact than SIMPLESORT.
+ */
+-bool Plot3D::saveVector(QString const& fileName, QString const& format, VectorWriter::TEXTMODE text, VectorWriter::SORTMODE sortmode)
++bool Plot3D::saveVector(QString const& fileName, QString const& format, VectorWriter::TEXTMODE textmode, VectorWriter::SORTMODE sortmode)
+ {
+   if (format == "EPS" || format == "EPS_GZ" || format == "PS" 
+-    || format == "PS_GZ" || format == "PDF")
++      || format == "PS_GZ" || format == "PDF" || format == "SVG"
++      || format == "PGF")
+   {  
+     VectorWriter* gl2ps = (VectorWriter*)IO::outputHandler(format);
+     if (gl2ps)
+     {
+       gl2ps->setSortMode(sortmode);
+-      gl2ps->setTextMode(text);
++      gl2ps->setLandscape(Qwt3D::VectorWriter::OFF); // FIXME
++      gl2ps->setTextMode(textmode);
+     }
+     return IO::save(this, fileName, format);
+   }
+--- qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp.pyqwt3d Sat Jul 28 14:18:51 2007
++++ qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp Sat Jul 28 14:31:47 2007
+@@ -69,7 +69,7 @@
+ 
+ /*! 
+ Set output format, must be one of "EPS_GZ", "PS_GZ", "EPS", 
+-"PS", "PDF" (case sensitive)
++"PS", "PDF", "SVG", or "PGF" (case sensitive)
+ */
+ bool VectorWriter::setFormat(QString const& format)
+ {
+@@ -95,6 +95,14 @@
+     gl2ps_format_ = GL2PS_PS;
+   }
+ #endif
++  else if (format == QString("SVG"))
++  {
++    gl2ps_format_ = GL2PS_SVG;
++  }
++  else if (format == QString("PGF"))
++  {
++    gl2ps_format_ = GL2PS_PGF;
++  }
+   else
+   {
+     formaterror_ = true;
