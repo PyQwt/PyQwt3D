@@ -1,4 +1,7 @@
+*.eps
 *.html
 *.pdf
 *.png
+*.ps
 *.pyc
+*.svg
