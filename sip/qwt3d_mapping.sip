@@ -35,6 +35,7 @@ class Mapping
 %TypeHeaderCode
 #include <qwt3d_mapping.h>
 #include <qwt3d_function.h>
+#include <qwt3d_parametricsurface.h>
 #include <qwt3d_gridmapping.h>
 class PyFunction;
 using namespace Qwt3D;
