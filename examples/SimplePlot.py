@@ -47,7 +47,7 @@ class Plot(SurfacePlot):
             
         axes[X1].setLabelString('x-axis')
         axes[Y1].setLabelString('y-axis')
-        axes[Z1].setLabelString(u'\u038f')
+        axes[Z1].setLabelString('z-axis')
 
         self.setCoordinateStyle(BOX);
 

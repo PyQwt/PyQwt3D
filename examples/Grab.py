@@ -2,17 +2,22 @@
 
 # iqt is part of PyQwt
 import Qwt5.iqt
+from Qwt3D import save
 
 def main():
     for demo in ['EnrichmentDemo',
                  'ParametricSurfaceDemo',
                  'SimplePlot',
-                 'TestNumeric',
+                 'TestNumPy',
                  ]:
         result = __import__(demo).make()
         raw_input("Is the demo looking HAPPY? ")
-        result.save(demo + '.png', 'PNG')
-        result.save(demo + '.pdf', 'PDF')
+
+        print save(result, demo + '.png', 'png')
+        print save(result, demo + '.pdf', 'pdf')
+        print save(result, demo + '.ps', 'pdf')
+        print save(result, demo + '.eps', 'eps')
+        print save(result, demo + '.svg', 'svg')
 
 # main()
 
