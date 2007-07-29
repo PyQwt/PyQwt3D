@@ -19,11 +19,11 @@ prune configure/Qwt3D_Qt3
 prune configure/Qwt3D_Qt4
 prune configure/tmp-Qwt3D_Qt3
 prune configure/tmp-Qwt3D_Qt4
-recursive-exclude configure Makefile PyQwt3D.nsi *.pyc *cvsignore* *~
+recursive-exclude configure Makefile PyQwt3D.nsi *.cpp *.pyc *cvsignore* *~
 
 # Qt3 examples
 graft examples
-recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
+recursive-exclude examples *.html *.pdf *.png *ps *.pyc *.svg *cvsignore* *~
 
 # fake headers
 graft include
@@ -39,7 +39,7 @@ recursive-exclude qt3lib *cvsignore* *~
 
 # Qt4 examples
 graft qt4examples
-recursive-exclude qt4examples *.html *.pdf *.png *.pyc *cvsignore* *~
+recursive-exclude qt4examples *.html *.pdf *.png *ps *.pyc *.svg *cvsignore* *~
 
 # PyQwt python code for PyQt4/Qt4
 graft qt4lib
