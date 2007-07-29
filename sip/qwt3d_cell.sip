@@ -2,7 +2,7 @@
 //
 // The SIP interface definition for Cell.
 //
-// Copyright (C) 2004-2006 Gerard Vermeulen
+// Copyright (C) 2004-2007 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

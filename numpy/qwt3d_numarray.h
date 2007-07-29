@@ -1,6 +1,6 @@
 // qwt3d_numarray.h: encapsulates all PyQwt3D's calls to the numarray C-API.
 //
-// Copyright (C) 2004-2006 Gerard Vermeulen
+// Copyright (C) 2004-2007 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
