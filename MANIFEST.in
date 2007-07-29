@@ -21,7 +21,7 @@ prune configure/tmp-Qwt3D_Qt3
 prune configure/tmp-Qwt3D_Qt4
 recursive-exclude configure Makefile PyQwt3D.nsi *.pyc *cvsignore* *~
 
-# examples
+# Qt3 examples
 graft examples
 recursive-exclude examples *.html *.pdf *.png *.pyc *cvsignore* *~
 
@@ -33,9 +33,18 @@ recursive-exclude include *.pyqwt3d *cvsignore* *~
 graft numpy
 recursive-exclude numpy *.py *cvsignore* *~
 
+# PyQwt python code for PyQt/Qt3
+graft qt3lib
+recursive-exclude qt3lib *cvsignore* *~
+
 # Qt4 examples
 graft qt4examples
 recursive-exclude qt4examples *.html *.pdf *.png *.pyc *cvsignore* *~
+
+# PyQwt python code for PyQt4/Qt4
+graft qt4lib
+recursive-exclude qt4lib *cvsignore* *~
+
 
 # QwtPlot3D
 graft qwtplot3d-0.2.6

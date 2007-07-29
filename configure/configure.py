@@ -166,18 +166,6 @@ def copy_files(sources, directory):
 # copy_files()
 
 
-def generate_init_py(target, configuration):
-    """Generate an __init__.py file.
-    """
-    init_py = open(target, 'w')
-    init_py.write(os.linesep.join([
-        'from _Qwt3D import *',
-        '',
-        ]))
-
-# generate_init_py()
-    
-
 def check_numarray(configuration, options, package):
     '''See if the numarray extension has been installed.
     '''
@@ -554,7 +542,12 @@ def setup_qwt3d_build(configuration, options, package):
     extra_sources = []
     extra_headers = []
     extra_moc_headers = []
-
+    if configuration.qt_version < 0x040000:
+        extra_py_files = glob.glob(
+            os.path.join(os.pardir, 'qt3lib', 'Qwt3D', '*.py'))
+    else:
+        extra_py_files = glob.glob(
+            os.path.join(os.pardir, 'qt4lib', 'PyQt4', 'Qwt3D', '*.py'))
 
     # do we compile and link the sources of QwtPlot3D into PyQwt3D?
     if options.qwtplot3d_sources:
@@ -567,7 +560,7 @@ def setup_qwt3d_build(configuration, options, package):
 
     # do we also compile and link the sources of zlib into PyQwt3D?
     if options.zlib_sources:
-        options.extra_defines.append('GL2PS_HAVE_ZLIB')
+        options.extra_defines.append('HAVE_ZLIB')
 
     print "Extended options:"
     pprint.pprint(options.__dict__)
@@ -619,6 +612,7 @@ def setup_qwt3d_build(configuration, options, package):
     copy_files(extra_sources, tmp_dir)
     copy_files(extra_headers, tmp_dir)
     copy_files(extra_moc_headers, tmp_dir)
+    copy_files(extra_py_files, tmp_dir)
 
     # fix '#include "gl2ps".h' because gl2ps.h got relocated 
     if options.qwtplot3d_sources:
@@ -692,9 +686,6 @@ def setup_qwt3d_build(configuration, options, package):
                 text = text.replace('{sipNm__Qwt3D_POINTS, POINTS',
                                     '{sipNm__Qwt3D_POINTS, Qwt3D::POINTS')
                 open(source, 'w').write(text)
-
-    # generate __init__.py'
-    generate_init_py(os.path.join(tmp_dir, '__init__.py'), configuration)
 
     # copy lazily to the build directory to speed up recompilation
     if not os.path.exists(build_dir):
