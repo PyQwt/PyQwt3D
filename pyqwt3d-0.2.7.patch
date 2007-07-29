@@ -1,6 +1,6 @@
---- qwtplot3d-0.2.7/src/qwt3d_io.cpp.pyqwt3d Sat Jul 28 13:39:26 2007
-+++ qwtplot3d-0.2.7/src/qwt3d_io.cpp Sat Jul 28 14:31:34 2007
-@@ -302,6 +302,10 @@
+--- qwtplot3d-0.2.7/src/qwt3d_io.cpp.pyqwt3d Sun Jul 29 11:27:57 2007
++++ qwtplot3d-0.2.7/src/qwt3d_io.cpp Sun Jul 29 14:44:20 2007
+@@ -302,6 +302,14 @@
  #endif
    vecfunc.setFormat("PDF");
    defineOutputHandler("PDF", vecfunc);
@@ -8,16 +8,21 @@
 +  defineOutputHandler("SVG", vecfunc);
 +  vecfunc.setFormat("PGF");
 +  defineOutputHandler("PGF", vecfunc);
++#ifdef GL2PS_HAVE_ZLIB
++  vecfunc.setFormat("SVG_GZ");
++  defineOutputHandler("SVG_GZ", vecfunc);
++#endif
  
    defineInputHandler("mes", NativeReader());
    defineInputHandler("MES", NativeReader());
-@@ -310,21 +314,23 @@
+@@ -310,21 +318,22 @@
  /*!
    \deprecated  Use Plot3D::save or IO::save instead.
    
 -  Writes vector data supported by gl2ps. The corresponding format types are "EPS","PS"or "PDF".
+-  If zlib has been configured this will be extended by "EPS_GZ" and "PS_GZ". 
 +  Writes vector data supported by gl2ps. The corresponding format types are "EPS","PS", "PDF", "SVG", or "PGF".
-   If zlib has been configured this will be extended by "EPS_GZ" and "PS_GZ". 
++  If zlib has been configured this will be extended by "EPS_GZ", "PS_GZ" and "SVG_GZ". 
    \b Beware: BSPSORT turns out to behave very slowly and memory consuming, especially in cases where
    many polygons appear. It is still more exact than SIMPLESORT.
  */
@@ -27,25 +32,36 @@
    if (format == "EPS" || format == "EPS_GZ" || format == "PS" 
 -    || format == "PS_GZ" || format == "PDF")
 +      || format == "PS_GZ" || format == "PDF" || format == "SVG"
-+      || format == "PGF")
++      || format == "SVG_GZ" || format == "PGF")
    {  
      VectorWriter* gl2ps = (VectorWriter*)IO::outputHandler(format);
      if (gl2ps)
      {
        gl2ps->setSortMode(sortmode);
 -      gl2ps->setTextMode(text);
-+      gl2ps->setLandscape(Qwt3D::VectorWriter::OFF); // FIXME
 +      gl2ps->setTextMode(textmode);
      }
      return IO::save(this, fileName, format);
    }
---- qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp.pyqwt3d Sat Jul 28 14:18:51 2007
-+++ qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp Sat Jul 28 14:31:47 2007
-@@ -69,7 +69,7 @@
+@@ -338,7 +347,8 @@
+ bool Plot3D::savePixmap(QString const& fileName, QString const& format)
+ {
+   if (format == "EPS" || format == "EPS_GZ" || format == "PS" 
+-    || format == "PS_GZ" || format == "PDF")
++      || format == "PS_GZ" || format == "PDF" || format == "SVG"
++      || format == "SVG_GZ" || format == "PGF")
+     return false;
+   
+   return IO::save(this, fileName, format);
+--- qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp.pyqwt3d Sun Jul 29 11:27:57 2007
++++ qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp Sun Jul 29 16:12:54 2007
+@@ -68,8 +68,8 @@
+ 
  
  /*! 
- Set output format, must be one of "EPS_GZ", "PS_GZ", "EPS", 
+-Set output format, must be one of "EPS_GZ", "PS_GZ", "EPS", 
 -"PS", "PDF" (case sensitive)
++Set output format, must be one of "EPS_GZ", "PS_GZ", "SVG_GZ", "EPS", 
 +"PS", "PDF", "SVG", or "PGF" (case sensitive)
  */
  bool VectorWriter::setFormat(QString const& format)
@@ -65,3 +81,72 @@
    else
    {
      formaterror_ = true;
+@@ -104,9 +112,20 @@
+   return true;
+ }
+ 
++#include <locale.h>
++class CLocale {
++public:
++  CLocale() { old = setlocale(LC_ALL, "C"); }
++  ~CLocale() { setlocale(LC_ALL, old); }
++private:
++  char *old;
++};
++
+ //! Performs actual output
+ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
+ {
++  CLocale();
++
+   if (formaterror_)
+     return false;
+ 
+@@ -174,7 +193,7 @@
+     + QString::number(QWT3D_PATCH_VERSION); 
+       
+   QString producer = QString("QwtPlot3D ") + version + 
+-    " (beta) , (C) 2002";
++    ", (C) 2002";
+ 
+   // calculate actual year
+   time_t now;
+@@ -184,7 +203,8 @@
+   if (newtime && newtime->tm_year + 1900 > 2002)
+     producer += "-" + QString::number(newtime->tm_year+1900); 
+ 
+-  producer += " Micha Bieber <krischnamurti@users.sourceforge.net>";
++  // the SVG format does not like some of the characters in a mail address
++  producer += " Micha Bieber, mailto: krischnamurti at users.sourceforge.net";
+ 
+   FILE *fp = fopen(QWT3DLOCAL8BIT(fname), "wb");  
+   if (!fp)
+@@ -195,7 +215,7 @@
+   while( state == GL2PS_OVERFLOW )
+   { 
+     bufsize += 2*1024*1024;
+-    gl2psBeginPage ( "---", QWT3DLOCAL8BIT(producer), viewport,
++    gl2psBeginPage ( QWT3DLOCAL8BIT(fname), QWT3DLOCAL8BIT(producer), viewport,
+                      gl2ps_format_, sortmode,
+                      options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
+                      fp, QWT3DLOCAL8BIT(fname) );
+@@ -225,7 +245,7 @@
+     while( state == GL2PS_OVERFLOW )
+     { 
+       bufsize += 2*1024*1024;
+-      gl2psBeginPage ( "---", QWT3DLOCAL8BIT(producer), viewport,
++      gl2psBeginPage ( QWT3DLOCAL8BIT(fname), QWT3DLOCAL8BIT(producer), viewport,
+         GL2PS_TEX, sortmode,
+         options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
+         fp, QWT3DLOCAL8BIT(fn) );
+--- qwtplot3d-0.2.7/include/qwt3d_global.h.pyqwt3d Sun Jul 29 11:27:57 2007
++++ qwtplot3d-0.2.7/include/qwt3d_global.h Sun Jul 29 11:27:57 2007
+@@ -8,7 +8,7 @@
+ 
+ #define QWT3D_MAJOR_VERSION 0
+ #define QWT3D_MINOR_VERSION 2
+-#define QWT3D_PATCH_VERSION 6
++#define QWT3D_PATCH_VERSION 7
+ 
+ //
+ // Create Qwt3d DLL if QWT3D_DLL is defined (Windows only)
