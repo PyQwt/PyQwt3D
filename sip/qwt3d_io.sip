@@ -41,13 +41,26 @@ using namespace Qwt3D;
 public:
     typedef bool (*Function)(Plot3D*, const QString &);
 
-    class Functor /Abstract/
+    class Functor
     {
     public:
         virtual ~Functor();
         virtual IO::Functor * clone() const = 0 /Factory/;
         virtual bool operator()(Plot3D *, const QString &) = 0;
-    };
+%ConvertToSubClassCode
+    // Traverse the inheritance tree left->right and bottom->up.
+    // Beware: Functor is abstract, and NativeReader too because it overrides
+    // the virtual functions privately.
+    // FIXME: NativeReader
+    if (dynamic_cast<const PixmapWriter *>(sipCpp))
+        sipClass = sipClass_PixmapWriter;
+    else if (dynamic_cast<const VectorWriter *>(sipCpp))
+        sipClass = sipClass_VectorWriter;
+    else // FIXME: Functor
+        sipClass = 0;
+%End // ConvertToSubClassCode        
+
+     }; // 
 
     // FIXME: static bool defineInputHandler(const QString &, Function);
     // FIXME: static bool defineOutputHandler(const QString &, Function);
