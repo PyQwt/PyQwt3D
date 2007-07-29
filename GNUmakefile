@@ -10,16 +10,17 @@
 #       script -c 'make all-static' LOG.txt
 #     The script command appeared in 3.0BSD and is part of util-linux.
 #
-#
-# Edit INCDIR and LIBDIR to suit your QwtPlot3D installation.
-INCDIR := /usr/include/qwtplot3d
-LIBDIR := /usr/lib
+# Edit QWT3DOPTIONS first.
 
 # To compile and link the QwtPlot3D sources statically into PyQwt3D.
 QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.7
 
 # To compile and link the zlib sources statically into PyQwt3D.
 ZLIBDIR := $(shell pwd)/zlib-1.2.3
+
+# Edit QWT3DOPTIONS first.
+#QWT3DOPTIONS := -Q $(QWT3DDIR) -Z $(ZLIBDIR) -D HAVE_LIBPNG -l png
+QWT3DOPTIONS := -Q $(QWT3DDIR) -D HAVE_ZLIB -l z -D HAVE_LIBPNG -l png
 
 # Do not edit below this line, unless you know what you are doing.
 JOBS := $(shell getconf _NPROCESSORS_ONLN)
@@ -44,35 +45,35 @@ trace: 3t 4t
 
 3:
 	cd configure \
-	&& python configure.py -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py -3 $(QWT3DOPTIONS) $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 4:
 	cd configure \
-	&& python configure.py -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py -4 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 3d:
 	cd configure \
-	&& python configure.py --debug -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py --debug $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 4d:
 	cd configure \
-	&& python configure.py --debug -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py --debug -4 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 3t:
 	cd configure \
-	&& python configure.py --debug --trace -3 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py --debug --trace -3 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 	cd configure \
-	&& python configure.py --debug --trace -4 -Q $(QWT3DDIR) -Z $(ZLIBDIR) -j $(JOBS) \
+	&& python configure.py --debug --trace -4 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 4t:
 
-# Installation
+# Installation.
 install-3: 3
 	make -C configure install
 
@@ -97,17 +98,30 @@ install-4t: 4t
 
 install-trace: install-3t install-4t
 
+# QwtPlot3D code.
+qwtplot3d-doc.zip:
+	wget http://qwtplot3d.sourceforge.net/qwtplot3d-doc.zip
+
 qwtplot3d-0.2.7.tgz:
 	wget http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.7.tgz
 
-qwtplot3d-0.2.7: qwtplot3d-0.2.7.tgz
-	rm -rf qwtplot3d qwtplot3d-0.2.7
-	tar xfz qwtplot3d-0.2.7.tgz
-	mv qwtplot3d qwtplot3d-0.2.7
+qwtplot3d-0.2.7: qwtplot3d-doc.zip qwtplot3d-0.2.7.tgz
+	rm -rf qwtplot3d qwtplot3d-doc qwtplot3d-0.2.7
+	(unzip qwtplot3d-doc.zip; mv qwtplot3d qwtplot3d-doc)
+	(tar xfz qwtplot3d-0.2.7.tgz; mv qwtplot3d qwtplot3d-0.2.7)
 	./unbieber.py qwtplot3d-0.2.7 .c .cpp .h
 	patch -p0 --fuzz=10 -b -z .pyqwt3d <pyqwt3d-0.2.7.patch
+	cp -r qwtplot3d-doc/doc/doxygenimages qwtplot3d-0.2.7/doc/doxygenimages
+	(cd qwtplot3d-0.2.7/doc; \
+         mv Doxyfile.doxygen Doxyfile.doxygen.in; \
+	 egrep -iv '(c|v):' Doxyfile.doxygen.in >Doxyfile.doxygen; \
+	 doxygen -u Doxyfile.doxygen; \
+	 doxygen Doxyfile.doxygen)
 
-# Documentation
+diff:
+	./gendiff qwtplot3d-0.2.7 .pyqwt3d >pyqwt3d-0.2.7.patch
+
+# PyQwt3D documentation.
 doc:
 	(cd Doc && make doc && make htdoc)
 
