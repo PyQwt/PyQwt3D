@@ -69,7 +69,7 @@ public:
     void setScaling(bool);
     bool scaling() const;
     void setScale(SCALETYPE);
-    void setScale(Scale *);
+    void setScale(Scale * /Transfer/);
     void setNumbers(bool);
     bool numbers() const;
     void setNumberColor(RGBA);
