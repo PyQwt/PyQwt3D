@@ -45,7 +45,7 @@ trace: 3t 4t
 
 3:
 	cd configure \
-	&& python configure.py -3 $(QWT3DOPTIONS) $(JOBS) \
+	&& python configure.py -3 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
 4:
