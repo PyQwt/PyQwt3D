@@ -1,6 +1,5 @@
 """Qwt3D -- a Python interface for the QwtPlot3D library.
 """
-#
 # Copyright (C) 2003-2007 Gerard Vermeulen
 #
 # This file is part of PyQwt3D.
@@ -28,8 +27,15 @@
 # If PyQwt3D is dynamically linked with non-free versions of Qt and PyQt,
 # PyQwt3D becomes a free plug-in for a non-free program.
 
-
 from _Qwt3D import *
+
+try:
+    from ezplot import *
+except ImportError, message:
+    if 'numpy' in message:
+        print 'Install numpy to use ezplot'
+    else:
+        raise ImportError, message
 
 def save(plot3d, name, format,
          landscape=VectorWriter.OFF,

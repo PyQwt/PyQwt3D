@@ -31,6 +31,14 @@
 
 from _Qwt3D import *
 
+try:
+    from ezplot import *
+except ImportError, message:
+    if 'numpy' in message:
+        print 'Install numpy to use ezplot'
+    else:
+        raise ImportError, message
+
 def save(plot3d, name, format,
          landscape=VectorWriter.OFF,
          textmode=VectorWriter.NATIVE,
