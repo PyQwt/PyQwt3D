@@ -18,9 +18,9 @@ QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.7
 # To compile and link the zlib sources statically into PyQwt3D.
 ZLIBDIR := $(shell pwd)/zlib-1.2.3
 
-# Edit QWT3DOPTIONS first.
+# Edit QWT3DOPTIONS first (DarwinPorts install in /opt/local).
 #QWT3DOPTIONS := -Q $(QWT3DDIR) -Z $(ZLIBDIR) -D HAVE_LIBPNG -l png
-QWT3DOPTIONS := -Q $(QWT3DDIR) -D HAVE_ZLIB -l z -D HAVE_LIBPNG -l png
+QWT3DOPTIONS := -Q $(QWT3DDIR) -D HAVE_ZLIB -l z -D HAVE_LIBPNG  -I /opt/local/include -L /opt/local/lib -l png
 
 # Do not edit below this line, unless you know what you are doing.
 JOBS := $(shell getconf _NPROCESSORS_ONLN)
