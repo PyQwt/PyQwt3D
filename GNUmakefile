@@ -18,6 +18,10 @@ QWT3DDIR := $(shell pwd)/qwtplot3d-0.2.7
 # To compile and link the zlib sources statically into PyQwt3D.
 ZLIBDIR := $(shell pwd)/zlib-1.2.3
 
+# To compile and link the libpng sources statically into PyQwt3D.
+PNGVER := 1.2.18
+PNGDIR := $(shell pwd)/libpng-$(PNGVER)
+
 # Edit QWT3DOPTIONS first (DarwinPorts install in /opt/local).
 #QWT3DOPTIONS := -Q $(QWT3DDIR) -Z $(ZLIBDIR) -D HAVE_LIBPNG -l png
 QWT3DOPTIONS := -Q $(QWT3DDIR) -D HAVE_ZLIB -l z -D HAVE_LIBPNG  -I /opt/local/include -L /opt/local/lib -l png
@@ -68,10 +72,10 @@ trace: 3t 4t
 	&& python configure.py --debug --trace -3 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
 
+4t:
 	cd configure \
 	&& python configure.py --debug --trace -4 $(QWT3DOPTIONS) -j $(JOBS) \
 	&& $(MAKE) -j $(JOBS)
-4t:
 
 # Installation.
 install-3: 3
@@ -117,6 +121,14 @@ qwtplot3d-0.2.7: qwtplot3d-doc.zip qwtplot3d-0.2.7.tgz
 	 egrep -iv '(c|v):' Doxyfile.doxygen.in >Doxyfile.doxygen; \
 	 doxygen -u Doxyfile.doxygen; \
 	 doxygen Doxyfile.doxygen)
+
+LIBPNG_TAR_GZ := libpng-1.2.18-no-config.tar.gz
+
+libpng-$(PNGVER)-no-config.tar.gz:
+	wget http://prdownloads.sourceforge.net/libpng/$@
+
+libpng: libpng-$(PNGVER)-no-config.tar.gz
+	tar xfz $<
 
 diff:
 	./gendiff qwtplot3d-0.2.7 .pyqwt3d >pyqwt3d-0.2.7.patch
