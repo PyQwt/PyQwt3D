@@ -38,27 +38,14 @@ from _Qwt3D import X1, X2, X3, X4, Y1, Y2, Y3, Y4, Z1, Z2, Z3, Z4
 
 def tocube(x, y, z):
     """
-    For arrays x, y, z, return scale factors sx and sy, so that
-    dz/2 < sx*dx < 2*dz and dz/2 < sy*dy < 2*dz, where
-    dx=max(x)-min(x), dy=max(y)-min(y), and dz=max(z)-min(z)
+    For arrays x, y, z, return scale factors sx and sy, so that dz=sx*dx and
+    dz=sy*dy, where dx=max(x)-min(x), dy=max(y)-min(y), and dz=max(z)-min(z)
     """
-    x = np.asarray(x)
-    y = np.asarray(y)
-    z = np.asarray(z)
-    # avoid integer divisions returning 0
-    dz = float(z.max()-z.min())
-    
     dx = float(x.max()-x.min())
-    sx = float(10)**int(round(np.log10(dz/dx)))
-    if 2*sx*dx < dz: sx *= 2
-    elif sx*dx > 2*dz: sx /= 2
-
     dy = float(y.max()-y.min())
-    sy = float(10)**int(round(np.log10(dz/dy)))
-    if 2*sy*dy < dz: sy *= 2
-    elif sy*dy > 2*dz: sy /= 2
+    dz = float(z.max()-z.min())
 
-    return sx, sy
+    return dz/dx, dz/dy
 
 # tocube()
 

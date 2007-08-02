@@ -806,8 +806,10 @@ For instance:
 \begin{funcdesc}{plot}{x, y, function, title='', labels=('x', 'y', 'z')}
   Returns a plot of \code{function(x, y)}
   
-  Here, \var{x} and \var{y} are vectors, var{function} is function of two
+  Here, \var{x} and \var{y} are vectors, \var{function} is function of two
   variables, \var{title} as string and \var{labels} a sequence of three strings.
+
+  The axes are scaled to make the axis frame cubic.
 \end{funcdesc}
 
 \begin{funcdesc}{save}{plot3d, name, format,
