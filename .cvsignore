@@ -2,8 +2,9 @@ LOG.*
 *.pyc
 MANIFEST
 dist
+libpng*
 qwtplot3d-doc*
 qwtplot3d-0.2.6*
 qwtplot3d-0.2.7*
 typescript
-zlib-1.2.3*
+zlib*
