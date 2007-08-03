@@ -1,6 +1,0 @@
-New features:
-- an NSIS Windows installer
-
-Bug fixes:
-- support for SIP-4.6
-- removed support for SIP-4.4 and the workarounds needed for SIP-4.4
