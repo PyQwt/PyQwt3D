@@ -835,9 +835,11 @@ def parse_args():
               ' (the -Z option is ignored without the -Q option)'))
     common_options.add_option(
         '-D', '--extra-defines', default=[], action='append',
-        type='string', metavar='GL2PS_HAVE_ZLIB',
-        help=('add an extra preprocessor definition'
-              ' (to enable compressed EPS/PDF/PS output with the -Q option)'))
+        type='string', metavar='HAVE_ZLIB',
+        help=('add an extra preprocessor definition (HAVE_ZLIB enables'
+              ' compression of EPS/PDF/PS/SVG output and HAVE_LIBPNG enables'
+              ' pixmaps in the SVG output, but both defines are ignored'
+              ' without the -Q option)'))
     common_options.add_option(
         '-I', '--extra-include-dirs', default=[], action='append',
         type='string', metavar='/usr/include/qwtplot3d',
