@@ -45,6 +45,8 @@
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.7.zip?download}}
 \newcommand{\Examples}{\ulink{PyQwt3D examples}
   {http://pyqwt.sourceforge.net/pyqwt3d-examples.html}}
+\newcommand{\MacPorts}{\ulink{MacPorts}
+  {http://www.macports.org}}
 
 % Installers for MS-Windows
 \newcommand{\PythonExe}{\ulink{python-2.5.1.msi}
@@ -71,11 +73,14 @@
   least one the Numerical Python extensions:
   \NumPy{}, \numarray{}, \Numeric{}.
 
-  I am testing PyQwt with \NumPyTarGz{}, \numarrayTarGz{}, and \NumericTarGz{}.
-  \NumPy{} is actively developed and recommended;
+  I am testing PyQwt3D with \NumPyTarGz{}, \numarrayTarGz{}, and
+  \NumericTarGz{}. \NumPy{} is actively developed and recommended;
   \numarray{} and \Numeric{} are unmaintained.
 
   \begin{notice}[note]
+    PyQwt3D contains a patched version of QwtPlot3D-0.2.7 to enable the
+    SVG and PGF vector output file formats and the patched version of
+    QwtPlot3D-0.2.7 is required when you want to use the SVG and PGF formats. 
     The PyQwt3D extension module containing statically linked sources of
     QwtPlot3D-0.2.7 coexists very well with system wide shared libraries
     of any version of QwtPlot3D.
@@ -264,6 +269,24 @@ make install
       QwtPlot3D library.
   \end{itemize}
 \end{enumerate}
+
+\begin{notice}[warning]
+  The patched version of QwtPlot3D-0.2.7 included in PyQwt3D is required
+  to enable saving of plots to the SVG and PGF vector file formats.
+  In addition, you have to define HAVE_ZLIB and HAVE_LIBPNG to enable pixmaps
+  in the SVG driver of GL2PS. A minimal configuration example is
+\begin{verbatim}
+python configure.py -Q ../qwtplot3d-0.2.7 -D HAVE_ZLIB -D HAVE_LIBPNG \
+    -l z -l png
+\end{verbatim}
+  which may need extra options to indicate the location of the headers and
+  libraries of libpng and zlib. For instance, a configuration example for
+  Mac OS X with libpng from \MacPorts{} is:
+\begin{verbatim}
+python configure.py -Q ../qwtplot3d-O.2.7 -I /opt/local/include \
+    -L /opt/local/lib -D HAVE_ZLIB -D HAVE_LIBPNG -l z -l png
+\end{verbatim}
+\end{notice}
 
 \begin{notice}[note]
   \file{PyQwt-0.1.5/GNUmakefile} is makefile for GNU make which contains more
