@@ -57,15 +57,6 @@ def save(plot3d, name, format,
     
     Returns True on success and False on failure.
     """
-    
-    if not isinstance(plot3d, Plot3D):
-        for child in plot3d.children():
-            if isinstance(child, Plot3D):
-                plot3d = child
-                break
-            else:
-                return False
-    
     format = format.upper()
     if format in ['EPS', 'EPS_GZ',
                   'PDF',
