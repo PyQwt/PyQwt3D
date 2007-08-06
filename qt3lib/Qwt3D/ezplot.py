@@ -101,6 +101,9 @@ def plot(x, y, function, title='', labels=('x', 'y', 'z')):
     w.setBackgroundColor(RGBA(1.0, 1.0, 1.0))
     w.setScale(1.0, 1.0, 1.0)
     w.setRotation(30, 0, 15)
+    # antialiasing
+    w.coordinates().setLineSmooth(True)
+    w.setSmoothMesh(True)
 
     # Load the data with scaled end points for the x- and y-axis,
     # so that all axes have a similar length (within a factor 2).
