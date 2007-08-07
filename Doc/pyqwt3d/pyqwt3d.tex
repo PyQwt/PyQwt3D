@@ -348,8 +348,8 @@ nmake install
   where the folder
   \file{C:\textbackslash{}sources\textbackslash{}of\textbackslash{}qwtplot3d}
   must contain the folders \file{3rdparty}, \file{include} and \file{src}.
-  You can also edit the files \file{go3.bat} or \file{go4.bat} to suit your
-  setup.
+  You can also edit one of the files \file{go3.bat}, \file{go4.bat}, or
+  \file{go-mingw.bat} to suit your setup.
 \item
   Fine tune (optional) by running the commands:
 \begin{verbatim}
@@ -369,7 +369,12 @@ nmake install
   The files \file{configure\textbackslash{}go3.bat} and
   \file{configure\textbackslash{}go4.bat} are examples of how to automatize
   the invokations of \strong{configure.py}, \strong{nmake}, and
-  \strong{nmake install}.  Adapt and use it.
+  \strong{nmake install}.
+
+  The file \file{configure\textbackslash{}go-mingw.bat} is used to build
+  PyQwt3D with MinGW after building libpng by hand.
+
+  Adapt and use one of those files.
 \end{notice}
 
 \begin{notice}[note]
