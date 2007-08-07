@@ -21,7 +21,8 @@ What is PyQwt3D ( http://pyqwt3d.sourceforge.net) ?
 The home page of PyQwt3D is http://pyqwt.sourceforge.net.
 
 PyQwt3D-0.1.6 is a bug fix release:
-- Improved text display on screen and in pixmaps with Qt-4 and X.
+- Improved text display on screen and in pixmaps with Qt-4 and X (requires
+  the use of the patched QwtPlot3D-0.2.7 library included in PyQwt3D).
 
 
 PyQwt3D-0.1.6 supports:
