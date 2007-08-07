@@ -1,3 +1,45 @@
+2007-08-07 21:05  gvermeul
+
+	* qt4examples/EnrichmentDemo.py: Replace string "Courier" with
+	  variable 'family'.
+
+2007-08-07 20:56  gvermeul
+
+	* qt4examples/: AutoSwitch.py, EnrichmentDemo.py,
+	  ParametricSurfaceDemo.py, SimplePlot.py, TestNumPy.py: Fix typo,
+	  and look if colored text is working.
+
+2007-08-07 20:28  gvermeul
+
+	* pyqwt3d-0.2.7.patch: Made it work on Mac OS X with Qt-4.  It
+	  still looks bad on Mac OS X with Qt-3.
+
+2007-08-07 19:15  gvermeul
+
+	* pyqwt3d-0.2.7.patch: Try to improve the text display with Qt-4 on
+	  Linux.
+
+2007-08-07 19:13  gvermeul
+
+	* qt4examples/: AutoSwitch.py, EnrichmentDemo.py,
+	  ParametricSurfaceDemo.py, SimplePlot.py, TestNumPy.py: Add font
+	  twiddling code (we stick to courrier, but Verdana or the default
+	  application code are also easy to test).
+
+2007-08-07 18:28  gvermeul
+
+	* qt4examples/SimplePlot.py: Try to select the Verdana font falling
+	  back on the application font.
+
+2007-08-07 18:28  gvermeul
+
+	* setup.py: Prepare PyQwt-0.1.6.
+
+2007-08-07 11:19  gvermeul
+
+	* ChangeLog, Doc/pyqwt3d/pyqwt3d.tex: PyQwt3D-0.1.5 has been
+	  released.
+
 2007-08-07 10:13  gvermeul
 
 	* ChangeLog: Released as PyQwt3D-0.1.5 with Windows fixes.

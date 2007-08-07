@@ -37,8 +37,8 @@
   {http://pyqwt.sourceforge.net/support/PyQt-mac-gpl-4.3.tar.gz}}
 \newcommand{\PyQtCom}{\ulink{PyQt-commercial}
   {http://www.riverbankcomputing.co.uk/pyqt/buy.php}}
-\newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.5.tar.gz}
-  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.5.tar.gz?download}}
+\newcommand{\PyQwtDddTarGz}{\ulink{PyQwt3D-0.1.6.tar.gz}
+  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.6.tar.gz?download}}
 \newcommand{\QwtPlotDddTgz}{\ulink{qwtplot3d-0.2.7.tgz}
   {http://prdownloads.sourceforge.net/qwtplot3d/qwtplot3d-0.2.7.tgz?download}}
 \newcommand{\QwtPlotDddZip}{\ulink{qwtplot3d-0.2.7.zip}
@@ -63,8 +63,8 @@
   {http://pyqwt.sourceforge.net/support/PyQt-gpl-4.1.1-Py2.5-Qt4.2.2.exe}}
 \newcommand{\PyQtNewExe}{\ulink{PyQt-gpl-4.2-Py2.5-Qt4.2.3.exe}
   {http://pyqwt.sourceforge.net/support/PyQt-gpl-4.2-Py2.5-Qt4.2.3.exe}}
-\newcommand{\PyQwtNewExe}{\ulink{PyQwt3D-0.1.5-Python2.5-Qt4.2.3-PyQt-4.2-NumPy1.0.3.exe}
-  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.5-Python2.5-Qt4.2.3-PyQt-4.2-NumPy1.0.3.exe}}
+\newcommand{\PyQwtNewExe}{\ulink{PyQwt3D-0.1.6-Python2.5-Qt4.2.3-PyQt-4.2-NumPy1.0.3.exe}
+  {http://prdownloads.sourceforge.net/pyqwt/PyQwt3D-0.1.6-Python2.5-Qt4.2.3-PyQt-4.2-NumPy1.0.3.exe}}
 
 
 
@@ -89,7 +89,7 @@
 
 \newcommand{\Future}{
   \begin{notice}[warning]
-    The documentation is for the future PyQwt3D-0.1.5 which has not yet been
+    The documentation is for the future PyQwt3D-0.1.6 which has not yet been
     released.  Please refer, to the documentation in the release that you are
     using.
   \end{notice}
@@ -104,8 +104,8 @@
 \author{Gerard Vermeulen}
 
 \date{\today}
-\release{0.1.5}
-\setshortversion{0.1.5}
+\release{0.1.6}
+\setshortversion{0.1.6}
 
 \makeindex
 
@@ -214,7 +214,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.5
+cd PyQwt3D-0.1.6
 cd configure
 python configure.py -Q ../qwtplot3d-0.2.7
 make
@@ -226,7 +226,7 @@ make install
   The installation will fail if Qt has been configured without runtime type
   information (RTTI).  In this case, run the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.5
+cd PyQwt3D-0.1.6
 cd configure
 python configure.py -Q /sources/of/qwtplot3d --extra-cxxflags=-frtti
 make
@@ -289,7 +289,7 @@ python configure.py -Q ../qwtplot3d-O.2.7 -I /opt/local/include \
 \end{notice}
 
 \begin{notice}[note]
-  \file{PyQwt-0.1.5/GNUmakefile} is makefile for GNU make which contains more
+  \file{PyQwt-0.1.6/GNUmakefile} is makefile for GNU make which contains more
   examples of how to invoke \file{configure.py}.
   Adapt and use it, if you have GNU make.
 \end{notice}
@@ -339,7 +339,7 @@ The installation procedure consists of three steps:
 \item
   Do a quick start to test the installation by running the commands:
 \begin{verbatim}
-cd PyQwt3D-0.1.5
+cd PyQwt3D-0.1.6
 cd configure
 python configure.py -Q ..\qwtplot3d-0.2.7
 nmake

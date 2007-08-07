@@ -29,7 +29,7 @@
 
 
 # These will change with different releases.
-!define PYQWT3D_VERSION        "0.1.5"
+!define PYQWT3D_VERSION        "0.1.6"
 !define PYQWT3D_PYQT_VERSION   "%(PYQT_VERSION)s"
 !define PYQWT3D_PYTHON_VERSION "%(PYTHON_VERSION)s"
 !define PYQWT3D_QT_VERSION     "%(QT_VERSION)s"
