@@ -52,7 +52,7 @@ class Plot(SurfacePlot):
         family = QCoreApplication.instance().font().family()
         if 'Verdana' in QFontDatabase().families():
             family = 'Verdana'
-        family = 'Courrier'
+        family = 'Courier'
 
         self.setTitleFont(family, 16, QFont.Bold)
             

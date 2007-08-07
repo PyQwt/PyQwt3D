@@ -2,7 +2,7 @@
 
 import sys
 from math import cos, pi, sin
-from PyQt4.Qt import QApplication, QCoreApplication, QFont, QFontDatabase
+from PyQt4.Qt import QApplication, QCoreApplication, QFont, QFontDatabase, Qt
 from PyQt4.Qwt3D import ParametricSurface, RGBA, SurfacePlot, Triple, NOCOORD
 
 class Sphere(ParametricSurface):
@@ -33,8 +33,9 @@ class Plot(SurfacePlot):
         if 'Verdana' in QFontDatabase().families():
             family = 'Verdana'
 
-        family = 'Courrier'
+        family = 'Courier'
         self.setTitleFont(family, 16, QFont.Bold)
+##         self.setTitleColor(RGBA(1.0, 0.0, 0.0))
         
         self.setTitle("A Simple Parametric Surface Demonstration")
 

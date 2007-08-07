@@ -203,7 +203,7 @@ class EnrichmentDemo(Qt.QWidget):
         plot.setTitle('Bar Style (Vertex Enrichment)')
         if 'Verdana' in Qt.QFontDatabase().families():
             family = 'Verdana'
-        family = 'Courrier'
+        family = 'Courier'
             
         plot.setTitleFont(family, 16, Qt.QFont.Bold)
         plot.coordinates().setLabelFont(family, 14)
