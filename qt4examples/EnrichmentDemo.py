@@ -231,7 +231,7 @@ class EnrichmentDemo(Qt.QWidget):
              
         plot.coordinates().setGridLinesColor(RGBA(0.0, 0.0, 0.5))
         plot.coordinates().setLineWidth(1)
-        plot.coordinates().setNumberFont("Courier", 8)
+        plot.coordinates().setNumberFont(family, 8)
         plot.coordinates().adjustNumbers(5)
 
         self.setColor()
