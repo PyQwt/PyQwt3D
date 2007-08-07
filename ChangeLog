@@ -1,3 +1,7 @@
+2007-08-07 10:13  gvermeul
+
+	* ChangeLog: Released as PyQwt3D-0.1.5 with Windows fixes.
+
 2007-08-07 10:11  gvermeul
 
 	* configure/go-mingw.bat: Add go-mingw.bat.
