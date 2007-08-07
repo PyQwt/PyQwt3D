@@ -57,6 +57,15 @@ class Plot(SurfacePlot):
 
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
+        # fonts
+        family = QCoreApplication.instance().font().family()
+        if 'Verdana' in QFontDatabase().families():
+            family = 'Verdana'
+        family = 'Courrier'
+            
+        self.coordinates().setLabelFont(family, 14)
+        self.coordinates().setNumberFont(family, 12)
+
         self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
         
         self.setRotation(30, 0, 15)

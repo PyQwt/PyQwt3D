@@ -197,10 +197,18 @@ class EnrichmentDemo(Qt.QWidget):
      
     def __init__(self, *args):
         Qt.QWidget.__init__(self, *args)
+        family = Qt.QCoreApplication.instance().font().family()
 
         plot = self.plot = SurfacePlot(self)
         plot.setTitle('Bar Style (Vertex Enrichment)')
-        plot.setTitleFont('Arial', 12)
+        if 'Verdana' in Qt.QFontDatabase().families():
+            family = 'Verdana'
+        family = 'Courrier'
+            
+        plot.setTitleFont(family, 16, Qt.QFont.Bold)
+        plot.coordinates().setLabelFont(family, 14)
+        plot.coordinates().setNumberFont(family, 12)
+
         plot.setZoom(0.8);
         plot.setRotation(30.0, 0.0, 15.0)
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import sys
-from PyQt4.Qt import QApplication, QSplitter, QTimer, SIGNAL, Qt
+from PyQt4.Qt import QApplication, QCoreApplication, QFont, QFontDatabase
+from PyQt4.Qt import QSplitter, QTimer, SIGNAL, Qt
 from PyQt4.Qwt3D import *
 
 
@@ -47,11 +48,19 @@ class Plot(SurfacePlot):
 
     def __init__(self, parent, updateinterval):
         SurfacePlot.__init__(self, parent)
+        # fonts
+        family = QCoreApplication.instance().font().family()
+        if 'Verdana' in QFontDatabase().families():
+            family = 'Verdana'
+        family = 'Courrier'
 
+        self.setTitleFont(family, 16, QFont.Bold)
+            
         self.setRotation(30, 0, 15)
         self.setShift(0.1, 0, 0)
         self.setZoom(0.8)
-        self.coordinates().setNumberFont("Courier", 8)
+
+        self.coordinates().setNumberFont(family, 8)
         
         axes = self.coordinates().axes # alias
         for axis in axes:
@@ -101,7 +110,7 @@ def make():
     plot1.updateData()
     plot1.updateGL()
     
-    plot2 = Plot(demo ,80)
+    plot2 = Plot(demo, 80)
     plot2.setZoom(0.8)
     hat = Hat(plot2)
     hat.create()

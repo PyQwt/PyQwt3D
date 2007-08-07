@@ -28,6 +28,8 @@ class Plot(SurfacePlot):
         family = QCoreApplication.instance().font().family()
         if 'Verdana' in QFontDatabase().families():
             family = 'Verdana'
+        family = 'Courrier'
+            
         self.coordinates().setLabelFont(family, 14)
         self.coordinates().setNumberFont(family, 12)
             
