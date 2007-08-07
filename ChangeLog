@@ -1,3 +1,21 @@
+2007-08-07 10:11  gvermeul
+
+	* configure/go-mingw.bat: Add go-mingw.bat.
+
+2007-08-07 10:10  gvermeul
+
+	* configure/PyQwt3D.nsi.in: Remove its own PyQt4/Qwt3D directory
+	  instead of PyQt4/Qwt5.  Bump version.  Add more documentation.
+
+2007-08-07 08:09  gvermeul
+
+	* ChangeLog, MANIFEST.in: Oops, included QwtPlot3D-0.2.6 instead of
+	  QwtPlot3D-0.2.7.  Released as PyQwt3D-0.1.5.
+
+2007-08-07 07:41  gvermeul
+
+	* ANNOUNCEMENT-0.1.5.TXT: Fixed requirements and minor editing.
+
 2007-08-07 07:22  gvermeul
 
 	* ChangeLog, MANIFEST.in, NEWS: PyQwt3D-0.1.5 released.
