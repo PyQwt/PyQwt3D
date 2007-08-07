@@ -47,8 +47,8 @@ recursive-exclude qt4lib *cvsignore* *~
 
 
 # QwtPlot3D
-graft qwtplot3d-0.2.6
-recursive-exclude qwtplot3d-0.2.6 *~
+graft qwtplot3d-0.2.7
+recursive-exclude qwtplot3d-0.2.7 *~
 
 # sip files
 graft sip
