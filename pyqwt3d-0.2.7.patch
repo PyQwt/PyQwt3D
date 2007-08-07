@@ -53,6 +53,58 @@
      return false;
    
    return IO::save(this, fileName, format);
+--- qwtplot3d-0.2.7/src/qwt3d_label.cpp.pyqwt3d Tue Aug  7 18:31:28 2007
++++ qwtplot3d-0.2.7/src/qwt3d_label.cpp Tue Aug  7 18:58:01 2007
+@@ -120,6 +120,7 @@
+     pm_ = QPixmap(r.width(), r.bottom());   
+   }
+   
++#if QT_VERSION < 0x040000
+   QBitmap bm(pm_.width(),pm_.height());
+   bm.fill(Qt::color0);
+   p.begin( &bm );
+@@ -131,9 +132,6 @@
+   pm_.setMask(bm);
+   
+   // avoids uninitialized areas in some cases
+-#if QT_VERSION < 0x040000
+-  pm_.fill();
+-#endif
+   p.begin( &pm_ );
+     p.setFont( font_ );
+     p.setPen( Qt::SolidLine );
+@@ -141,9 +139,30 @@
+ 
+     p.drawText(0,r.height() - fm.descent() -1 , text_);
+   p.end();
+-#if QT_VERSION < 0x040000
++
+   buf_ = pm_.convertToImage();
+ #else
++
++  QBitmap bm(pm_.width(),pm_.height());
++  bm.fill(Qt::white);
++  p.begin( &bm );
++    p.setPen(Qt::black);
++    p.setFont(font_);
++    p.drawText(0,r.height() - fm.descent() -1 , text_);
++  p.end();
++
++  pm_.setMask(bm);
++  
++  // avoids uninitialized areas in some cases
++  pm_.fill(Qt::white);
++  p.begin( &pm_ );
++    p.setFont( font_ );
++    p.setPen( Qt::SolidLine );
++    p.setPen( GL2Qt(color.r, color.g, color.b) );
++
++    p.drawText(0,r.height() - fm.descent() -1 , text_);
++  p.end();
++
+   buf_ = pm_.toImage();
+ #endif
+   tex_ = QGLWidget::convertToGLFormat( buf_ );    // flipped 32bit RGBA ?   
 --- qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp.pyqwt3d Sun Jul 29 16:24:13 2007
 +++ qwtplot3d-0.2.7/src/qwt3d_io_gl2ps.cpp Sun Jul 29 19:42:31 2007
 @@ -68,8 +68,8 @@
