@@ -1,4 +1,4 @@
-V0.1.5
+V0.1.5 -- 2007-08-07
 - Added support for QwtPlot3D-0.2.7
 - Added support for SIP-4.7, PyQt-4.3 and PyQt-3.17.3.
 - Added support for SVG and PGF vector output.
