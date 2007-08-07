@@ -2,7 +2,7 @@
 
 import sys
 from math import log
-from PyQt4.Qt import QApplication
+from PyQt4.Qt import QApplication, QCoreApplication, QFont, QFontDatabase
 from PyQt4.Qwt3D import Function, RGBA, SurfacePlot, BOX, X1, Y1, Z1
 
 class Rosenbrock(Function):
@@ -24,7 +24,15 @@ class Plot(SurfacePlot):
     
     def __init__(self, *args):
         SurfacePlot.__init__(self, *args)
+        # fonts
+        family = QCoreApplication.instance().font().family()
+        if 'Verdana' in QFontDatabase().families():
+            family = 'Verdana'
+        self.coordinates().setLabelFont(family, 14)
+        self.coordinates().setNumberFont(family, 12)
+            
         self.setTitle('A Simple SurfacePlot Demonstration');
+        self.setTitleFont(family, 16, QFont.Bold)
         self.setBackgroundColor(RGBA(1.0, 1.0, 0.6))
 
         rosenbrock = Rosenbrock(self)
