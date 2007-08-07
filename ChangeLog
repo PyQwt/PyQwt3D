@@ -1,3 +1,21 @@
+2007-08-07 22:12  gvermeul
+
+	* NEWS: Prepare PyQwt-0.1.6.
+
+2007-08-07 22:09  gvermeul
+
+	* ANNOUNCEMENT-0.1.6.TXT: Point out the necessity of the include
+	  patched QwtPlot3D library to improve the text display.
+
+2007-08-07 22:05  gvermeul
+
+	* Doc/pyqwt3d/pyqwt3d.tex: Document go-mingw.bat.
+
+2007-08-07 21:47  gvermeul
+
+	* ANNOUNCEMENT-0.1.6.TXT, ChangeLog, Doc/pyqwt3d/pyqwt3d.tex,
+	  configure/PyQwt3D.nsi.in: Prepare PyQwt3D-0.1.6.
+
 2007-08-07 21:05  gvermeul
 
 	* qt4examples/EnrichmentDemo.py: Replace string "Courier" with
