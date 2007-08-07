@@ -29,7 +29,7 @@
 
 
 # These will change with different releases.
-!define PYQWT3D_VERSION        "0.1.4"
+!define PYQWT3D_VERSION        "0.1.5"
 !define PYQWT3D_PYQT_VERSION   "%(PYQT_VERSION)s"
 !define PYQWT3D_PYTHON_VERSION "%(PYTHON_VERSION)s"
 !define PYQWT3D_QT_VERSION     "%(QT_VERSION)s"
@@ -150,6 +150,7 @@ Section "Documentation" SecDocumentation
 
     SetOutPath $PROGRAMFILES\PyQwt3D
     File /r ..\Doc\html\pyqwt3d
+    File /r ..\qwtplot3d-0.2.7\doc\web\doxygen
 SectionEnd
 
 Section "Examples" SecExamples
@@ -171,8 +172,10 @@ Section "Start Menu shortcuts" SecShortcuts
     IfFileExists "$PROGRAMFILES\PyQwt3D\pyqwt3d\index.html" 0 +2
         CreateShortCut "$SMPROGRAMS\${PYQWT3D_NAME}\PyQwt3D Documentation.lnk" "$PROGRAMFILES\PyQwt3D\pyqwt3d\index.html"
         
-    IfFileExists "$PROGRAMFILES\PyQwt3D\html\index.html" 0 +2
-        CreateShortCut "$SMPROGRAMS\${PYQWT3D_NAME}\Qwt Documentation.lnk" "$PROGRAMFILES\PyQwt3D\html\index.html"
+    IfFileExists "$PROGRAMFILES\PyQwt3D\doxygen\index.html" 0 +2
+        CreateShortCut "$SMPROGRAMS\${PYQWT3D_NAME}\QwtPlot3D Documentation.lnk" "$PROGRAMFILES\PyQwt3D\doxygen\index.html"
+
+    CreateShortCut "$SMPROGRAMS\${PYQWT3D_NAME}\QwtPlot3D Manual.lnk" "http://qwtplot3d.sourceforge.net"
 
     IfFileExists "$PROGRAMFILES\PyQwt3D\qt4examples" 0 +3
 	SetOutPath $INSTDIR
@@ -215,7 +218,7 @@ Section "Uninstall"
     ReadRegStr $INSTDIR HKLM "Software\PyQwt3D" ""
 
     # The modules section.
-    RMDir /r $INSTDIR\Lib\site-packages\PyQt4\Qwt5
+    RMDir /r $INSTDIR\Lib\site-packages\PyQt4\Qwt3D
 
     # The shortcuts section.
     RMDir /r "$SMPROGRAMS\${PYQWT3D_NAME}"
