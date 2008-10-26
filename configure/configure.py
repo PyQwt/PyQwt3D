@@ -312,6 +312,8 @@ def check_sip(configuration, options, package):
     if 0x040500 > version:
         raise SystemExit, required
 
+    options.extra_include_dirs.append(configuration.sip_inc_dir)
+
     return options
 
 # check_sip()

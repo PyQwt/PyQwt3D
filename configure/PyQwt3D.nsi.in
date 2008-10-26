@@ -139,6 +139,7 @@ Section "Extension modules" SecModules
 
     SetOutPath $INSTDIR\Lib\site-packages\PyQt4\Qwt3D
     File .\Qwt3D_Qt4\__init__.py
+    File .\Qwt3D_Qt4\ezplot.py
     File .\Qwt3D_Qt4\_Qwt3D.pyd
     File .\OpenGL_Qt4\OpenGL.pyd
 SectionEnd
