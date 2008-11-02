@@ -2,7 +2,7 @@
 //
 // The SIP interface definition for AxisVector.
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2006 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -42,21 +42,21 @@ typedef std::vector<Axis> AxisVector;
 
 public:
     AxisVector();
-    AxisVector(size_type);
-    AxisVector(size_type, const Axis &);
+    AxisVector(size_t);
+    AxisVector(size_t, const Axis &);
     AxisVector(const AxisVector &);
 
-    size_type capacity() const;
+    size_t capacity() const;
     void clear();
     bool empty() const;
     Axis & back();
     Axis & front();
-    size_type max_size() const;
+    size_t max_size() const;
     void pop_back();
     void push_back(const Axis &);
-    void reserve(size_type);
-    void resize(size_type, const Axis & = Axis());
-    size_type size() const;
+    void reserve(size_t);
+    void resize(size_t, const Axis & = Axis());
+    size_t size() const;
     void swap(AxisVector &);
 
     Axis & __getitem__(int);

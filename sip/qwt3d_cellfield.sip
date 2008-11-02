@@ -2,7 +2,7 @@
 //
 // The SIP interface definition for CellField.
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2006 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -40,21 +40,21 @@ using namespace Qwt3D;
 
 public:
     CellField();
-    CellField(size_type);
-    CellField(size_type, const Cell &);
+    CellField(size_t);
+    CellField(size_t, const Cell &);
     CellField(const CellField &);
 
-    size_type capacity() const;
+    size_t capacity() const;
     void clear();
     bool empty() const;
     Cell & back();
     Cell & front();
-    size_type max_size() const;
+    size_t max_size() const;
     void pop_back();
     void push_back(const Cell &);
-    void reserve(size_type);
-    void resize(size_type, const Cell & = Cell());
-    size_type size() const;
+    void reserve(size_t);
+    void resize(size_t, const Cell & = Cell());
+    size_t size() const;
     void swap(CellField &);
 
     Cell & __getitem__(int);

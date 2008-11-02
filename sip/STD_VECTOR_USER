@@ -38,21 +38,21 @@ class %(VECTOR)s
 
 public:
     %(VECTOR)s();
-    %(VECTOR)s(size_type);
-    %(VECTOR)s(size_type, const %(ITEM)s &);
+    %(VECTOR)s(size_t);
+    %(VECTOR)s(size_t, const %(ITEM)s &);
     %(VECTOR)s(const %(VECTOR)s &);
 
-    size_type capacity() const;
+    size_t capacity() const;
     void clear();
     bool empty() const;
     %(ITEM)s & back();
     %(ITEM)s & front();
-    size_type max_size() const;
+    size_t max_size() const;
     void pop_back();
     void push_back(const %(ITEM)s &);
-    void reserve(size_type);
-    void resize(size_type, const %(ITEM)s & = %(ITEM)s());
-    size_type size() const;
+    void reserve(size_t);
+    void resize(size_t, const %(ITEM)s & = %(ITEM)s());
+    size_t size() const;
     void swap(%(VECTOR)s &);
 
     %(ITEM)s & __getitem__(int);

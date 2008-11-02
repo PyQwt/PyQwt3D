@@ -1,3 +1,13 @@
+2008-10-26 15:52  gvermeul
+
+	* configure/: PyQwt3D.nsi.in, configure.py, go-mingw.bat: Fix some
+	  build problems on Windows.
+
+2007-08-08 11:31  gvermeul
+
+	* ANNOUNCEMENT-0.1.7.TXT, ChangeLog, setup.py: Prepare
+	  PyQwt3D-0.1.7.
+
 2007-08-08 06:40  gvermeul
 
 	* ChangeLog: Releasing PyQwt3D-0.1.6.

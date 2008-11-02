@@ -2,7 +2,7 @@
 //
 // The SIP interface definition for FreeVectorField.
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2006 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -41,21 +41,21 @@ using namespace Qwt3D;
 
 public:
     FreeVectorField();
-    FreeVectorField(size_type);
-    FreeVectorField(size_type, const FreeVector &);
+    FreeVectorField(size_t);
+    FreeVectorField(size_t, const FreeVector &);
     FreeVectorField(const FreeVectorField &);
 
-    size_type capacity() const;
+    size_t capacity() const;
     void clear();
     bool empty() const;
     FreeVector & back();
     FreeVector & front();
-    size_type max_size() const;
+    size_t max_size() const;
     void pop_back();
     void push_back(const FreeVector &);
-    void reserve(size_type);
-    void resize(size_type, const FreeVector & = FreeVector());
-    size_type size() const;
+    void reserve(size_t);
+    void resize(size_t, const FreeVector & = FreeVector());
+    size_t size() const;
     void swap(FreeVectorField &);
 
     FreeVector & __getitem__(int);

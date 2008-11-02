@@ -1,6 +1,6 @@
 // The SIP interface definition for the OpenGL module of PyQwt3D.
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2008 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

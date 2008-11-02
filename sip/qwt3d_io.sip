@@ -2,7 +2,7 @@
 // - class IO
 // - class PixmapWriter
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2008 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //

@@ -353,7 +353,7 @@ def check_compiler(configuration, options, package):
         else:
             print "NO"
             comment =  '// '
-        new.append('%stypedef %s size_type;' % (comment, ctype))
+        new.append('%stypedef %s size_t;' % (comment, ctype))
 
     new.extend(['',
                 '// Local Variables:',

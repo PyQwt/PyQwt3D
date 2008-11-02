@@ -24,7 +24,7 @@ print >> file, STD_VECTOR_BASE % {
     'HEAD': ('\n#include <qwt3d_types.h>'          
              '\nusing namespace Qwt3D;'
              ),
-    'ITEM': 'size_type',
+    'ITEM': 'size_t',
     'VECTOR': 'Cell',
     }
 

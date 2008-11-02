@@ -2,7 +2,7 @@
 //
 // The SIP interface definition for ColorVector.
 //
-// Copyright (C) 2004-2007 Gerard Vermeulen
+// Copyright (C) 2004-2006 Gerard Vermeulen
 //
 // This file is part of PyQwt3D.
 //
@@ -40,21 +40,21 @@ using namespace Qwt3D;
 
 public:
     ColorVector();
-    ColorVector(size_type);
-    ColorVector(size_type, const RGBA &);
+    ColorVector(size_t);
+    ColorVector(size_t, const RGBA &);
     ColorVector(const ColorVector &);
 
-    size_type capacity() const;
+    size_t capacity() const;
     void clear();
     bool empty() const;
     RGBA & back();
     RGBA & front();
-    size_type max_size() const;
+    size_t max_size() const;
     void pop_back();
     void push_back(const RGBA &);
-    void reserve(size_type);
-    void resize(size_type, const RGBA & = RGBA());
-    size_type size() const;
+    void reserve(size_t);
+    void resize(size_t, const RGBA & = RGBA());
+    size_t size() const;
     void swap(ColorVector &);
 
     RGBA & __getitem__(int);
