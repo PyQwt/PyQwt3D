@@ -2,7 +2,7 @@
 """
 Generate the build tree and Makefiles for PyQwt3D.
 """
-# Copyright (C) 2003-2007 Gerard Vermeulen
+# Copyright (C) 2003-2008 Gerard Vermeulen
 #
 # This file is part of PyQwt3D.
 #
