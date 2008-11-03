@@ -7,6 +7,10 @@ import PyQt4.Qt as Qt
 from PyQt4.Qwt3D import *
 from PyQt4.Qwt3D.OpenGL import *
 
+# enable all tracing options of the SIP generated bindings (requires -r option)
+if False:
+    import sip
+    sip.settracemask(0x3f)
 
 # translated from enrichments.cpp
 
