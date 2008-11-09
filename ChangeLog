@@ -1,3 +1,35 @@
+2008-11-03 07:23  gvermeul
+
+	* qt4examples/EnrichmentDemo.py: Add scaffolding.
+
+2008-11-02 10:15  gvermeul
+
+	* configure/configure.py: Update copyright dates.
+
+2008-11-02 09:57  gvermeul
+
+	* ChangeLog, configure/configure.py, sip/FILL,
+	  sip/OpenGL_Qt3_Module.sip, sip/OpenGL_Qt4_Module.sip,
+	  sip/OpenGL_mod.sip, sip/Qwt3D_Qt3_Module.sip,
+	  sip/Qwt3D_Qt4_Module.sip, sip/STD_VECTOR_BASE,
+	  sip/STD_VECTOR_USER, sip/features.sip, sip/qwt3d_autoscaler.sip,
+	  sip/qwt3d_axis.sip, sip/qwt3d_axisvector.sip, sip/qwt3d_cell.sip,
+	  sip/qwt3d_cellfield.sip, sip/qwt3d_color.sip,
+	  sip/qwt3d_colorlegend.sip, sip/qwt3d_colorvector.sip,
+	  sip/qwt3d_coordsys.sip, sip/qwt3d_doublevector.sip,
+	  sip/qwt3d_drawable.sip, sip/qwt3d_enrichment.sip,
+	  sip/qwt3d_enrichment_std.sip, sip/qwt3d_freevectorfield.sip,
+	  sip/qwt3d_function.sip, sip/qwt3d_gridmapping.sip,
+	  sip/qwt3d_io.sip, sip/qwt3d_io_gl2ps.sip,
+	  sip/qwt3d_io_reader.sip, sip/qwt3d_label.sip,
+	  sip/qwt3d_mapping.sip, sip/qwt3d_openglhelper.sip,
+	  sip/qwt3d_parametricsurface.sip, sip/qwt3d_plot.sip,
+	  sip/qwt3d_portability.sip, sip/qwt3d_scale.sip,
+	  sip/qwt3d_surfaceplot.sip, sip/qwt3d_triplefield.sip,
+	  sip/qwt3d_types.sip, sip/qwt3dmod.sip: Make PyQwt3D compile with
+	  the snapshots leading to SIP-4.8 by replacing size_type with
+	  size_t.  Update copyright dates.
+
 2008-10-26 15:52  gvermeul
 
 	* configure/: PyQwt3D.nsi.in, configure.py, go-mingw.bat: Fix some
